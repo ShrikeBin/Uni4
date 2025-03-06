@@ -1,0 +1,40 @@
+PING kiribati.gov.ki (85.187.128.46) 120(148) bytes of data.
+128 bytes from sg1-tr2.supercp.com (85.187.128.46): icmp_seq=1 ttl=47 time=472 ms
+128 bytes from sg1-tr2.supercp.com (85.187.128.46): icmp_seq=2 ttl=47 time=391 ms
+128 bytes from sg1-tr2.supercp.com (85.187.128.46): icmp_seq=3 ttl=47 time=414 ms
+128 bytes from sg1-tr2.supercp.com (85.187.128.46): icmp_seq=4 ttl=47 time=335 ms
+128 bytes from sg1-tr2.supercp.com (85.187.128.46): icmp_seq=5 ttl=47 time=465 ms
+
+--- kiribati.gov.ki ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4005ms
+rtt min/avg/max/mdev = 334.812/415.315/472.443/50.603 ms
+PING cs.pwr.edu.pl (156.17.7.22) 120(148) bytes of data.
+128 bytes from informatyka.im.pwr.wroc.pl (156.17.7.22): icmp_seq=1 ttl=60 time=50.7 ms
+128 bytes from informatyka.im.pwr.wroc.pl (156.17.7.22): icmp_seq=2 ttl=60 time=124 ms
+128 bytes from informatyka.im.pwr.wroc.pl (156.17.7.22): icmp_seq=3 ttl=60 time=44.1 ms
+128 bytes from informatyka.im.pwr.wroc.pl (156.17.7.22): icmp_seq=4 ttl=60 time=73.8 ms
+128 bytes from informatyka.im.pwr.wroc.pl (156.17.7.22): icmp_seq=5 ttl=60 time=89.2 ms
+
+--- cs.pwr.edu.pl ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4006ms
+rtt min/avg/max/mdev = 44.058/76.337/123.878/28.738 ms
+PING olx.pl (18.244.102.127) 120(148) bytes of data.
+128 bytes from server-18-244-102-127.waw51.r.cloudfront.net (18.244.102.127): icmp_seq=1 ttl=243 time=36.2 ms
+128 bytes from server-18-244-102-127.waw51.r.cloudfront.net (18.244.102.127): icmp_seq=2 ttl=243 time=56.0 ms
+128 bytes from server-18-244-102-127.waw51.r.cloudfront.net (18.244.102.127): icmp_seq=3 ttl=243 time=78.1 ms
+128 bytes from server-18-244-102-127.waw51.r.cloudfront.net (18.244.102.127): icmp_seq=4 ttl=243 time=49.0 ms
+128 bytes from server-18-244-102-127.waw51.r.cloudfront.net (18.244.102.127): icmp_seq=5 ttl=243 time=71.2 ms
+
+--- olx.pl ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4007ms
+rtt min/avg/max/mdev = 36.224/58.129/78.147/15.094 ms
+PING google.com (142.250.179.142) 120(148) bytes of data.
+128 bytes from ams17s10-in-f14.1e100.net (142.250.179.142): icmp_seq=1 ttl=110 time=100 ms
+128 bytes from ams17s10-in-f14.1e100.net (142.250.179.142): icmp_seq=2 ttl=110 time=235 ms
+128 bytes from ams17s10-in-f14.1e100.net (142.250.179.142): icmp_seq=3 ttl=110 time=93.5 ms
+128 bytes from ams17s10-in-f14.1e100.net (142.250.179.142): icmp_seq=4 ttl=110 time=115 ms
+128 bytes from ams17s10-in-f14.1e100.net (142.250.179.142): icmp_seq=5 ttl=110 time=138 ms
+
+--- google.com ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4007ms
+rtt min/avg/max/mdev = 93.456/136.372/234.987/51.634 ms
