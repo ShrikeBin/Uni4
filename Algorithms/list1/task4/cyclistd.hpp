@@ -14,7 +14,7 @@ struct Node
 template <typename T>
 class CycListD 
 {
-private:
+public:
     Node<T>* front;
     unsigned long elementcount;
 

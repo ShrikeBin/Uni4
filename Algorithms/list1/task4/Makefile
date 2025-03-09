@@ -1,11 +1,12 @@
-CC = g++
+CC = clang++
 CFLAGS = -Wall -Wextra -std=c++17
 TARGET = main
 SRC = main.cpp
+INCLUDE = $(wildcard *.hpp)
 
 all: $(TARGET)
 
-$(TARGET): $(SRC) queue.hpp
+$(TARGET): $(SRC) $(INCLUDE)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
 
 run: $(TARGET)
