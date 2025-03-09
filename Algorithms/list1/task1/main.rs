@@ -59,7 +59,7 @@ fn main()
         {
             println!("{}", value);
         } 
-        else // if Some is Nullptr
+        else // if Option is Null
         {
             println!("Empty stack for i: {}", i);
         }
