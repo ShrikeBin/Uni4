@@ -86,5 +86,5 @@ var StartTime time.Time = time.Now()
 		Position Position_Type
 	}
 
-	// 118 linijka w dół 
+	// 118 linijka w dół utworzyć task jako metody ?? coś jak javowy Thread
 
