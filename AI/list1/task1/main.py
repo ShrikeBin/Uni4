@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 from sklearn.metrics import confusion_matrix
+
 # Load Mnist
 (X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()
 
@@ -13,7 +14,7 @@ X_test = X_test / 255.0
 model = keras.Sequential([
     keras.layers.Flatten(input_shape=(28, 28)),
     keras.layers.Dense(128, activation="relu"),
-    keras.layers.Dense(10, activation="softmax") # Softmax so it adds up to 100%
+    keras.layers.Dense(10, activation="softmax")  # Softmax so it adds up to 100%
 ])
 
 model.compile(optimizer="adam",
@@ -27,14 +28,15 @@ model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
 y_pred = model.predict(X_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
 
-cm = confusion_matrix(y_test, y_pred)
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred_classes)
 
-accuracy = clf.score(X_test, y_test)
+accuracy = model.evaluate(X_test, y_test, verbose=0)[1]
 precision = cm.diagonal() / cm.sum(axis=0) 
 sensitivity = cm.diagonal() / cm.sum(axis=1)
 
-# FP FN TN TP
-fp = cm.sum(axis=0) - cm.diagonal() 
+# FP, FN, TN, TP
+fp = cm.sum(axis=0) - cm.diagonal()
 fn = cm.sum(axis=1) - cm.diagonal()
 tn = cm.sum() - (fp + fn + cm.diagonal()) 
 tp = cm.diagonal()
@@ -49,16 +51,16 @@ tp_percentage = (tp / total_samples) * 100
 precision_percentage = (precision * 100)
 sensitivity_percentage = (sensitivity * 100)
 
-# Save
+# Save 
 with open("metrics.txt", "w") as file:
     file.write(f"Accuracy: {accuracy * 100:.2f}%\n\n")
     
     file.write("Precision for each class:\n")
-    for i, p in enumerate(precision * 100):
+    for i, p in enumerate(precision_percentage):
         file.write(f"Class {i}: {p:.2f}%\n")
     
     file.write("\nSensitivity for each class:\n")
-    for i, s in enumerate(sensitivity * 100):
+    for i, s in enumerate(sensitivity_percentage):
         file.write(f"Class {i}: {s:.2f}%\n")
     
     file.write("\nFalse Positives (FP) percentage for each class:\n")
@@ -76,3 +78,7 @@ with open("metrics.txt", "w") as file:
     file.write("\nTrue Positives (TP) percentage for each class:\n")
     for i, tp_val in enumerate(tp_percentage):
         file.write(f"Class {i}: {tp_val:.2f}%\n")
+
+# Save  model
+model.save("mnist_model.keras")
+
