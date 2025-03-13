@@ -8,7 +8,7 @@ procedure  Travelers is
 
 -- Travelers moving on the board
 
-  Nr_Of_Travelers : constant Integer :=15;
+  Nr_Of_Travelers : constant Integer :=27;
 
   Min_Steps : constant Integer := 10 ;
   Max_Steps : constant Integer := 100 ;
@@ -37,7 +37,7 @@ procedure  Travelers is
     Y: Integer range 0 .. Board_Height - 1; 
   end record;	   
 
-  -- elementary steps
+  -- elementary steps, in out means you can modify the input (in - read, out - modify)
   procedure Move_Down( Position: in out Position_Type ) is
   begin
     Position.Y := ( Position.Y + 1 ) mod Board_Height;
@@ -190,7 +190,7 @@ procedure  Travelers is
   end Traveler_Task_Type;
 
 
--- local for main task
+-- Data for main task
 
   Travel_Tasks: array (0 .. Nr_Of_Travelers-1) of Traveler_Task_Type; -- for tests
   Symbol : Character := 'A';
@@ -204,10 +204,9 @@ begin
       Integer'Image( Board_Height )      
     );
 
-
   -- init tarvelers tasks
   for I in Travel_Tasks'Range loop
-    Travel_Tasks(I).Init( I, Seeds(I+1), Symbol );   -- `Seeds(I+1)` is ugly :-(
+    Travel_Tasks(I).Init( I, Seeds(I+1), Symbol );
     Symbol := Character'Succ( Symbol );
   end loop;
 
