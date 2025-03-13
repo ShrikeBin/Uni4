@@ -1,73 +1,73 @@
-Accuracy: 97.69%
+Accuracy: 98.00%
 
 Precision for each class:
-Class 0: 97.39%
+Class 0: 98.78%
 Class 1: 99.12%
-Class 2: 97.67%
-Class 3: 97.34%
-Class 4: 97.96%
-Class 5: 97.32%
-Class 6: 98.32%
-Class 7: 97.02%
-Class 8: 96.32%
-Class 9: 98.27%
+Class 2: 97.21%
+Class 3: 98.22%
+Class 4: 97.76%
+Class 5: 97.65%
+Class 6: 98.54%
+Class 7: 98.32%
+Class 8: 96.93%
+Class 9: 97.32%
 
 Sensitivity for each class:
-Class 0: 99.18%
-Class 1: 98.85%
-Class 2: 97.29%
-Class 3: 97.72%
-Class 4: 97.66%
-Class 5: 97.65%
-Class 6: 97.70%
-Class 7: 98.35%
-Class 8: 96.71%
-Class 9: 95.64%
+Class 0: 98.78%
+Class 1: 98.94%
+Class 2: 98.06%
+Class 3: 98.32%
+Class 4: 97.96%
+Class 5: 97.98%
+Class 6: 98.43%
+Class 7: 96.98%
+Class 8: 97.33%
+Class 9: 97.13%
 
 False Positives (FP) percentage for each class:
-Class 0: 0.26%
+Class 0: 0.12%
 Class 1: 0.10%
-Class 2: 0.24%
-Class 3: 0.27%
-Class 4: 0.20%
-Class 5: 0.24%
-Class 6: 0.16%
-Class 7: 0.31%
-Class 8: 0.36%
-Class 9: 0.17%
+Class 2: 0.29%
+Class 3: 0.18%
+Class 4: 0.22%
+Class 5: 0.21%
+Class 6: 0.14%
+Class 7: 0.17%
+Class 8: 0.30%
+Class 9: 0.27%
 
 False Negatives (FN) percentage for each class:
-Class 0: 0.08%
-Class 1: 0.13%
-Class 2: 0.28%
-Class 3: 0.23%
-Class 4: 0.23%
-Class 5: 0.21%
-Class 6: 0.22%
-Class 7: 0.17%
-Class 8: 0.32%
-Class 9: 0.44%
+Class 0: 0.12%
+Class 1: 0.12%
+Class 2: 0.20%
+Class 3: 0.17%
+Class 4: 0.20%
+Class 5: 0.18%
+Class 6: 0.15%
+Class 7: 0.31%
+Class 8: 0.26%
+Class 9: 0.29%
 
 True Negatives (TN) percentage for each class:
-Class 0: 89.94%
+Class 0: 90.08%
 Class 1: 88.55%
-Class 2: 89.44%
-Class 3: 89.63%
-Class 4: 89.98%
-Class 5: 90.84%
-Class 6: 90.26%
-Class 7: 89.41%
-Class 8: 89.90%
-Class 9: 89.74%
+Class 2: 89.39%
+Class 3: 89.72%
+Class 4: 89.96%
+Class 5: 90.87%
+Class 6: 90.28%
+Class 7: 89.55%
+Class 8: 89.96%
+Class 9: 89.64%
 
 True Positives (TP) percentage for each class:
-Class 0: 9.72%
-Class 1: 11.22%
-Class 2: 10.04%
-Class 3: 9.87%
-Class 4: 9.59%
-Class 5: 8.71%
-Class 6: 9.36%
-Class 7: 10.11%
-Class 8: 9.42%
-Class 9: 9.65%
+Class 0: 9.68%
+Class 1: 11.23%
+Class 2: 10.12%
+Class 3: 9.93%
+Class 4: 9.62%
+Class 5: 8.74%
+Class 6: 9.43%
+Class 7: 9.97%
+Class 8: 9.48%
+Class 9: 9.80%
