@@ -1,0 +1,7 @@
+(for '0') True Positive: 88.15%
+(for '0') True Negative: 9.72%
+(for '0') False Positive: 2.05%
+(for '0') False Negative: 0.08%
+Accuracy: 97.87%
+Sensitivity: 0.9991
+Precision: 0.9773
