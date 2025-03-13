@@ -3,5 +3,4 @@
 - Dependencies:
     - tensorflow
     - numpy
-    - matplotlib
     - scikit-learn
