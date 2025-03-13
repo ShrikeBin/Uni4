@@ -1,0 +1,63 @@
+Frame 2: 53 bytes on wire (424 bits), 53 bytes captured (424 bits) on interface wlp5s0, id 0
+    Section number: 1
+    Interface id: 0 (wlp5s0)
+        Interface name: wlp5s0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: Mar 13, 2025 14:10:30.458690992 CET
+    UTC Arrival Time: Mar 13, 2025 13:10:30.458690992 UTC
+    Epoch Arrival Time: 1741871430.458690992
+    [Time shift for this packet: 0.000000000 seconds]
+    [Time delta from previous captured frame: 0.000044662 seconds]
+    [Time delta from previous displayed frame: 0.000044662 seconds]
+    [Time since reference or first frame: 0.000044662 seconds]
+    Frame Number: 2
+    Frame Length: 53 bytes (424 bits)
+    Capture Length: 53 bytes (424 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:icmp:data]
+    [Coloring Rule Name: ICMP]
+    [Coloring Rule String: icmp || icmpv6]
+Ethernet II, Src: Intel_51:7a:89 (0c:7a:15:51:7a:89), Dst: Intel_f9:6b:db (cc:f9:e4:f9:6b:db)
+    Destination: Intel_f9:6b:db (cc:f9:e4:f9:6b:db)
+        Address: Intel_f9:6b:db (cc:f9:e4:f9:6b:db)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Intel_51:7a:89 (0c:7a:15:51:7a:89)
+        Address: Intel_51:7a:89 (0c:7a:15:51:7a:89)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.61.239, Dst: 192.168.61.232
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 39
+    Identification: 0x67c2 (26562)
+    000. .... = Flags: 0x0
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: ICMP (1)
+    Header Checksum: 0x15ec [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.61.239
+    Destination Address: 192.168.61.232
+Internet Control Message Protocol
+    Type: 0 (Echo (ping) reply)
+    Code: 0
+    Checksum: 0x5257 [correct]
+    [Checksum Status: Good]
+    Identifier (BE): 7129 (0x1bd9)
+    Identifier (LE): 55579 (0xd91b)
+    Sequence Number (BE): 1 (0x0001)
+    Sequence Number (LE): 256 (0x0100)
+    [Request frame: 1]
+    [Response time: 0.045 ms]
+    Data (11 bytes)
+        Data: 68656c6c6f20776f726c64
+        [Length: 11]
