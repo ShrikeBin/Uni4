@@ -1,0 +1,73 @@
+Accuracy: 97.04%
+
+Precision for each class:
+Class 0: 96.81%
+Class 1: 98.77%
+Class 2: 96.16%
+Class 3: 96.33%
+Class 4: 97.45%
+Class 5: 97.62%
+Class 6: 97.60%
+Class 7: 97.15%
+Class 8: 96.17%
+Class 9: 96.20%
+
+Sensitivity for each class:
+Class 0: 99.08%
+Class 1: 99.30%
+Class 2: 97.09%
+Class 3: 96.24%
+Class 4: 97.25%
+Class 5: 96.41%
+Class 6: 97.81%
+Class 7: 96.21%
+Class 8: 95.48%
+Class 9: 95.24%
+
+False Positives (FP) percentage for each class:
+Class 0: 0.32%
+Class 1: 0.14%
+Class 2: 0.40%
+Class 3: 0.37%
+Class 4: 0.25%
+Class 5: 0.21%
+Class 6: 0.23%
+Class 7: 0.29%
+Class 8: 0.37%
+Class 9: 0.38%
+
+False Negatives (FN) percentage for each class:
+Class 0: 0.09%
+Class 1: 0.08%
+Class 2: 0.30%
+Class 3: 0.38%
+Class 4: 0.27%
+Class 5: 0.32%
+Class 6: 0.21%
+Class 7: 0.39%
+Class 8: 0.44%
+Class 9: 0.48%
+
+True Negatives (TN) percentage for each class:
+Class 0: 89.88%
+Class 1: 88.51%
+Class 2: 89.28%
+Class 3: 89.53%
+Class 4: 89.93%
+Class 5: 90.87%
+Class 6: 90.19%
+Class 7: 89.43%
+Class 8: 89.89%
+Class 9: 89.53%
+
+True Positives (TP) percentage for each class:
+Class 0: 9.71%
+Class 1: 11.27%
+Class 2: 10.02%
+Class 3: 9.72%
+Class 4: 9.55%
+Class 5: 8.60%
+Class 6: 9.37%
+Class 7: 9.89%
+Class 8: 9.30%
+Class 9: 9.61%
