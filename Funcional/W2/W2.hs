@@ -3,11 +3,6 @@ module W2 where
 id' x = x -- przypisuje typowi A funckję A -> A
 inc x = x+1
 
-integral :: Int -> Int -> (Double -> Double) -> Int
-integral a b f
-    |f 1 == 1 = b - a  -- dla funckji = 1
-    |otherwise = 0     -- else
-
 collapse :: Integer -> Integer
 collapse n -- sławna 3n +1
     |n == 1 = 1
