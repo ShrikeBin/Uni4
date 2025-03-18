@@ -1,3 +1,5 @@
+module W1 where
+
 -- Silnia : IF ... ELSE ...
 fact1 :: Integer -> Integer
 fact1 n = if n==0 then 1
