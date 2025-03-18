@@ -87,17 +87,37 @@ length' (_:arr) = 1 + length' arr
 dcp :: Integer -> Double
 dcp n = fromIntegral (length' [(x,y) | x <- [1..n], y <- [1..n], gcd x y == 1]) / fromIntegral (n^2)
 
-helpdcp :: Integer -> Integer -> Integer -> Integer
-helpdcp n x y
-    |x > n = 0 -- doszliśmy do końca pary na x
-    |y > n = helpdcp n (x+1) 1 -- doszliśmy do końca pary na y
-    |gcd x y == 1 = 1 + helpdcp n x (y+1) -- znaleźliśmy względnie pierwsze, odpal rekurencję
-    |otherwise = helpdcp n x (y+1) -- nie były pierwsze -> idź dalej
+helpdcp :: Integer -> Integer -> Integer -> Integer -> Integer
+helpdcp n x y acc
+    |x > n = acc -- doszliśmy do końca pary na x
+    |y > n = helpdcp n (x+1) 1 acc -- doszliśmy do końca pary na y
+    |gcd x y == 1 = helpdcp n x (y+1) (acc+1) -- znaleźliśmy względnie pierwsze, odpal rekurencję
+    |otherwise = helpdcp n x (y+1) acc -- nie były pierwsze -> idź dalej
 
 -- XD policzył z 4gb stacka dla 10000
 -- dodaj opcje: +RTS -K4000m -RTS
 recdcp :: Integer -> Double
-recdcp n = fromIntegral (helpdcp n 1 1) / fromIntegral (n^2)
+recdcp n = fromIntegral (helpdcp n 1 1 0) / fromIntegral (n*n)
 
 -- map' recdcp ([100*x | x <- [1..50]])
 -- daje jakieś ~0.608 zawsze potem
+
+
+-- zad 17
+nub' :: Eq a => [a] -> [a]
+nub' [] = []
+nub' (i:arr) = i:nub' [x | x <- arr, x /= i]
+
+
+-- zad 20 -- Nelki pomysł
+splits' :: [a] -> [([a],[a])]
+splits' [] = [([],[])]  -- wtf czemu to działa???
+splits' (i:arr) = ([], i:arr) : map (\(left, right) -> (i:left, right)) (splits' arr)
+                        -- usun pierwszy i przesun go na 
+                        -- lewo do wszystkich następnych wywołań
+
+-- zad 21   -- DO NAPRAWY
+fastpartition :: (a -> Bool) -> [a] -> ([a],[a]) -> ([a],[a])
+fastpartition _ [] _ = ([],[])
+fastpartition f (i:arr) (true, false)= if f i then f arr (i:true, false)
+                                       else f arr (true, i:false)   
