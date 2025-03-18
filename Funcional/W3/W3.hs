@@ -76,11 +76,11 @@ niech x # y = y + x
 
 wtedy foldleft # e arr = foldright + e (reverse arr)
 
-foldleft:       foldright:
-    /\x4               x1/\
-   /\x3                 x2/\
-  /\x2                   x3/\                              
-e/\x1                     x4/\e        
+foldleft:       foldright:              flip f fold left
+    /\x4               x1/\                  x4/\
+   /\x3                 x2/\                  x3/\  
+  /\x2                   x3/\                  x2/\         
+e/\x1                     x4/\e                 x1/\e        
 
 gdy wezmiemy operację ':' - składania
 oraz (flip f) x y = f y x
