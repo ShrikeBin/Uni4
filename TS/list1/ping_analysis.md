@@ -100,7 +100,7 @@
 
 
 ## 8. Table:
-<table border="1" cellspacing="0" cellpadding="5">
+<table border="1" cellspacing="0" cellpadding="5" style="margin: auto; text-align: center;">
   <tr>
     <th>Service</th>
     <th>Packet Size</th>
@@ -207,4 +207,5 @@
     <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
   </tr>
 </table>
+
 
