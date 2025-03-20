@@ -100,6 +100,20 @@
 
 
 ## 8. Table:
+<style>
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    th, td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+
 <table border="1" cellspacing="0" cellpadding="5" style="margin: auto; text-align: center;">
   <tr>
     <th>Service</th>
