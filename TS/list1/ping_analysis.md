@@ -100,34 +100,111 @@
 
 
 ## 8. Table:
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>Service</th>
+    <th>Packet Size</th>
+    <th>Jumps</th>
+    <th>Jumps Back</th>
+    <th>Avg RTT (ms)</th>
+    <th>Avg RTT per Jump (ms)</th>
+  </tr>
+  <tr>
+    <td rowspan="4">kiribati.gov.ki</td>
+    <td>64B</td><td>27</td><td>17</td><td>415.3</td><td>15.4</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>27</td><td>17</td><td>428.7</td><td>15.9</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>25</td><td>16</td><td>481.3</td><td>17.8</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">cs.pwr.edu.pl</td>
+    <td>64B</td><td>5</td><td>2</td><td>76.3</td><td>15.3</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>5</td><td>2</td><td>2.1</td><td>0.3</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>5</td><td>2</td><td>3.5</td><td>0.5</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">olx.pl</td>
+    <td>64B</td><td>7</td><td>12</td><td>58.1</td><td>8.3</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>7</td><td>12</td><td>61.2</td><td>8.7</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">google.com</td>
+    <td>64B</td><td>6</td><td>18</td><td>136.4</td><td>22.7</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>6</td><td>18</td><td>140.9</td><td>23.5</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">id.wikipedia.org</td>
+    <td>64B</td><td>16</td><td>12</td><td>100.8</td><td>6.3</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>16</td><td>12</td><td>104.1</td><td>6.5</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">tierradelfuego.org.ar</td>
+    <td>64B</td><td>22</td><td>22</td><td>395.5</td><td>18.0</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>22</td><td>22</td><td>405.7</td><td>18.4</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>29</td><td>31</td><td>547.3</td><td>19.2</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+  
+  <tr>
+    <td rowspan="4">cocosseaview.com</td>
+    <td>64B</td><td>22</td><td>22</td><td>510</td><td>23.2</td>
+  </tr>
+  <tr>
+    <td>1024B</td><td>22</td><td>22</td><td>523.5</td><td>23.8</td>
+  </tr>
+  <tr>
+    <td>1500B</td><td>27</td><td>31</td><td>659.3</td><td>22.1</td>
+  </tr>
+  <tr>
+    <td>2MB</td><td>❌</td><td>❌</td><td>Stopped Responding</td><td>N/A</td>
+  </tr>
+</table>
 
-| Service                     | Packet Size | Jumps | Jumps Back | Avg RTT (ms) | Avg RTT per Jump (ms) |
-|-----------------------------|-------------|-------|------------|--------------|-----------------------|
-| kiribati.gov.ki             | 64B         | 27    | 17         | 415.3        | 15.4                  |
-| (very far away)             | 1024B       | 27    | 17         | 428.7        | 15.9                  |
-|                             | 1500B       | 25    | 16         | 481.3        | 17.8            |
-|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
-| cs.pwr.edu.pl               | 64B         | 5     | 2          | 76.3         | 15.3                |
-| (very close)                | 1024B       | 5     | 2          | 2.1         | 0.3                  |
-|                             | 1500B       | 5     | 2          | 3.5         | 0.5                  |
-|                             | 2MB         | ❌    | ❌          | Stopped Responding | N/A            |
-| olx.pl                      | 64B         | 7     | 12         | 58.1         | 8.3                   |
-| (close)                     | 1024B       | 7     | 12         | 61.2         | 8.7                   |
-|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A             |
-|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
-| google.com                  | 64B         | 6     | 18         | 136.4        | 22.7                  |
-| (big service, relatiely close)| 1024B       | 6     | 18         | 140.9        | 23.5                |
-|                             | 1500B       | ❌     | ❌         | Stopped Responding | N/A            |
-|                             | 2MB         | ❌     | ❌         | Stopped Responding | N/A            |
-| id.wikipedia.org            | 64B         | 16    | 12         | 100.8        | 6.3                   |
-| (far away)                  | 1024B       | 16    | 12         | 104.1        | 6.5                   |
-|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
-|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
-| tierradelfuego.org.ar       | 64B         | 22    | 22         | 395.5        | 18.0                  |
-| (very far away)             | 1024B       | 22    | 22         | 405.7        | 18.4                  |
-|                             | 1500B       | 29    | 31         | 547.3 | 19.2            |
-|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
-| cocosseaview.com            | 64B         | 22    | 22         | 510          | 23.2                  |
-| (small private hosting very far away)| 1024B       | 22    | 22         | 523.5        | 23.8         |
-|                             | 1500B       | 27    | 31         |659.3 | 22.1            |
-|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
