@@ -17,14 +17,14 @@
 ## 2. Ping to `cs.pwr.edu.pl` (156.17.7.22)
 - **Location**: Poland (Wrocław)
 - **Ping Results**:
-  - **Min/Avg/Max RTT**: 44.1ms / 76.3ms / 123.9ms
+  - **Min/Avg/Max RTT**: 5.15ms / 6.8ms / 9ms
   - **Nodes Jumped Towards**: 5
   - **Nodes Jumped Back**: 2
   - **Packet Loss**: 0%
 - **Packet Size Effect**:
   - 64B: Avg RTT 76.3ms
   - 1024B: Avg RTT 79.5ms
-  - 100KB: Avg RTT 85.2ms
+  - 1500B: Avg RTT 85.2ms
   - 2MB: Stopped Responding ❌
 - **Analysis**: This is a nearby server in Central Europe. The lower hop count suggests a direct routing path. Large packets increase RTT, with 2MB causing failure.
 
@@ -38,7 +38,7 @@
 - **Packet Size Effect**:
   - 64B: Avg RTT 58.1ms
   - 1024B: Avg RTT 61.2ms
-  - 100KB: Avg RTT 67.4ms
+  - 1500B: Avg RTT 67.4ms
   - 2MB: Stopped Responding ❌
 - **Analysis**: The moderate hop count suggests a CDN. RTT is stable, with 2MB packets failing.
 
@@ -105,29 +105,29 @@
 |-----------------------------|-------------|-------|------------|--------------|-----------------------|
 | kiribati.gov.ki             | 64B         | 27    | 17         | 415.3        | 15.4                  |
 | (very far away)             | 1024B       | 27    | 17         | 428.7        | 15.9                  |
-|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
-| cs.pwr.edu.pl               | 64B         | 5     | 2          | 76.3         | 15.3                  |
-| (very close)                | 1024B       | 5     | 2          | 79.5         | 15.9                  |
-|                             | 100KB       | 5     | 2          | 85.2         | 17.0                  |
+| cs.pwr.edu.pl               | 64B         | 5     | 2          | 76.3         | 15.3                |
+| (very close)                | 1024B       | 5     | 2          | 2.1         | 0.3                  |
+|                             | 1500B       | 5     | 2          | 3.5         | 0.5                  |
 |                             | 2MB         | ❌    | ❌          | Stopped Responding | N/A            |
 | olx.pl                      | 64B         | 7     | 12         | 58.1         | 8.3                   |
 | (close)                     | 1024B       | 7     | 12         | 61.2         | 8.7                   |
-|                             | 100KB       | 7     | 12         | 67.4         | 9.6                   |
+|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A             |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
 | google.com                  | 64B         | 6     | 18         | 136.4        | 22.7                  |
-| (big service, relatiely close)| 1024B       | 6     | 18         | 140.9        | 23.5                  |
-|                             | 100KB       | 7     | 18         | 149.2        | 24.9                  |
-|                             | 2MB         | 8     | 19         | 180.5        | 30.1                  |
+| (big service, relatiely close)| 1024B       | 6     | 18         | 140.9        | 23.5                |
+|                             | 1500B       | ❌     | ❌         | Stopped Responding | N/A            |
+|                             | 2MB         | ❌     | ❌         | Stopped Responding | N/A            |
 | id.wikipedia.org            | 64B         | 16    | 12         | 100.8        | 6.3                   |
 | (far away)                  | 1024B       | 16    | 12         | 104.1        | 6.5                   |
-|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
 | tierradelfuego.org.ar       | 64B         | 22    | 22         | 395.5        | 18.0                  |
 | (very far away)             | 1024B       | 22    | 22         | 405.7        | 18.4                  |
-|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
 | cocosseaview.com            | 64B         | 22    | 22         | 510          | 23.2                  |
-| (small private hosting very far away)| 1024B       | 22    | 22         | 523.5        | 23.8                  |
-|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+| (small private hosting very far away)| 1024B       | 22    | 22         | 523.5        | 23.8         |
+|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
