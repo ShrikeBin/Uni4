@@ -129,5 +129,5 @@
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
 | cocosseaview.com            | 64B         | 22    | 22         | 510          | 23.2                  |
 | (small private hosting very far away)| 1024B       | 22    | 22         | 523.5        | 23.8         |
-|                             | 1500B       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 1500B       | 27    | 31         |659.3 | 22.1            |
 |                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
