@@ -97,3 +97,37 @@
   - 100KB: Stopped Responding ❌
   - 2MB: Stopped Responding ❌
 - **Analysis**: The remote location leads to high RTT. Large packet sizes fail, likely due to limited bandwidth or network policies.
+
+
+## 8. Table:
+
+| Service                     | Packet Size | Jumps | Jumps Back | Avg RTT (ms) | Avg RTT per Jump (ms) |
+|-----------------------------|-------------|-------|------------|--------------|-----------------------|
+| kiribati.gov.ki             | 64B         | 27    | 17         | 415.3        | 15.4                  |
+|                             | 1024B       | 27    | 17         | 428.7        | 15.9                  |
+|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
+| cs.pwr.edu.pl               | 64B         | 5     | 2          | 76.3         | 15.3                  |
+|                             | 1024B       | 5     | 2          | 79.5         | 15.9                  |
+|                             | 100KB       | 5     | 2          | 85.2         | 17.0                  |
+|                             | 2MB         | ❌    | ❌          | Stopped Responding | N/A            |
+| olx.pl                      | 64B         | 7     | 12         | 58.1         | 8.3                   |
+|                             | 1024B       | 7     | 12         | 61.2         | 8.7                   |
+|                             | 100KB       | 7     | 12         | 67.4         | 9.6                   |
+|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
+| google.com                  | 64B         | 6     | 18         | 136.4        | 22.7                  |
+|                             | 1024B       | 6     | 18         | 140.9        | 23.5                  |
+|                             | 100KB       | 7     | 18         | 149.2        | 24.9                  |
+|                             | 2MB         | 8     | 19         | 180.5        | 30.1                  |
+| id.wikipedia.org            | 64B         | 16    | 12         | 100.8        | 6.3                   |
+|                             | 1024B       | 16    | 12         | 104.1        | 6.5                   |
+|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
+| tierradelfuego.org.ar       | 64B         | 22    | 22         | 395.5        | 18.0                  |
+|                             | 1024B       | 22    | 22         | 405.7        | 18.4                  |
+|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
+| cocosseaview.com            | 64B         | 22    | 22         | 510          | 23.2                  |
+|                             | 1024B       | 22    | 22         | 523.5        | 23.8                  |
+|                             | 100KB       | ❌    | ❌         | Stopped Responding | N/A            |
+|                             | 2MB         | ❌    | ❌         | Stopped Responding | N/A            |
