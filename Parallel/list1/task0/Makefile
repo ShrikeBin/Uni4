@@ -2,7 +2,7 @@ all:
 	gnatmake travelers.adb
 run:
 	./travelers > out
-	bash ./display-travel.bash out
+	bash ../display-travel.bash out
 clean:
 	rm *.o
 	rm *.ali
