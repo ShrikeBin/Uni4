@@ -1,7 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Random_Seeds; use Random_Seeds;
-with Board; use Board;
+with BoardMutex;
 with Constants;
 with Position_Type;
 with Ada.Real_Time; use Ada.Real_Time;
@@ -143,8 +143,8 @@ procedure  Travelers is
             return;
       end case;
       -- Now check if the new position is occupied
-      if not Is_Occupied(New_Position) then
-         Move_Traveler(New_Position, Traveler.Id);
+      if not BoardMutex.Board.Is_Occupied(New_Position) then
+         BoardMutex.Board.Move_Traveler(New_Position, Traveler.Id);
          Traveler.Position := New_Position; 
       end if;
     end Make_Step;
