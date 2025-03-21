@@ -11,7 +11,7 @@ X_train = X_train.reshape(-1, 28*28) / 255.0
 X_test = X_test.reshape(-1, 28*28) / 255.0
 
 # Train 
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf = RandomForestClassifier(n_estimators=100, random_state=37)
 clf.fit(X_train, y_train)
 
 # Make predictions
