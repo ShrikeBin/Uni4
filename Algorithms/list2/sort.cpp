@@ -125,7 +125,7 @@ void dual_pivot_quick_sort(std::vector<int>& arr)
 
 void hybrid_sort(std::vector<int>& arr)
 {
-    if (arr.size() < 50) 
+    if (arr.size() < 10) 
     {
         insertion_sort(arr);
     } 
@@ -190,73 +190,51 @@ void alt_merge_sort(std::vector<int>& arr)
     // TimSort or PowerSort
     // finds biggest rising subsequence from 'left' and then merges it with the rest
     // I DONT FREAKING KNOW
-    std::function<void(int, int)> merge_sort_rec = [&](int left, int right) 
+
+    std::function<std::vector<std::vector<int>>(std::vector<int>&)> find_rising_subsequences = [&](std::vector<int>& arr)
     {
-        if (left >= right) 
-        {
-            return;
-        }
+        std::vector<std::vector<int>> rising_subsequences;
+        std::vector<int> current_subsequence;
+        current_subsequence.push_back(arr[0]);
 
-        // we start at "left"
-        int mid = left;
-        // find the biggest rising subsequence
-        for(int i = left; i < right-1; ++i)
+        for(int i = 1; i < arr.size(); ++i)
         {
-            if(arr[i] > arr[i + 1])
+            if(arr[i] > arr[i - 1])
             {
-                mid ++;
+                current_subsequence.push_back(arr[i]);
             }
-            else // if no longer rising, break
+            else
             {
-                break;
+                rising_subsequences.push_back(current_subsequence);
+                current_subsequence.clear();
+                current_subsequence.push_back(arr[i]);
             }
         }
 
-        // unlikely
-        if (mid == right) 
-        {
-            return;
-        }
+        rising_subsequences.push_back(current_subsequence);
+        return rising_subsequences;
+    };
 
-        // aand merge it
-        merge_sort_rec(left, mid);
-        merge_sort_rec(mid + 1, right);
-
-        // merge is down there
-        std::vector<int> tmp(right - left + 1);
-        int i = left;
-        int j = mid + 1;
+    std::function<void(std::vector<int>&, std::vector<std::vector<int>>)> merge_rising_subsequences = [&](std::vector<int>& arr, std::vector<std::vector<int>> rising_subsequences)
+    {
+        std::vector<int> tmp(arr.size());
         int k = 0;
-        
-        while (i <= mid && j <= right) 
+
+        for(int i = 0; i < rising_subsequences.size(); ++i)
         {
-            if (arr[i] < arr[j]) 
+            for(int j = 0; j < rising_subsequences[i].size(); ++j)
             {
-                tmp[k++] = arr[i++];
-            } 
-            else 
-            {
-                tmp[k++] = arr[j++];
+                tmp[k++] = rising_subsequences[i][j];
             }
         }
-    
-        while (i <= mid) 
-        {
-            tmp[k++] = arr[i++];
-        }
 
-        while (j <= right) 
+        for(int i = 0; i < arr.size(); ++i)
         {
-            tmp[k++] = arr[j++];
-        }
-        
-        for (int i = 0; i < k; ++i) 
-        {
-            arr[left + i] = tmp[i];
+            arr[i] = tmp[i];
         }
     };
-    
-    merge_sort_rec(0, arr.size() - 1);
+    // doesnt work at all..
+    merge_rising_subsequences(arr, find_rising_subsequences(arr));
 }
 
 // global map of sorts
