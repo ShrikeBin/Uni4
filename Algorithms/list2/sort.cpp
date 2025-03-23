@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <functional>
+#include <stack>
 
 void std_sort(std::vector<int>& arr)
 {
@@ -186,55 +187,81 @@ void merge_sort(std::vector<int>& arr)
 
 void alt_merge_sort(std::vector<int>& arr)
 {
-    // should use Merge from mergesort and D&C and rising subsequences 
-    // TimSort or PowerSort
-    // finds biggest rising subsequence from 'left' and then merges it with the rest
-    // I DONT FREAKING KNOW
-
-    std::function<std::vector<std::vector<int>>(std::vector<int>&)> find_rising_subsequences = [&](std::vector<int>& arr)
+    // define merge function
+    std::function<void(std::vector<int>&, int, int, int)> merge = [&](std::vector<int>& arr, int left, int mid, int right) 
     {
-        std::vector<std::vector<int>> rising_subsequences;
-        std::vector<int> current_subsequence;
-        current_subsequence.push_back(arr[0]);
-
-        for(int i = 1; i < arr.size(); ++i)
+        std::vector<int> tmp(right - left + 1);
+        int i = left;
+        int j = mid + 1;
+        int k = 0;
+        
+        while (i <= mid && j <= right) 
         {
-            if(arr[i] > arr[i - 1])
+            if (arr[i] < arr[j]) 
             {
-                current_subsequence.push_back(arr[i]);
-            }
-            else
+                tmp[k++] = arr[i++];
+            } 
+            else 
             {
-                rising_subsequences.push_back(current_subsequence);
-                current_subsequence.clear();
-                current_subsequence.push_back(arr[i]);
+                tmp[k++] = arr[j++];
             }
         }
+    
+        while (i <= mid) 
+        {
+            tmp[k++] = arr[i++];
+        }
+        while (j <= right) 
+        {
+            tmp[k++] = arr[j++];
+        }
+        
+        for (int i = 0; i < k; ++i) 
+        {
+            arr[left + i] = tmp[i];
+        }
+    };
 
-        rising_subsequences.push_back(current_subsequence);
+    // finding rising subsequences
+    std::function<std::vector<std::pair<int,int>>(const std::vector<int>&)> find_rising_subsequences = [&](const std::vector<int>& arr) 
+    {
+        std::vector<std::pair<int,int>> rising_subsequences;
+        int start = 0;
+        int end = 0;
+        
+        for (int i = 1; i < arr.size(); ++i) 
+        {
+            if (arr[i] < arr[i - 1]) 
+            {
+                rising_subsequences.push_back({start, end});
+                start = i;
+            }
+            end = i;
+        }
+        
+        rising_subsequences.push_back({start, end});
         return rising_subsequences;
     };
 
-    std::function<void(std::vector<int>&, std::vector<std::vector<int>>)> merge_rising_subsequences = [&](std::vector<int>& arr, std::vector<std::vector<int>> rising_subsequences)
+    // sort implementation, tim sort like (?)
+    std::vector<std::pair<int,int>> rising_subsequences = find_rising_subsequences(arr);
+    std::stack<std::pair<int,int>> stack;
+
+    for(auto sequence : rising_subsequences)
     {
-        std::vector<int> tmp(arr.size());
-        int k = 0;
+        stack.push(sequence);
 
-        for(int i = 0; i < rising_subsequences.size(); ++i)
+        while(stack.size() >= 2)
         {
-            for(int j = 0; j < rising_subsequences[i].size(); ++j)
-            {
-                tmp[k++] = rising_subsequences[i][j];
-            }
-        }
+            auto top = stack.top();
+            stack.pop();
+            auto next = stack.top();
+            stack.pop();
 
-        for(int i = 0; i < arr.size(); ++i)
-        {
-            arr[i] = tmp[i];
+            merge(arr, next.first, next.second, top.second);
+            stack.push({next.first, top.second}); 
         }
-    };
-    // doesnt work at all..
-    merge_rising_subsequences(arr, find_rising_subsequences(arr));
+    }
 }
 
 // global map of sorts
