@@ -121,3 +121,8 @@ fastpartition :: (a -> Bool) -> [a] -> ([a],[a]) -> ([a],[a])
 fastpartition _ [] _ = ([],[])
 fastpartition f (i:arr) (true, false)= if f i then f arr (i:true, false)
                                        else f arr (true, i:false)   
+
+
+-- zad 24 -- musi sie dzielic przez 2 i 5 a jesli przez 5 w ! to przez 2 na pewno też więc wystarczy sprawdzic 5
+factorialzeroes :: Integer -> Integer
+factorialzeroes n = sum [div n (5^x) | x <- [1..floor (logBase 5 (fromIntegral n))]]
