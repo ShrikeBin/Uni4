@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <functional>
 #include <queue>
+#include <chrono>
 
 void std_sort(std::vector<int>& arr)
 {
@@ -126,14 +127,63 @@ void dual_pivot_quick_sort(std::vector<int>& arr)
 
 void hybrid_sort(std::vector<int>& arr)
 {
-    if (arr.size() < 10) 
+    std::function<void(int, int)> insort = [&](int left, int right) 
     {
-        insertion_sort(arr);
-    } 
-    else 
+        for (int i = left; i <= right; ++i) 
+        {
+            int key = arr[i];
+            int j = i - 1;
+            
+            while (j >= 0 && arr[j] > key) 
+            {
+                arr[j + 1] = arr[j];
+                --j;
+            }
+            
+            arr[j + 1] = key;
+        }
+    };
+
+    std::function<void(int, int)> hybrid_quick = [&](int left, int right) 
     {
-        quick_sort(arr);
-    }
+        if (left >= right) 
+        {
+            return;
+        }
+        if (right - left < 10) 
+        {
+            insort(left, right);
+            return;
+        }
+        
+        int pivot = arr[(left + right) / 2];
+        int i = left;
+        int j = right;
+        
+        while (i <= j) 
+        {
+            while (arr[i] < pivot) 
+            {
+                ++i;
+            }
+            while (arr[j] > pivot) 
+            {
+                --j;
+            }
+            
+            if (i <= j) 
+            {
+                std::swap(arr[i], arr[j]);
+                ++i;
+                --j;
+            }
+        }
+        
+        hybrid_quick(left, j);
+        hybrid_quick(i, right);
+    };
+
+    hybrid_quick(0, arr.size() - 1);
 }
 
 void merge_sort(std::vector<int>& arr)
@@ -321,27 +371,42 @@ int main(int argc, char* argv[])
     
     try 
     {
+        auto start = std::chrono::high_resolution_clock::now();
+
         sort_map.at(sort_type)(numbers);
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << "Time taken to sort: " << duration.count() << " seconds\n";
     } 
     catch (const std::out_of_range&) 
     {
         std::cerr << "Invalid sort type [" << sort_type << "]" << std::endl;
+        std::cout << "Available sort types: " << std::endl;
+        for (const auto& entry : sort_map) 
+        {
+            std::cout << "[" << entry.first <<"]" <<std::endl;
+        }        
         return 1;
     }
 
-    std::cout << "Before sorting: ";
-    for (int num : numbers_copy) 
+    if(numbers.size() < 30) 
     {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "After sorting: ";
-    for (int num : numbers) 
-    {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
+        std::cout << "Before sorting: ";
+        for (int num : numbers_copy) 
+        {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
     
+        std::cout << "After sorting: ";
+        for (int num : numbers) 
+        {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+    
+    } 
     return 0;
 }
