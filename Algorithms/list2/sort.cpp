@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <functional>
-#include <stack>
+#include <queue>
 
 void std_sort(std::vector<int>& arr)
 {
@@ -187,15 +187,42 @@ void merge_sort(std::vector<int>& arr)
 
 void alt_merge_sort(std::vector<int>& arr)
 {
-    // define merge function
-    std::function<void(std::vector<int>&, int, int, int)> merge = [&](std::vector<int>& arr, int left, int mid, int right) 
+    // find rising subsequences
+    std::function<std::vector<std::pair<int, int>>(const std::vector<int>&)> find_rising_subsequences = 
+    [&](const std::vector<int>& arr) 
     {
-        std::vector<int> tmp(right - left + 1);
-        int i = left;
-        int j = mid + 1;
-        int k = 0;
+        std::vector<std::pair<int, int>> rising_subsequences;
+        if (arr.empty()) return rising_subsequences;
+        rising_subsequences.reserve(arr.size());
+        int sequence_begin = 0;
         
-        while (i <= mid && j <= right) 
+        for (int i = 1; i < arr.size(); ++i) 
+        {
+            if (arr[i] < arr[i - 1]) 
+            {
+                rising_subsequences.emplace_back(sequence_begin, i - 1);
+                sequence_begin = i;
+            }
+        }
+        
+        rising_subsequences.emplace_back(sequence_begin, arr.size() - 1);
+
+        return rising_subsequences;
+    };
+
+    std::function<void(int, int, int, int)> merge = [&](int leftFirst, int leftLast, int rightFirst, int rightLast) 
+    {
+        if(leftFirst >= rightLast) 
+        {
+            return;
+        }
+        std::vector<int> tmp(rightLast - leftFirst + 1);
+        int i = leftFirst;
+        int j = rightFirst;
+        int k = 0;
+
+        // Merge the two sequences into tmp[]
+        while (i <= leftLast && j <= rightLast) 
         {
             if (arr[i] < arr[j]) 
             {
@@ -206,60 +233,57 @@ void alt_merge_sort(std::vector<int>& arr)
                 tmp[k++] = arr[j++];
             }
         }
-    
-        while (i <= mid) 
+
+        // If there are any remaining elements in the left half, copy them over
+        while (i <= leftLast) 
         {
             tmp[k++] = arr[i++];
         }
-        while (j <= right) 
+
+        // If there are any remaining elements in the right half, copy them over
+        while (j <= rightLast) 
         {
             tmp[k++] = arr[j++];
         }
-        
+
+        // Copy the merged data from tmp[] back into arr[]
         for (int i = 0; i < k; ++i) 
         {
-            arr[left + i] = tmp[i];
+            arr[leftFirst + i] = tmp[i];
         }
     };
 
-    // finding rising subsequences
-    std::function<std::vector<std::pair<int,int>>(const std::vector<int>&)> find_rising_subsequences = [&](const std::vector<int>& arr) 
+    // sort implementation
+    std::queue<std::pair<int, int>> queue;
+    std::vector<std::pair<int, int>> rising_subsequences = find_rising_subsequences(arr);
+    for(std::pair<int, int> sequence : rising_subsequences) 
     {
-        std::vector<std::pair<int,int>> rising_subsequences;
-        int start = 0;
-        int end = 0;
-        
-        for (int i = 1; i < arr.size(); ++i) 
-        {
-            if (arr[i] < arr[i - 1]) 
-            {
-                rising_subsequences.push_back({start, end});
-                start = i;
-            }
-            end = i;
-        }
-        
-        rising_subsequences.push_back({start, end});
-        return rising_subsequences;
-    };
+        queue.push(sequence);
+    }
 
-    // sort implementation, tim sort like (?)
-    std::vector<std::pair<int,int>> rising_subsequences = find_rising_subsequences(arr);
-    std::stack<std::pair<int,int>> stack;
+    std::pair<int, int> first;
+    std::pair<int, int> second;
 
-    for(auto sequence : rising_subsequences)
+    // bardzo misterny algorytm, ale działa xd
+    while (queue.size() > 1) 
     {
-        stack.push(sequence);
+        first = queue.front();
+        queue.pop();
+        second = queue.front();
+        queue.pop();
 
-        while(stack.size() >= 2)
+        if(first.second > second.first) 
         {
-            auto top = stack.top();
-            stack.pop();
-            auto next = stack.top();
-            stack.pop();
-
-            merge(arr, next.first, next.second, top.second);
-            stack.push({next.first, top.second}); 
+            queue.push({first.first, first.second});
+            first = queue.front();
+            queue.pop();
+            merge(second.first, second.second, first.first, first.second);
+            queue.push({second.first, first.second});
+        } 
+        else 
+        {
+            merge(first.first, first.second, second.first, second.second);
+            queue.push({first.first, second.second});
         }
     }
 }
