@@ -238,8 +238,8 @@ void merge_sort(std::vector<int>& arr)
 void alt_merge_sort(std::vector<int>& arr)
 {
     // find rising subsequences
-    std::function<std::vector<std::pair<int, int>>(const std::vector<int>&)> find_rising_subsequences = 
-    [&](const std::vector<int>& arr) 
+    std::function<std::vector<std::pair<int, int>>()> find_rising_subsequences = 
+    [&]() 
     {
         std::vector<std::pair<int, int>> rising_subsequences;
         if (arr.empty()) return rising_subsequences;
@@ -305,7 +305,7 @@ void alt_merge_sort(std::vector<int>& arr)
 
     // sort implementation
     std::queue<std::pair<int, int>> queue;
-    std::vector<std::pair<int, int>> rising_subsequences = find_rising_subsequences(arr);
+    std::vector<std::pair<int, int>> rising_subsequences = find_rising_subsequences();
     for(std::pair<int, int> sequence : rising_subsequences) 
     {
         queue.push(sequence);
