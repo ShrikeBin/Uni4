@@ -1,7 +1,8 @@
+import Data.List (permutations)
+
 -- zad 4
 sum' = \a b -> a+b
 product' = \a b -> a*b
-
 
 -- zad 8
 integral :: Int -> Int -> (Double -> Double) -> Int
@@ -117,12 +118,67 @@ splits' (i:arr) = ([], i:arr) : map (\(left, right) -> (i:left, right)) (splits'
                         -- lewo do wszystkich następnych wywołań
 
 -- zad 21   -- DO NAPRAWY
-fastpartition :: (a -> Bool) -> [a] -> ([a],[a]) -> ([a],[a])
-fastpartition _ [] _ = ([],[])
-fastpartition f (i:arr) (true, false)= if f i then f arr (i:true, false)
-                                       else f arr (true, i:false)   
+-- fastpartition :: (a -> Bool) -> [a] -> ([a],[a]) -> ([a],[a])
+-- fastpartition _ [] _ = ([],[])
+-- fastpartition f (i:arr) (true, false)= if f i then f arr (i:true, false)
+--                                       else f arr (true, i:false)   
+
+
+-- zad 23
+queens :: Int -> [[Int]]
+queens n = filter (not . checkArr) (permutations [1..n])
+
+checkArr :: [Int] -> Bool
+checkArr [] = False
+checkArr (i:arr) = checkHit i arr || checkArr arr
+
+-- robi mi tutaj cały czas lewo prawo xd (zamien na checkHitUp i checkHitDown)
+checkHit :: Int -> [Int] -> Bool
+checkHit _ [] = False
+checkHit i (j:arr) = if (abs (i - j)) == 1 then True
+                   else checkHit (i+1) arr || checkHit (i-1) arr
 
 
 -- zad 24 -- musi sie dzielic przez 2 i 5 a jesli przez 5 w ! to przez 2 na pewno też więc wystarczy sprawdzic 5
 factorialzeroes :: Integer -> Integer
 factorialzeroes n = sum [div n (5^x) | x <- [1..floor (logBase 5 (fromIntegral n))]]
+
+
+-- zad 28
+-- partition
+partition::(a->Bool)->[a]->([a],[a])
+partition _ [] = ([],[])
+partition p (i:arr) = if p i then (i:l, r) 
+                            else (l, i:r)
+                            where (l, r) = partition p arr
+-- Insertion Sort
+inSort [] = []
+inSort (x:xs) = l ++ [x] ++ r
+                where   sxs = inSort xs 
+                        (l, r) = partition (<x) sxs
+
+-- hybrid
+hybridsort :: Ord a => [a] -> [a]
+hybridsort [] = []
+hybridsort (i:arr) = if length' arr <= 9 then inSort arr
+                    else hybridsort l ++ [i] ++ hybridsort r
+                    where (l, r) = partition (<i) arr 
+
+
+-- zad 31
+takeWhile' :: (a -> Bool) -> [a] -> [a]
+takeWhile' _ [] = []
+takeWhile' f (i:arr) = if f i then i:takeWhile' f arr
+                       else []
+
+dropWhile' :: (a -> Bool) -> [a] -> [a]
+dropWhile' _ [] = []
+dropWhile' f (i:arr) = if f i then dropWhile' f arr
+                       else i:arr
+
+
+-- zad 33
+subCard :: Int -> [a] -> [[a]]
+subCard 0 _ = [[]]
+subCard _ [] = []
+subCard k (i:arr) = map (i:) (subCard (k-1) arr) ++ subCard k arr
