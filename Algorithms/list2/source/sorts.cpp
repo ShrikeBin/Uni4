@@ -12,6 +12,7 @@ void std_sort(std::vector<int>& arr, SortStats& stats)
     std::sort(arr.begin(), arr.end());
 }
 
+
 void insertion_sort(std::vector<int>& arr, SortStats& stats)
 {
     for (int i = 1; i < arr.size(); ++i)
@@ -31,6 +32,7 @@ void insertion_sort(std::vector<int>& arr, SortStats& stats)
         ++stats.swaps;
     }
 }
+
 
 void quick_sort(std::vector<int>& arr, SortStats& stats)
 {
@@ -74,104 +76,139 @@ void quick_sort(std::vector<int>& arr, SortStats& stats)
     quick_rec(0, arr.size() - 1);
 }
 
-void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
+// broken
+void DPCQsort(std::vector<int>& arr, SortStats& stats) 
 {
-    std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right)
+    std::function<void(int, int)> DPCQsort_impl = [&](int left, int right) 
     {
-        if (left >= right) 
+        if (left >= right) return;
+
+        //  pivots
+        int p = left;
+        int q = right;
+
+        // rest of the variables
+        int pPos = left + 1;
+        int qPos = right - 1;
+        int i = pPos;
+        int d = 0; // |small| - |large|
+
+        while (i <= qPos) 
         {
-            return;
+            if (d > 0) 
+            {
+               if(arr[i] < arr[p]) 
+               {
+                   std::swap(arr[pPos], arr[i]);
+                   ++pPos;
+                   ++i;
+                   ++d;
+               } 
+               else 
+               {
+                   if(arr[i] < arr[q]) 
+                   {
+                       ++i;
+                   } 
+                   else 
+                   {
+                       std::swap(arr[i], arr[qPos]);
+                       --qPos;
+                       --d;
+                   }
+               }
+            } 
+            else // d < 0
+            {
+                if(arr[i] > arr[q]) 
+                {
+                    std::swap(arr[i], arr[qPos]);
+                    --qPos;
+                    --d;
+                } 
+                else 
+                {
+                    if(arr[i] < arr[p]) 
+                    {
+                        std::swap(arr[pPos], arr[i]);
+                        ++pPos;
+                        ++i;
+                        ++d;
+                    } 
+                    else 
+                    {
+                        std::swap(arr[i], arr[qPos]);
+                        --qPos;
+                        --d;
+                    }
+                }
+            }
         }
 
-        if (arr[left] > arr[right]) 
-        {
+        std::swap(arr[left], arr[pPos - 1]);
+        std::swap(arr[right], arr[qPos + 1]);
+
+        DPCQsort_impl(left, pPos);  // Left partition
+        DPCQsort_impl(pPos, qPos); // Middle partition
+        DPCQsort_impl(qPos + 2, right); // Right partition
+    };   
+
+    DPCQsort_impl(0, arr.size() - 1);
+}
+
+
+void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats) 
+{
+    std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right) 
+    {
+        if (left >= right) return;
+        
+        if (arr[left] > arr[right]) {
             std::swap(arr[left], arr[right]);
-            ++stats.comparisons;
-            ++stats.swaps;
+            stats.swaps++;
         }
-
-        // two pivots, p and q
-        int p = arr[left];
-        int q = arr[right];
-        int s = 0;
-        int l= 0;
-        int pPosition = left + s;
-        int qPosition = right - l;
-
-        std::cout << "P: " << p << " Q: " << q << std::endl;
-        for(int i = left; i <= right; ++i)
+        
+        int pivot1 = arr[left], pivot2 = arr[right];
+        int i = left + 1, lt = left + 1, gt = right - 1;
+        
+        while (i <= gt) 
         {
-            std::cout << arr[i] << " ";
+            stats.comparisons++;
+            if (arr[i] < pivot1) 
+            {
+                std::swap(arr[i], arr[lt]);
+                stats.swaps++;
+                lt++;
+            } 
+            else if (arr[i] > pivot2) 
+            {
+                while (i < gt && arr[gt] > pivot2) 
+                {
+                    stats.comparisons++;
+                    gt--;
+                }
+                std::swap(arr[i], arr[gt]);
+                stats.swaps++;
+                gt--;
+                if (arr[i] < pivot1) 
+                {
+                    std::swap(arr[i], arr[lt]);
+                    stats.swaps++;
+                    lt++;
+                }
+            }
+            i++;
         }
-        std::cout << std::endl;
-        std::cout << pPosition << " " << qPosition << std::endl;
-
-        // Count Strategy but incomplete
-        for (int i = left + 1; i < right; ++i) 
-        {
-            std::cout << "i: " << i << std::endl;
-            for(int j = left; j <= right; ++j)
-            {
-                std::cout << arr[j] << " ";
-            }
-            std::cout << std::endl;
-
-            pPosition = left + s;
-            qPosition = right - l;
-
-            if(l > s)
-            {
-                if (arr[i] >= q) // co jeśli jest większe od q?? jak to przerzucic dobrze??
-                {
-                    ++stats.comparisons;
-                    ++l;
-                    std::swap(arr[i], arr[qPosition-1]);
-                    ++stats.swaps;
-                    std::swap(arr[qPosition-1], arr[qPosition]);
-                    ++stats.swaps;
-                } 
-                else if (arr[i] <= p) 
-                {
-                    ++stats.comparisons;
-                    ++s;
-                    std::swap(arr[i], arr[pPosition]);
-                    ++stats.swaps;
-                }
-                else    // is between p and q
-                {
-                    ++stats.comparisons;
-                    ++stats.comparisons;
-                }
-            }
-            else
-            {
-                if (arr[i] <= p) 
-                {
-                    ++stats.comparisons;
-                    ++s;
-                    std::swap(arr[i], arr[pPosition]);
-                    ++stats.swaps;
-                } 
-                else if (arr[i] >= q) 
-                {
-                    ++stats.comparisons;
-                    ++l;
-                    std::swap(arr[i], arr[qPosition-1]);
-                    ++stats.swaps;
-                    std::swap(arr[qPosition-1], arr[qPosition]);
-                    ++stats.swaps;
-                }
-                else    // is between p and q
-                {
-                    ++stats.comparisons;
-                    ++stats.comparisons;
-                }
-            }
-        }
-
-        dual_pivot_quick_sort_impl(left, pPosition - 1);
-        dual_pivot_quick_sort_impl(pPosition +1 , qPosition - 1);
-        dual_pivot_quick_sort_impl(qPosition + 1, right);
+        
+        lt--;
+        gt++;
+        std::swap(arr[left], arr[lt]);
+        std::swap(arr[right], arr[gt]);
+        stats.swaps += 2;
+        
+        dual_pivot_quick_sort_impl(left, lt - 1);
+        dual_pivot_quick_sort_impl(lt + 1, gt - 1);
+        dual_pivot_quick_sort_impl(gt + 1, right);
     };
     
     dual_pivot_quick_sort_impl(0, arr.size() - 1);
@@ -245,6 +282,7 @@ void hybrid_sort(std::vector<int>& arr, SortStats& stats)
     hybrid_quick(0, arr.size() - 1);
 }
 
+
 void merge_sort(std::vector<int>& arr, SortStats& stats)
 {
     std::function<void(int, int)> merge_sort_rec = [&](int left, int right)
@@ -297,6 +335,7 @@ void merge_sort(std::vector<int>& arr, SortStats& stats)
     
     merge_sort_rec(0, arr.size() - 1);
 }
+
 
 void alt_merge_sort(std::vector<int>& arr, SortStats& stats)
 {

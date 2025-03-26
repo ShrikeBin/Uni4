@@ -14,7 +14,8 @@ const std::unordered_map<std::string, std::function<void(std::vector<int>&, Sort
     {"dpquick", dual_pivot_quick_sort},
     {"hybrid", hybrid_sort},
     {"altmerge", alt_merge_sort},
-    {"merge", merge_sort}
+    {"merge", merge_sort},
+    {"dpcquick", DPCQsort}
 };
 
 int main(int argc, char* argv[]) 
