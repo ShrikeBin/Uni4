@@ -4,33 +4,37 @@
 #include <unordered_map>
 #include <functional>
 #include <queue>
-#include <chrono>
 
-void std_sort(std::vector<int>& arr)
+#include "sorts.hpp"
+
+void std_sort(std::vector<int>& arr, SortStats& stats)
 {
     std::sort(arr.begin(), arr.end());
 }
 
-void insertion_sort(std::vector<int>& arr)
+void insertion_sort(std::vector<int>& arr, SortStats& stats)
 {
-    for (int i = 1; i < arr.size(); ++i) 
+    for (int i = 1; i < arr.size(); ++i)
     {
         int key = arr[i];
         int j = i - 1;
         
-        while (j >= 0 && arr[j] > key) 
+        while (j >= 0 && arr[j] > key)
         {
             arr[j + 1] = arr[j];
             --j;
+            ++stats.comparisons;
+            ++stats.swaps;
         }
         
         arr[j + 1] = key;
+        ++stats.swaps;
     }
 }
 
-void quick_sort(std::vector<int>& arr)
+void quick_sort(std::vector<int>& arr, SortStats& stats)
 {
-    std::function<void(int, int)> quick_rec = [&](int left, int right) 
+    std::function<void(int, int)> quick_rec = [&](int left, int right)
     {
         if (left >= right) 
         {
@@ -41,20 +45,23 @@ void quick_sort(std::vector<int>& arr)
         int i = left;
         int j = right;
         
-        while (i <= j) 
+        while (i <= j)
         {
-            while (arr[i] < pivot) 
+            while (arr[i] < pivot)
             {
                 ++i;
+                ++stats.comparisons;
             }
-            while (arr[j] > pivot) 
+            while (arr[j] > pivot)
             {
                 --j;
+                ++stats.comparisons;
             }
             
-            if (i <= j) 
+            if (i <= j)
             {
                 std::swap(arr[i], arr[j]);
+                ++stats.swaps;
                 ++i;
                 --j;
             }
@@ -67,67 +74,113 @@ void quick_sort(std::vector<int>& arr)
     quick_rec(0, arr.size() - 1);
 }
 
-void dual_pivot_quick_sort(std::vector<int>& arr)
+void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
 {
-    std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right) 
+    std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right)
     {
         if (left >= right) 
         {
             return;
         }
-        
+
         if (arr[left] > arr[right]) 
         {
             std::swap(arr[left], arr[right]);
+            ++stats.comparisons;
+            ++stats.swaps;
         }
-        
-        int pivot1 = arr[left];
-        int pivot2 = arr[right];
-        int i = left + 1;
-        int k = left + 1;
-        int j = right - 1;
-        
-        while (k <= j) 
+
+        // two pivots, p and q
+        int p = arr[left];
+        int q = arr[right];
+        int s = 0;
+        int l= 0;
+        int pPosition = left + s;
+        int qPosition = right - l;
+
+        std::cout << "P: " << p << " Q: " << q << std::endl;
+        for(int i = left; i <= right; ++i)
         {
-            if (arr[k] < pivot1) 
+            std::cout << arr[i] << " ";
+        }
+        std::cout << std::endl;
+        std::cout << pPosition << " " << qPosition << std::endl;
+
+        // Count Strategy but incomplete
+        for (int i = left + 1; i < right; ++i) 
+        {
+            std::cout << "i: " << i << std::endl;
+            for(int j = left; j <= right; ++j)
             {
-                std::swap(arr[k], arr[i]);
-                ++i;
-            } 
-            else if (arr[k] >= pivot2) 
+                std::cout << arr[j] << " ";
+            }
+            std::cout << std::endl;
+
+            pPosition = left + s;
+            qPosition = right - l;
+
+            if(l > s)
             {
-                while (arr[j] > pivot2 && k < j) 
+                if (arr[i] >= q) // co jeśli jest większe od q?? jak to przerzucic dobrze??
                 {
-                    --j;
+                    ++stats.comparisons;
+                    ++l;
+                    std::swap(arr[i], arr[qPosition-1]);
+                    ++stats.swaps;
+                    std::swap(arr[qPosition-1], arr[qPosition]);
+                    ++stats.swaps;
+                } 
+                else if (arr[i] <= p) 
+                {
+                    ++stats.comparisons;
+                    ++s;
+                    std::swap(arr[i], arr[pPosition]);
+                    ++stats.swaps;
                 }
-                std::swap(arr[k], arr[j]);
-                --j;
-                
-                if (arr[k] < pivot1) 
+                else    // is between p and q
                 {
-                    std::swap(arr[k], arr[i]);
-                    ++i;
+                    ++stats.comparisons;
+                    ++stats.comparisons;
                 }
             }
-            ++k;
+            else
+            {
+                if (arr[i] <= p) 
+                {
+                    ++stats.comparisons;
+                    ++s;
+                    std::swap(arr[i], arr[pPosition]);
+                    ++stats.swaps;
+                } 
+                else if (arr[i] >= q) 
+                {
+                    ++stats.comparisons;
+                    ++l;
+                    std::swap(arr[i], arr[qPosition-1]);
+                    ++stats.swaps;
+                    std::swap(arr[qPosition-1], arr[qPosition]);
+                    ++stats.swaps;
+                }
+                else    // is between p and q
+                {
+                    ++stats.comparisons;
+                    ++stats.comparisons;
+                }
+            }
         }
-        
-        --i;
-        ++j;
-        std::swap(arr[left], arr[i]);
-        std::swap(arr[right], arr[j]);
-        
-        dual_pivot_quick_sort_impl(left, i - 1);
-        dual_pivot_quick_sort_impl(i + 1, j - 1);
-        dual_pivot_quick_sort_impl(j + 1, right);
+
+        dual_pivot_quick_sort_impl(left, pPosition - 1);
+        dual_pivot_quick_sort_impl(pPosition +1 , qPosition - 1);
+        dual_pivot_quick_sort_impl(qPosition + 1, right);
     };
     
     dual_pivot_quick_sort_impl(0, arr.size() - 1);
 }
 
-void hybrid_sort(std::vector<int>& arr)
+
+void hybrid_sort(std::vector<int>& arr, SortStats& stats)
 {
-    std::function<void(int, int)> insort = [&](int left, int right) 
+    std::function<void(int, int)> insort = [&](int left, int right)
     {
         for (int i = left; i <= right; ++i) 
         {
@@ -138,13 +191,16 @@ void hybrid_sort(std::vector<int>& arr)
             {
                 arr[j + 1] = arr[j];
                 --j;
+                ++stats.comparisons;
+                ++stats.swaps;
             }
             
             arr[j + 1] = key;
+            ++stats.swaps;
         }
     };
 
-    std::function<void(int, int)> hybrid_quick = [&](int left, int right) 
+    std::function<void(int, int)> hybrid_quick = [&](int left, int right)
     {
         if (left >= right) 
         {
@@ -165,15 +221,18 @@ void hybrid_sort(std::vector<int>& arr)
             while (arr[i] < pivot) 
             {
                 ++i;
+                ++stats.comparisons;
             }
             while (arr[j] > pivot) 
             {
                 --j;
+                ++stats.comparisons;
             }
             
             if (i <= j) 
             {
                 std::swap(arr[i], arr[j]);
+                ++stats.swaps;
                 ++i;
                 --j;
             }
@@ -186,9 +245,9 @@ void hybrid_sort(std::vector<int>& arr)
     hybrid_quick(0, arr.size() - 1);
 }
 
-void merge_sort(std::vector<int>& arr)
+void merge_sort(std::vector<int>& arr, SortStats& stats)
 {
-    std::function<void(int, int)> merge_sort_rec = [&](int left, int right) 
+    std::function<void(int, int)> merge_sort_rec = [&](int left, int right)
     {
         if (left >= right) 
         {
@@ -199,7 +258,6 @@ void merge_sort(std::vector<int>& arr)
         merge_sort_rec(left, mid);
         merge_sort_rec(mid + 1, right);
 
-        // merge is down there
         std::vector<int> tmp(right - left + 1);
         int i = left;
         int j = mid + 1;
@@ -210,35 +268,39 @@ void merge_sort(std::vector<int>& arr)
             if (arr[i] < arr[j]) 
             {
                 tmp[k++] = arr[i++];
+                ++stats.comparisons;
             } 
             else 
             {
                 tmp[k++] = arr[j++];
+                ++stats.comparisons;
             }
         }
     
         while (i <= mid) 
         {
             tmp[k++] = arr[i++];
+            ++stats.swaps;
         }
         while (j <= right) 
         {
             tmp[k++] = arr[j++];
+            ++stats.swaps;
         }
         
         for (int i = 0; i < k; ++i) 
         {
             arr[left + i] = tmp[i];
+            ++stats.swaps;
         }
     };
     
     merge_sort_rec(0, arr.size() - 1);
 }
 
-void alt_merge_sort(std::vector<int>& arr)
+void alt_merge_sort(std::vector<int>& arr, SortStats& stats)
 {
-    // find rising subsequences
-    std::function<std::vector<std::pair<int, int>>()> find_rising_subsequences = 
+    std::function<std::vector<std::pair<int, int>>()> find_rising_subsequences =
     [&]() 
     {
         std::vector<std::pair<int, int>> rising_subsequences;
@@ -271,39 +333,39 @@ void alt_merge_sort(std::vector<int>& arr)
         int j = rightFirst;
         int k = 0;
 
-        // Merge the two sequences into tmp[]
         while (i <= leftLast && j <= rightLast) 
         {
             if (arr[i] < arr[j]) 
             {
                 tmp[k++] = arr[i++];
+                ++stats.comparisons;
             } 
             else 
             {
                 tmp[k++] = arr[j++];
+                ++stats.comparisons;
             }
         }
 
-        // If there are any remaining elements in the left half, copy them over
         while (i <= leftLast) 
         {
             tmp[k++] = arr[i++];
+            ++stats.swaps;
         }
 
-        // If there are any remaining elements in the right half, copy them over
         while (j <= rightLast) 
         {
             tmp[k++] = arr[j++];
+            ++stats.swaps;
         }
 
-        // Copy the merged data from tmp[] back into arr[]
         for (int i = 0; i < k; ++i) 
         {
             arr[leftFirst + i] = tmp[i];
+            ++stats.swaps;
         }
     };
 
-    // sort implementation
     std::queue<std::pair<int, int>> queue;
     std::vector<std::pair<int, int>> rising_subsequences = find_rising_subsequences();
     for(std::pair<int, int> sequence : rising_subsequences) 
@@ -314,7 +376,6 @@ void alt_merge_sort(std::vector<int>& arr)
     std::pair<int, int> first;
     std::pair<int, int> second;
 
-    // bardzo misterny algorytm, ale działa xd
     while (queue.size() > 1) 
     {
         first = queue.front();
@@ -336,77 +397,4 @@ void alt_merge_sort(std::vector<int>& arr)
             queue.push({first.first, second.second});
         }
     }
-}
-
-// global map of sorts
-const std::unordered_map<std::string, std::function<void(std::vector<int>&)>> sort_map = 
-{
-    {"std", std_sort},
-    {"insertion", insertion_sort},
-    {"quick", quick_sort},
-    {"dpquick", dual_pivot_quick_sort},
-    {"hybrid", hybrid_sort},
-    {"altmerge", alt_merge_sort},
-    {"merge", merge_sort}
-};
-
-int main(int argc, char* argv[]) 
-{
-    if (argc != 2) 
-    {
-        std::cerr << "Usage: " << argv[0] << " <sort_type>\n";
-        return 1;
-    }
-    
-    std::string sort_type = argv[1];
-    std::vector<int> numbers;
-    int num;
-    
-    while (std::cin >> num) 
-    {
-        numbers.push_back(num);
-    }
-
-    std::vector<int> numbers_copy = numbers;
-    
-    try 
-    {
-        auto start = std::chrono::high_resolution_clock::now();
-
-        sort_map.at(sort_type)(numbers);
-
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = end - start;
-
-        std::cout << "Time taken to sort: " << duration.count() << " seconds\n";
-    } 
-    catch (const std::out_of_range&) 
-    {
-        std::cerr << "Invalid sort type [" << sort_type << "]" << std::endl;
-        std::cout << "Available sort types: " << std::endl;
-        for (const auto& entry : sort_map) 
-        {
-            std::cout << "[" << entry.first <<"]" <<std::endl;
-        }        
-        return 1;
-    }
-
-    if(numbers.size() < 30) 
-    {
-        std::cout << "Before sorting: ";
-        for (int num : numbers_copy) 
-        {
-            std::cout << num << " ";
-        }
-        std::cout << std::endl;
-    
-        std::cout << "After sorting: ";
-        for (int num : numbers) 
-        {
-            std::cout << num << " ";
-        }
-        std::cout << std::endl;
-    
-    } 
-    return 0;
 }
