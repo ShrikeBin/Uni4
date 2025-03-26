@@ -67,6 +67,7 @@ void quick_sort(std::vector<int>& arr, SortStats& stats)
                 ++i;
                 --j;
             }
+            ++stats.comparisons;
         }
         
         quick_rec(left, j);
@@ -76,7 +77,7 @@ void quick_sort(std::vector<int>& arr, SortStats& stats)
     quick_rec(0, arr.size() - 1);
 }
 
-// broken
+
 void DPCQsort(std::vector<int>& arr, SortStats& stats) 
 {
     std::function<void(int, int)> insort = [&](int left, int right)
@@ -123,16 +124,19 @@ void DPCQsort(std::vector<int>& arr, SortStats& stats)
         while (j <= k)
         {
             if (d > 0)
-            {
+            {   
+                ++stats.comparisons;
                 if (arr[j] <= p)
                 {
                     std::swap(arr[i], arr[j]);
+                    ++stats.swaps;
                     ++i;
                     ++j;
                     ++d;
                 }
                 else
                 {
+                    ++stats.comparisons;
                     if (arr[j] < q)
                     {
                         ++j;
@@ -140,6 +144,7 @@ void DPCQsort(std::vector<int>& arr, SortStats& stats)
                     else
                     {
                         std::swap(arr[j], arr[k]);
+                        ++stats.swaps;
                         --k;
                         --d;
                     }
@@ -151,10 +156,12 @@ void DPCQsort(std::vector<int>& arr, SortStats& stats)
                 {
                     --k;
                     --d;
+                    ++stats.comparisons;
                 }
 
                 if(j <= k)
                 {
+                    ++stats.comparisons;
                     if (arr[k] <= p)
                     {
                         // rotate3(arr[k], arr[j], arr[i]);
@@ -168,6 +175,7 @@ void DPCQsort(std::vector<int>& arr, SortStats& stats)
                     else
                     {
                         std::swap(arr[j], arr[k]);
+                        ++stats.swaps;
                     }
                     ++j;
                 }
@@ -175,7 +183,9 @@ void DPCQsort(std::vector<int>& arr, SortStats& stats)
         }
 
         std::swap(arr[left], arr[i - 1]);
+        ++stats.swaps;
         std::swap(arr[right], arr[k + 1]);
+        ++stats.swaps;
 
         DPCQsort_impl(left, i - 2);  // Left partition
         DPCQsort_impl(i, k); // Middle partition
@@ -211,6 +221,7 @@ void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
             } 
             else if (arr[i] > pivot2) 
             {
+                stats.comparisons++;
                 while (i < gt && arr[gt] > pivot2) 
                 {
                     stats.comparisons++;
@@ -219,6 +230,7 @@ void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
                 std::swap(arr[i], arr[gt]);
                 stats.swaps++;
                 gt--;
+                stats.comparisons++;
                 if (arr[i] < pivot1) 
                 {
                     std::swap(arr[i], arr[lt]);
@@ -378,6 +390,7 @@ void alt_merge_sort(std::vector<int>& arr, SortStats& stats)
         
         for (int i = 1; i < arr.size(); ++i) 
         {
+            stats.comparisons++;
             if (arr[i] < arr[i - 1]) 
             {
                 rising_subsequences.emplace_back(sequence_begin, i - 1);
