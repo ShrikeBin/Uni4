@@ -79,78 +79,107 @@ void quick_sort(std::vector<int>& arr, SortStats& stats)
 // broken
 void DPCQsort(std::vector<int>& arr, SortStats& stats) 
 {
+    std::function<void(int, int)> insort = [&](int left, int right)
+    {
+        for (int i = left; i <= right; ++i) 
+        {
+            int key = arr[i];
+            int j = i - 1;
+            
+            while (j >= 0 && arr[j] > key) 
+            {
+                arr[j + 1] = arr[j];
+                --j;
+                ++stats.comparisons;
+                ++stats.swaps;
+            }
+            
+            arr[j + 1] = key;
+            ++stats.swaps;
+        }
+    };
+
     std::function<void(int, int)> DPCQsort_impl = [&](int left, int right) 
     {
-        if (left >= right) return;
+        if (left >= right) 
+        {
+            return;
+        }
+        if (right - left < 10) 
+        {
+            insort(left, right);
+            return;
+        }
 
         //  pivots
-        int p = left;
-        int q = right;
+        int p = arr[left];
+        int q = arr[right];
 
-        // rest of the variables
-        int pPos = left + 1;
-        int qPos = right - 1;
-        int i = pPos;
+        int i = left + 1;
+        int k = right - 1;
+        int j = i;
         int d = 0; // |small| - |large|
 
-        while (i <= qPos) 
+        while (j <= k)
         {
-            if (d > 0) 
+            if (d > 0)
             {
-               if(arr[i] < arr[p]) 
-               {
-                   std::swap(arr[pPos], arr[i]);
-                   ++pPos;
-                   ++i;
-                   ++d;
-               } 
-               else 
-               {
-                   if(arr[i] < arr[q]) 
-                   {
-                       ++i;
-                   } 
-                   else 
-                   {
-                       std::swap(arr[i], arr[qPos]);
-                       --qPos;
-                       --d;
-                   }
-               }
-            } 
-            else // d < 0
-            {
-                if(arr[i] > arr[q]) 
+                if (arr[j] <= p)
                 {
-                    std::swap(arr[i], arr[qPos]);
-                    --qPos;
-                    --d;
-                } 
-                else 
+                    std::swap(arr[i], arr[j]);
+                    ++i;
+                    ++j;
+                    ++d;
+                }
+                else
                 {
-                    if(arr[i] < arr[p]) 
+                    if (arr[j] < q)
                     {
-                        std::swap(arr[pPos], arr[i]);
-                        ++pPos;
-                        ++i;
-                        ++d;
-                    } 
-                    else 
+                        ++j;
+                    }
+                    else
                     {
-                        std::swap(arr[i], arr[qPos]);
-                        --qPos;
+                        std::swap(arr[j], arr[k]);
+                        --k;
                         --d;
                     }
                 }
             }
+            else
+            {
+                while (arr[k] > q)
+                {
+                    --k;
+                    --d;
+                }
+
+                if(j <= k)
+                {
+                    if (arr[k] <= p)
+                    {
+                        // rotate3(arr[k], arr[j], arr[i]);
+                        int temp = arr[k];
+                        arr[k] = arr[j];
+                        arr[j] = arr[i];
+                        arr[i] = temp;
+                        ++i;
+                        ++d;
+                    }
+                    else
+                    {
+                        std::swap(arr[j], arr[k]);
+                    }
+                    ++j;
+                }
+            }
         }
 
-        std::swap(arr[left], arr[pPos - 1]);
-        std::swap(arr[right], arr[qPos + 1]);
+        std::swap(arr[left], arr[i - 1]);
+        std::swap(arr[right], arr[k + 1]);
 
-        DPCQsort_impl(left, pPos);  // Left partition
-        DPCQsort_impl(pPos, qPos); // Middle partition
-        DPCQsort_impl(qPos + 2, right); // Right partition
+        DPCQsort_impl(left, i - 2);  // Left partition
+        DPCQsort_impl(i, k); // Middle partition
+        DPCQsort_impl(k + 2, right); // Right partition
     };   
 
     DPCQsort_impl(0, arr.size() - 1);

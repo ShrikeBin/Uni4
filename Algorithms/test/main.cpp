@@ -5,76 +5,75 @@ void DPCQsort_impl (std::vector<int>& arr, int left, int right)
 {
     if (left >= right) return;
 
-        //  pivots
-        int p = left;
-        int q = right;
+    //  pivots
+    int p = arr[left];
+    int q = arr[right];
 
-        // rest of the variables
-        int pPos = left + 1;
-        int qPos = right - 1;
-        int i = pPos;
-        int d = 0; // |small| - |large|
+    int i = left + 1;
+    int k = right - 1;
+    int j = i;
+    int d = 0; // |small| - |large|
 
-        while (i <= qPos) 
+    while (j <= k)
+    {
+        if (d > 0)
         {
-            if (d > 0) 
+            if (arr[j] <= p)
             {
-               if(arr[i] < arr[p]) 
-               {
-                   std::swap(arr[pPos], arr[i]);
-                   ++pPos;
-                   ++i;
-                   ++d;
-               } 
-               else 
-               {
-                   if(arr[i] < arr[q]) 
-                   {
-                       ++i;
-                   } 
-                   else // wrooong
-                   {
-                       std::swap(arr[i], arr[qPos - 1]);
-                       --qPos;
-                       --d;
-                   }
-               }
-            } 
-            else // d <= 0
+                std::swap(arr[i], arr[j]);
+                ++i;
+                ++j;
+                ++d;
+            }
+            else
             {
-                if(arr[i] > arr[q]) 
+                if (arr[j] < q)
                 {
-                    std::swap(arr[i], arr[qPos]);
-                    --qPos;
+                    ++j;
+                }
+                else
+                {
+                    std::swap(arr[j], arr[k]);
+                    --k;
                     --d;
-                } 
-                else 
-                {
-                    if(arr[i] < arr[p]) 
-                    {
-                        std::swap(arr[pPos], arr[i]);
-                        ++pPos;
-                        ++i;
-                        ++d;
-                    } 
-                    else // worg
-                    {
-                        std::swap(arr[i], arr[qPos - 1]);
-                        --qPos;
-                        --d;
-                    }
                 }
             }
         }
+        else
+        {
+            while (arr[k] > q)
+            {
+                --k;
+                --d;
+            }
 
-        std::swap(arr[left], arr[pPos - 1]);
-        std::swap(arr[right], arr[qPos + 1]);
+            if(j <= k)
+            {
+                if (arr[k] <= p)
+                {
+                    // rotate3(arr[k], arr[j], arr[i]);
+                    int temp = arr[k];
+                    arr[k] = arr[j];
+                    arr[j] = arr[i];
+                    arr[i] = temp;
+                    ++i;
+                    ++d;
+                }
+                else
+                {
+                    std::swap(arr[j], arr[k]);
+                }
+                ++j;
+            }
+        }
+    }
 
-        std::cout << "p: " << arr[pPos - 1] << " q: " << arr[qPos + 1] << std::endl;
+    std::swap(arr[left], arr[i - 1]);
+    std::swap(arr[right], arr[k + 1]);
 }
 
 int main() {
-    std::vector<int> arr = {3,1,6,2,7,9,8,4,5};
+    std::vector<int> arr = {3, 1, 6, 3, 7, 9, 8, 4, 5};
     int left = 0, right = arr.size() - 1;
     DPCQsort_impl(arr, left, right);
 
