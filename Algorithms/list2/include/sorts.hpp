@@ -11,6 +11,12 @@ struct SortStats
 {
     size_t comparisons = 0;
     size_t swaps = 0;
+
+    void reset() 
+    {
+        comparisons = 0;
+        swaps = 0;
+    }
 };
 
 void std_sort(std::vector<int>& arr, SortStats& stats);

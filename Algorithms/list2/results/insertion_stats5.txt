@@ -1,0 +1,1071 @@
+N: 1000 mode: random
+Avg Time: 0.00123287 sec.
+Comparisons: 250653
+Swaps: 251652
+Comparisons/n: 250.653
+Swaps/n: 251.652
+-----
+N: 1000 mode: asc
+Avg Time: 5.863e-06 sec.
+Comparisons: 0
+Swaps: 999
+Comparisons/n: 0
+Swaps/n: 0.999
+-----
+N: 1000 mode: desc
+Avg Time: 0.00238644 sec.
+Comparisons: 499500
+Swaps: 500499
+Comparisons/n: 499.5
+Swaps/n: 500.499
+-----
+N: 2000 mode: random
+Avg Time: 0.00500288 sec.
+Comparisons: 1015054
+Swaps: 1017053
+Comparisons/n: 507.527
+Swaps/n: 508.526
+-----
+N: 2000 mode: asc
+Avg Time: 1.91242e-05 sec.
+Comparisons: 0
+Swaps: 1999
+Comparisons/n: 0
+Swaps/n: 0.9995
+-----
+N: 2000 mode: desc
+Avg Time: 0.010001 sec.
+Comparisons: 1999000
+Swaps: 2000999
+Comparisons/n: 999.5
+Swaps/n: 1000.5
+-----
+N: 3000 mode: random
+Avg Time: 0.0102078 sec.
+Comparisons: 2255303
+Swaps: 2258302
+Comparisons/n: 751.768
+Swaps/n: 752.767
+-----
+N: 3000 mode: asc
+Avg Time: 1.42146e-05 sec.
+Comparisons: 0
+Swaps: 2999
+Comparisons/n: 0
+Swaps/n: 0.999667
+-----
+N: 3000 mode: desc
+Avg Time: 0.01728 sec.
+Comparisons: 4498500
+Swaps: 4501499
+Comparisons/n: 1499.5
+Swaps/n: 1500.5
+-----
+N: 4000 mode: random
+Avg Time: 0.0158453 sec.
+Comparisons: 4080714
+Swaps: 4084713
+Comparisons/n: 1020.18
+Swaps/n: 1021.18
+-----
+N: 4000 mode: asc
+Avg Time: 1.89436e-05 sec.
+Comparisons: 0
+Swaps: 3999
+Comparisons/n: 0
+Swaps/n: 0.99975
+-----
+N: 4000 mode: desc
+Avg Time: 0.0310145 sec.
+Comparisons: 7998000
+Swaps: 8001999
+Comparisons/n: 1999.5
+Swaps/n: 2000.5
+-----
+N: 5000 mode: random
+Avg Time: 0.0245281 sec.
+Comparisons: 6187599
+Swaps: 6192598
+Comparisons/n: 1237.52
+Swaps/n: 1238.52
+-----
+N: 5000 mode: asc
+Avg Time: 2.36264e-05 sec.
+Comparisons: 0
+Swaps: 4999
+Comparisons/n: 0
+Swaps/n: 0.9998
+-----
+N: 5000 mode: desc
+Avg Time: 0.0505392 sec.
+Comparisons: 12497500
+Swaps: 12502499
+Comparisons/n: 2499.5
+Swaps/n: 2500.5
+-----
+N: 6000 mode: random
+Avg Time: 0.0345585 sec.
+Comparisons: 8959601
+Swaps: 8965600
+Comparisons/n: 1493.27
+Swaps/n: 1494.27
+-----
+N: 6000 mode: asc
+Avg Time: 2.85138e-05 sec.
+Comparisons: 0
+Swaps: 5999
+Comparisons/n: 0
+Swaps/n: 0.999833
+-----
+N: 6000 mode: desc
+Avg Time: 0.0690929 sec.
+Comparisons: 17997000
+Swaps: 18002999
+Comparisons/n: 2999.5
+Swaps/n: 3000.5
+-----
+N: 7000 mode: random
+Avg Time: 0.0473779 sec.
+Comparisons: 12142923
+Swaps: 12149922
+Comparisons/n: 1734.7
+Swaps/n: 1735.7
+-----
+N: 7000 mode: asc
+Avg Time: 3.38858e-05 sec.
+Comparisons: 0
+Swaps: 6999
+Comparisons/n: 0
+Swaps/n: 0.999857
+-----
+N: 7000 mode: desc
+Avg Time: 0.0952369 sec.
+Comparisons: 24496500
+Swaps: 24503499
+Comparisons/n: 3499.5
+Swaps/n: 3500.5
+-----
+N: 8000 mode: random
+Avg Time: 0.0624111 sec.
+Comparisons: 15882649
+Swaps: 15890648
+Comparisons/n: 1985.33
+Swaps/n: 1986.33
+-----
+N: 8000 mode: asc
+Avg Time: 3.80676e-05 sec.
+Comparisons: 0
+Swaps: 7999
+Comparisons/n: 0
+Swaps/n: 0.999875
+-----
+N: 8000 mode: desc
+Avg Time: 0.124627 sec.
+Comparisons: 31996000
+Swaps: 32003999
+Comparisons/n: 3999.5
+Swaps/n: 4000.5
+-----
+N: 9000 mode: random
+Avg Time: 0.0780731 sec.
+Comparisons: 20242630
+Swaps: 20251629
+Comparisons/n: 2249.18
+Swaps/n: 2250.18
+-----
+N: 9000 mode: asc
+Avg Time: 4.32156e-05 sec.
+Comparisons: 0
+Swaps: 8999
+Comparisons/n: 0
+Swaps/n: 0.999889
+-----
+N: 9000 mode: desc
+Avg Time: 0.156597 sec.
+Comparisons: 40495500
+Swaps: 40504499
+Comparisons/n: 4499.5
+Swaps/n: 4500.5
+-----
+N: 10000 mode: random
+Avg Time: 0.0964666 sec.
+Comparisons: 24998414
+Swaps: 25008413
+Comparisons/n: 2499.84
+Swaps/n: 2500.84
+-----
+N: 10000 mode: asc
+Avg Time: 4.7359e-05 sec.
+Comparisons: 0
+Swaps: 9999
+Comparisons/n: 0
+Swaps/n: 0.9999
+-----
+N: 10000 mode: desc
+Avg Time: 0.193943 sec.
+Comparisons: 49995000
+Swaps: 50004999
+Comparisons/n: 4999.5
+Swaps/n: 5000.5
+-----
+N: 11000 mode: random
+Avg Time: 0.11741 sec.
+Comparisons: 30408731
+Swaps: 30419730
+Comparisons/n: 2764.43
+Swaps/n: 2765.43
+-----
+N: 11000 mode: asc
+Avg Time: 5.2114e-05 sec.
+Comparisons: 0
+Swaps: 10999
+Comparisons/n: 0
+Swaps/n: 0.999909
+-----
+N: 11000 mode: desc
+Avg Time: 0.232455 sec.
+Comparisons: 60494500
+Swaps: 60505499
+Comparisons/n: 5499.5
+Swaps/n: 5500.5
+-----
+N: 12000 mode: random
+Avg Time: 0.140601 sec.
+Comparisons: 35934518
+Swaps: 35946517
+Comparisons/n: 2994.54
+Swaps/n: 2995.54
+-----
+N: 12000 mode: asc
+Avg Time: 5.6781e-05 sec.
+Comparisons: 0
+Swaps: 11999
+Comparisons/n: 0
+Swaps/n: 0.999917
+-----
+N: 12000 mode: desc
+Avg Time: 0.281578 sec.
+Comparisons: 71994000
+Swaps: 72005999
+Comparisons/n: 5999.5
+Swaps/n: 6000.5
+-----
+N: 13000 mode: random
+Avg Time: 0.162662 sec.
+Comparisons: 42158591
+Swaps: 42171590
+Comparisons/n: 3242.97
+Swaps/n: 3243.97
+-----
+N: 13000 mode: asc
+Avg Time: 6.147e-05 sec.
+Comparisons: 0
+Swaps: 12999
+Comparisons/n: 0
+Swaps/n: 0.999923
+-----
+N: 13000 mode: desc
+Avg Time: 0.325664 sec.
+Comparisons: 84493500
+Swaps: 84506499
+Comparisons/n: 6499.5
+Swaps/n: 6500.5
+-----
+N: 14000 mode: random
+Avg Time: 0.18837 sec.
+Comparisons: 48838664
+Swaps: 48852663
+Comparisons/n: 3488.48
+Swaps/n: 3489.48
+-----
+N: 14000 mode: asc
+Avg Time: 6.63188e-05 sec.
+Comparisons: 0
+Swaps: 13999
+Comparisons/n: 0
+Swaps/n: 0.999929
+-----
+N: 14000 mode: desc
+Avg Time: 0.38103 sec.
+Comparisons: 97993000
+Swaps: 98006999
+Comparisons/n: 6999.5
+Swaps/n: 7000.5
+-----
+N: 15000 mode: random
+Avg Time: 0.21513 sec.
+Comparisons: 55687896
+Swaps: 55702895
+Comparisons/n: 3712.53
+Swaps/n: 3713.53
+-----
+N: 15000 mode: asc
+Avg Time: 7.10098e-05 sec.
+Comparisons: 0
+Swaps: 14999
+Comparisons/n: 0
+Swaps/n: 0.999933
+-----
+N: 15000 mode: desc
+Avg Time: 0.432527 sec.
+Comparisons: 112492500
+Swaps: 112507499
+Comparisons/n: 7499.5
+Swaps/n: 7500.5
+-----
+N: 16000 mode: random
+Avg Time: 0.246886 sec.
+Comparisons: 64154352
+Swaps: 64170351
+Comparisons/n: 4009.65
+Swaps/n: 4010.65
+-----
+N: 16000 mode: asc
+Avg Time: 7.56186e-05 sec.
+Comparisons: 0
+Swaps: 15999
+Comparisons/n: 0
+Swaps/n: 0.999938
+-----
+N: 16000 mode: desc
+Avg Time: 0.492652 sec.
+Comparisons: 127992000
+Swaps: 128007999
+Comparisons/n: 7999.5
+Swaps/n: 8000.5
+-----
+N: 17000 mode: random
+Avg Time: 0.275459 sec.
+Comparisons: 71655887
+Swaps: 71672886
+Comparisons/n: 4215.05
+Swaps/n: 4216.05
+-----
+N: 17000 mode: asc
+Avg Time: 8.05394e-05 sec.
+Comparisons: 0
+Swaps: 16999
+Comparisons/n: 0
+Swaps/n: 0.999941
+-----
+N: 17000 mode: desc
+Avg Time: 0.555615 sec.
+Comparisons: 144491500
+Swaps: 144508499
+Comparisons/n: 8499.5
+Swaps/n: 8500.5
+-----
+N: 18000 mode: random
+Avg Time: 0.311249 sec.
+Comparisons: 81000302
+Swaps: 81018301
+Comparisons/n: 4500.02
+Swaps/n: 4501.02
+-----
+N: 18000 mode: asc
+Avg Time: 8.56652e-05 sec.
+Comparisons: 0
+Swaps: 17999
+Comparisons/n: 0
+Swaps/n: 0.999944
+-----
+N: 18000 mode: desc
+Avg Time: 0.623105 sec.
+Comparisons: 161991000
+Swaps: 162008999
+Comparisons/n: 8999.5
+Swaps/n: 9000.5
+-----
+N: 19000 mode: random
+Avg Time: 0.345429 sec.
+Comparisons: 90106952
+Swaps: 90125951
+Comparisons/n: 4742.47
+Swaps/n: 4743.47
+-----
+N: 19000 mode: asc
+Avg Time: 8.98872e-05 sec.
+Comparisons: 0
+Swaps: 18999
+Comparisons/n: 0
+Swaps/n: 0.999947
+-----
+N: 19000 mode: desc
+Avg Time: 0.694769 sec.
+Comparisons: 180490500
+Swaps: 180509499
+Comparisons/n: 9499.5
+Swaps/n: 9500.5
+-----
+N: 20000 mode: random
+Avg Time: 0.383878 sec.
+Comparisons: 100011942
+Swaps: 100031941
+Comparisons/n: 5000.6
+Swaps/n: 5001.6
+-----
+N: 20000 mode: asc
+Avg Time: 9.49448e-05 sec.
+Comparisons: 0
+Swaps: 19999
+Comparisons/n: 0
+Swaps/n: 0.99995
+-----
+N: 20000 mode: desc
+Avg Time: 0.768713 sec.
+Comparisons: 199990000
+Swaps: 200009999
+Comparisons/n: 9999.5
+Swaps/n: 10000.5
+-----
+N: 21000 mode: random
+Avg Time: 0.42184 sec.
+Comparisons: 109970285
+Swaps: 109991284
+Comparisons/n: 5236.68
+Swaps/n: 5237.68
+-----
+N: 21000 mode: asc
+Avg Time: 9.90688e-05 sec.
+Comparisons: 0
+Swaps: 20999
+Comparisons/n: 0
+Swaps/n: 0.999952
+-----
+N: 21000 mode: desc
+Avg Time: 0.844402 sec.
+Comparisons: 220489500
+Swaps: 220510499
+Comparisons/n: 10499.5
+Swaps/n: 10500.5
+-----
+N: 22000 mode: random
+Avg Time: 0.460382 sec.
+Comparisons: 120225340
+Swaps: 120247339
+Comparisons/n: 5464.79
+Swaps/n: 5465.79
+-----
+N: 22000 mode: asc
+Avg Time: 0.000104326 sec.
+Comparisons: 0
+Swaps: 21999
+Comparisons/n: 0
+Swaps/n: 0.999955
+-----
+N: 22000 mode: desc
+Avg Time: 0.925762 sec.
+Comparisons: 241989000
+Swaps: 242010999
+Comparisons/n: 10999.5
+Swaps/n: 11000.5
+-----
+N: 23000 mode: random
+Avg Time: 0.508124 sec.
+Comparisons: 132672180
+Swaps: 132695179
+Comparisons/n: 5768.36
+Swaps/n: 5769.36
+-----
+N: 23000 mode: asc
+Avg Time: 0.000109877 sec.
+Comparisons: 0
+Swaps: 22999
+Comparisons/n: 0
+Swaps/n: 0.999957
+-----
+N: 23000 mode: desc
+Avg Time: 1.01468 sec.
+Comparisons: 264488500
+Swaps: 264511499
+Comparisons/n: 11499.5
+Swaps/n: 11500.5
+-----
+N: 24000 mode: random
+Avg Time: 0.555658 sec.
+Comparisons: 144639261
+Swaps: 144663260
+Comparisons/n: 6026.64
+Swaps/n: 6027.64
+-----
+N: 24000 mode: asc
+Avg Time: 0.000113509 sec.
+Comparisons: 0
+Swaps: 23999
+Comparisons/n: 0
+Swaps/n: 0.999958
+-----
+N: 24000 mode: desc
+Avg Time: 1.10133 sec.
+Comparisons: 287988000
+Swaps: 288011999
+Comparisons/n: 11999.5
+Swaps/n: 12000.5
+-----
+N: 25000 mode: random
+Avg Time: 0.596046 sec.
+Comparisons: 155562561
+Swaps: 155587560
+Comparisons/n: 6222.5
+Swaps/n: 6223.5
+-----
+N: 25000 mode: asc
+Avg Time: 0.000119064 sec.
+Comparisons: 0
+Swaps: 24999
+Comparisons/n: 0
+Swaps/n: 0.99996
+-----
+N: 25000 mode: desc
+Avg Time: 1.19826 sec.
+Comparisons: 312487500
+Swaps: 312512499
+Comparisons/n: 12499.5
+Swaps/n: 12500.5
+-----
+N: 26000 mode: random
+Avg Time: 0.643792 sec.
+Comparisons: 167826669
+Swaps: 167852668
+Comparisons/n: 6454.87
+Swaps/n: 6455.87
+-----
+N: 26000 mode: asc
+Avg Time: 0.000122631 sec.
+Comparisons: 0
+Swaps: 25999
+Comparisons/n: 0
+Swaps/n: 0.999962
+-----
+N: 26000 mode: desc
+Avg Time: 1.29317 sec.
+Comparisons: 337987000
+Swaps: 338012999
+Comparisons/n: 12999.5
+Swaps/n: 13000.5
+-----
+N: 27000 mode: random
+Avg Time: 0.699284 sec.
+Comparisons: 182024457
+Swaps: 182051456
+Comparisons/n: 6741.65
+Swaps/n: 6742.65
+-----
+N: 27000 mode: asc
+Avg Time: 0.000128794 sec.
+Comparisons: 0
+Swaps: 26999
+Comparisons/n: 0
+Swaps/n: 0.999963
+-----
+N: 27000 mode: desc
+Avg Time: 1.40935 sec.
+Comparisons: 364486500
+Swaps: 364513499
+Comparisons/n: 13499.5
+Swaps/n: 13500.5
+-----
+N: 28000 mode: random
+Avg Time: 0.7498 sec.
+Comparisons: 195303470
+Swaps: 195331469
+Comparisons/n: 6975.12
+Swaps/n: 6976.12
+-----
+N: 28000 mode: asc
+Avg Time: 0.00013294 sec.
+Comparisons: 0
+Swaps: 27999
+Comparisons/n: 0
+Swaps/n: 0.999964
+-----
+N: 28000 mode: desc
+Avg Time: 1.51453 sec.
+Comparisons: 391986000
+Swaps: 392013999
+Comparisons/n: 13999.5
+Swaps/n: 14000.5
+-----
+N: 29000 mode: random
+Avg Time: 0.81197 sec.
+Comparisons: 210030760
+Swaps: 210059759
+Comparisons/n: 7242.44
+Swaps/n: 7243.44
+-----
+N: 29000 mode: asc
+Avg Time: 0.000137673 sec.
+Comparisons: 0
+Swaps: 28999
+Comparisons/n: 0
+Swaps/n: 0.999966
+-----
+N: 29000 mode: desc
+Avg Time: 1.61737 sec.
+Comparisons: 420485500
+Swaps: 420514499
+Comparisons/n: 14499.5
+Swaps/n: 14500.5
+-----
+N: 30000 mode: random
+Avg Time: 0.869458 sec.
+Comparisons: 224827843
+Swaps: 224857842
+Comparisons/n: 7494.26
+Swaps/n: 7495.26
+-----
+N: 30000 mode: asc
+Avg Time: 0.000142755 sec.
+Comparisons: 0
+Swaps: 29999
+Comparisons/n: 0
+Swaps/n: 0.999967
+-----
+N: 30000 mode: desc
+Avg Time: 1.72933 sec.
+Comparisons: 449985000
+Swaps: 450014999
+Comparisons/n: 14999.5
+Swaps/n: 15000.5
+-----
+N: 31000 mode: random
+Avg Time: 0.931245 sec.
+Comparisons: 240236116
+Swaps: 240267115
+Comparisons/n: 7749.55
+Swaps/n: 7750.55
+-----
+N: 31000 mode: asc
+Avg Time: 0.000147666 sec.
+Comparisons: 0
+Swaps: 30999
+Comparisons/n: 0
+Swaps/n: 0.999968
+-----
+N: 31000 mode: desc
+Avg Time: 1.85769 sec.
+Comparisons: 480484500
+Swaps: 480515499
+Comparisons/n: 15499.5
+Swaps/n: 15500.5
+-----
+N: 32000 mode: random
+Avg Time: 0.99322 sec.
+Comparisons: 256792888
+Swaps: 256824887
+Comparisons/n: 8024.78
+Swaps/n: 8025.78
+-----
+N: 32000 mode: asc
+Avg Time: 0.000154651 sec.
+Comparisons: 0
+Swaps: 31999
+Comparisons/n: 0
+Swaps/n: 0.999969
+-----
+N: 32000 mode: desc
+Avg Time: 1.98614 sec.
+Comparisons: 511984000
+Swaps: 512015999
+Comparisons/n: 15999.5
+Swaps/n: 16000.5
+-----
+N: 33000 mode: random
+Avg Time: 1.05206 sec.
+Comparisons: 271781008
+Swaps: 271814007
+Comparisons/n: 8235.79
+Swaps/n: 8236.79
+-----
+N: 33000 mode: asc
+Avg Time: 0.0001572 sec.
+Comparisons: 0
+Swaps: 32999
+Comparisons/n: 0
+Swaps/n: 0.99997
+-----
+N: 33000 mode: desc
+Avg Time: 2.10253 sec.
+Comparisons: 544483500
+Swaps: 544516499
+Comparisons/n: 16499.5
+Swaps/n: 16500.5
+-----
+N: 34000 mode: random
+Avg Time: 1.11479 sec.
+Comparisons: 288706952
+Swaps: 288740951
+Comparisons/n: 8491.38
+Swaps/n: 8492.38
+-----
+N: 34000 mode: asc
+Avg Time: 0.000161939 sec.
+Comparisons: 0
+Swaps: 33999
+Comparisons/n: 0
+Swaps/n: 0.999971
+-----
+N: 34000 mode: desc
+Avg Time: 2.23182 sec.
+Comparisons: 577983000
+Swaps: 578016999
+Comparisons/n: 16999.5
+Swaps/n: 17000.5
+-----
+N: 35000 mode: random
+Avg Time: 1.17305 sec.
+Comparisons: 305870886
+Swaps: 305905885
+Comparisons/n: 8739.17
+Swaps/n: 8740.17
+-----
+N: 35000 mode: asc
+Avg Time: 0.000165894 sec.
+Comparisons: 0
+Swaps: 34999
+Comparisons/n: 0
+Swaps/n: 0.999971
+-----
+N: 35000 mode: desc
+Avg Time: 2.36054 sec.
+Comparisons: 612482500
+Swaps: 612517499
+Comparisons/n: 17499.5
+Swaps/n: 17500.5
+-----
+N: 36000 mode: random
+Avg Time: 1.24571 sec.
+Comparisons: 323845623
+Swaps: 323881622
+Comparisons/n: 8995.71
+Swaps/n: 8996.71
+-----
+N: 36000 mode: asc
+Avg Time: 0.000170645 sec.
+Comparisons: 0
+Swaps: 35999
+Comparisons/n: 0
+Swaps/n: 0.999972
+-----
+N: 36000 mode: desc
+Avg Time: 2.48359 sec.
+Comparisons: 647982000
+Swaps: 648017999
+Comparisons/n: 17999.5
+Swaps/n: 18000.5
+-----
+N: 37000 mode: random
+Avg Time: 1.30677 sec.
+Comparisons: 340726776
+Swaps: 340763775
+Comparisons/n: 9208.83
+Swaps/n: 9209.83
+-----
+N: 37000 mode: asc
+Avg Time: 0.000175426 sec.
+Comparisons: 0
+Swaps: 36999
+Comparisons/n: 0
+Swaps/n: 0.999973
+-----
+N: 37000 mode: desc
+Avg Time: 2.63064 sec.
+Comparisons: 684481500
+Swaps: 684518499
+Comparisons/n: 18499.5
+Swaps/n: 18500.5
+-----
+N: 38000 mode: random
+Avg Time: 1.38105 sec.
+Comparisons: 360075218
+Swaps: 360113217
+Comparisons/n: 9475.66
+Swaps/n: 9476.66
+-----
+N: 38000 mode: asc
+Avg Time: 0.000179259 sec.
+Comparisons: 0
+Swaps: 37999
+Comparisons/n: 0
+Swaps/n: 0.999974
+-----
+N: 38000 mode: desc
+Avg Time: 2.76739 sec.
+Comparisons: 721981000
+Swaps: 722018999
+Comparisons/n: 18999.5
+Swaps/n: 19000.5
+-----
+N: 39000 mode: random
+Avg Time: 1.46107 sec.
+Comparisons: 380974422
+Swaps: 381013421
+Comparisons/n: 9768.57
+Swaps/n: 9769.57
+-----
+N: 39000 mode: asc
+Avg Time: 0.000184752 sec.
+Comparisons: 0
+Swaps: 38999
+Comparisons/n: 0
+Swaps/n: 0.999974
+-----
+N: 39000 mode: desc
+Avg Time: 2.91519 sec.
+Comparisons: 760480500
+Swaps: 760519499
+Comparisons/n: 19499.5
+Swaps/n: 19500.5
+-----
+N: 40000 mode: random
+Avg Time: 1.53223 sec.
+Comparisons: 399543829
+Swaps: 399583828
+Comparisons/n: 9988.6
+Swaps/n: 9989.6
+-----
+N: 40000 mode: asc
+Avg Time: 0.000189257 sec.
+Comparisons: 0
+Swaps: 39999
+Comparisons/n: 0
+Swaps/n: 0.999975
+-----
+N: 40000 mode: desc
+Avg Time: 3.06534 sec.
+Comparisons: 799980000
+Swaps: 800019999
+Comparisons/n: 19999.5
+Swaps/n: 20000.5
+-----
+N: 41000 mode: random
+Avg Time: 1.60471 sec.
+Comparisons: 418601871
+Swaps: 418642870
+Comparisons/n: 10209.8
+Swaps/n: 10210.8
+-----
+N: 41000 mode: asc
+Avg Time: 0.000195764 sec.
+Comparisons: 0
+Swaps: 40999
+Comparisons/n: 0
+Swaps/n: 0.999976
+-----
+N: 41000 mode: desc
+Avg Time: 3.22177 sec.
+Comparisons: 840479500
+Swaps: 840520499
+Comparisons/n: 20499.5
+Swaps/n: 20500.5
+-----
+N: 42000 mode: random
+Avg Time: 1.69503 sec.
+Comparisons: 442018194
+Swaps: 442060193
+Comparisons/n: 10524.2
+Swaps/n: 10525.2
+-----
+N: 42000 mode: asc
+Avg Time: 0.000198777 sec.
+Comparisons: 0
+Swaps: 41999
+Comparisons/n: 0
+Swaps/n: 0.999976
+-----
+N: 42000 mode: desc
+Avg Time: 3.38406 sec.
+Comparisons: 881979000
+Swaps: 882020999
+Comparisons/n: 20999.5
+Swaps/n: 21000.5
+-----
+N: 43000 mode: random
+Avg Time: 1.77518 sec.
+Comparisons: 462494004
+Swaps: 462537003
+Comparisons/n: 10755.7
+Swaps/n: 10756.7
+-----
+N: 43000 mode: asc
+Avg Time: 0.000203794 sec.
+Comparisons: 0
+Swaps: 42999
+Comparisons/n: 0
+Swaps/n: 0.999977
+-----
+N: 43000 mode: desc
+Avg Time: 3.54364 sec.
+Comparisons: 924478500
+Swaps: 924521499
+Comparisons/n: 21499.5
+Swaps/n: 21500.5
+-----
+N: 44000 mode: random
+Avg Time: 1.86558 sec.
+Comparisons: 486304696
+Swaps: 486348695
+Comparisons/n: 11052.4
+Swaps/n: 11053.4
+-----
+N: 44000 mode: asc
+Avg Time: 0.000208378 sec.
+Comparisons: 0
+Swaps: 43999
+Comparisons/n: 0
+Swaps/n: 0.999977
+-----
+N: 44000 mode: desc
+Avg Time: 3.71593 sec.
+Comparisons: 967978000
+Swaps: 968021999
+Comparisons/n: 21999.5
+Swaps/n: 22000.5
+-----
+N: 45000 mode: random
+Avg Time: 1.95452 sec.
+Comparisons: 509672709
+Swaps: 509717708
+Comparisons/n: 11326.1
+Swaps/n: 11327.1
+-----
+N: 45000 mode: asc
+Avg Time: 0.000214357 sec.
+Comparisons: 0
+Swaps: 44999
+Comparisons/n: 0
+Swaps/n: 0.999978
+-----
+N: 45000 mode: desc
+Avg Time: 3.91621 sec.
+Comparisons: 1012477500
+Swaps: 1012522499
+Comparisons/n: 22499.5
+Swaps/n: 22500.5
+-----
+N: 46000 mode: random
+Avg Time: 2.04056 sec.
+Comparisons: 527626064
+Swaps: 527672063
+Comparisons/n: 11470.1
+Swaps/n: 11471.1
+-----
+N: 46000 mode: asc
+Avg Time: 0.000218378 sec.
+Comparisons: 0
+Swaps: 45999
+Comparisons/n: 0
+Swaps/n: 0.999978
+-----
+N: 46000 mode: desc
+Avg Time: 4.07597 sec.
+Comparisons: 1057977000
+Swaps: 1058022999
+Comparisons/n: 22999.5
+Swaps/n: 23000.5
+-----
+N: 47000 mode: random
+Avg Time: 2.14152 sec.
+Comparisons: 553269662
+Swaps: 553316661
+Comparisons/n: 11771.7
+Swaps/n: 11772.7
+-----
+N: 47000 mode: asc
+Avg Time: 0.000222594 sec.
+Comparisons: 0
+Swaps: 46999
+Comparisons/n: 0
+Swaps/n: 0.999979
+-----
+N: 47000 mode: desc
+Avg Time: 4.26344 sec.
+Comparisons: 1104476500
+Swaps: 1104523499
+Comparisons/n: 23499.5
+Swaps/n: 23500.5
+-----
+N: 48000 mode: random
+Avg Time: 2.21856 sec.
+Comparisons: 577574039
+Swaps: 577622038
+Comparisons/n: 12032.8
+Swaps/n: 12033.8
+-----
+N: 48000 mode: asc
+Avg Time: 0.000227156 sec.
+Comparisons: 0
+Swaps: 47999
+Comparisons/n: 0
+Swaps/n: 0.999979
+-----
+N: 48000 mode: desc
+Avg Time: 4.43687 sec.
+Comparisons: 1151976000
+Swaps: 1152023999
+Comparisons/n: 23999.5
+Swaps/n: 24000.5
+-----
+N: 49000 mode: random
+Avg Time: 2.30186 sec.
+Comparisons: 598072294
+Swaps: 598121293
+Comparisons/n: 12205.6
+Swaps/n: 12206.6
+-----
+N: 49000 mode: asc
+Avg Time: 0.000232343 sec.
+Comparisons: 0
+Swaps: 48999
+Comparisons/n: 0
+Swaps/n: 0.99998
+-----
+N: 49000 mode: desc
+Avg Time: 4.62191 sec.
+Comparisons: 1200475500
+Swaps: 1200524499
+Comparisons/n: 24499.5
+Swaps/n: 24500.5
+-----
+N: 50000 mode: random
+Avg Time: 2.40042 sec.
+Comparisons: 623140715
+Swaps: 623190714
+Comparisons/n: 12462.8
+Swaps/n: 12463.8
+-----
+N: 50000 mode: asc
+Avg Time: 0.000238276 sec.
+Comparisons: 0
+Swaps: 49999
+Comparisons/n: 0
+Swaps/n: 0.99998
+-----
+N: 50000 mode: desc
+Avg Time: 4.79479 sec.
+Comparisons: 1249975000
+Swaps: 1250024999
+Comparisons/n: 24999.5
+Swaps/n: 25000.5
+-----
+N: 51000 mode: random
+Avg Time: 2.49382 sec.
+Comparisons: 650373657
+Swaps: 650424656
+Comparisons/n: 12752.4
+Swaps/n: 12753.4
+-----
+N: 51000 mode: asc
+Avg Time: 0.000241147 sec.
+Comparisons: 0
+Swaps: 50999
+Comparisons/n: 0
+Swaps/n: 0.99998
+-----
+N: 51000 mode: desc
+Avg Time: 4.98328 sec.
+Comparisons: 1300474500
+Swaps: 1300525499
+Comparisons/n: 25499.5
+Swaps/n: 25500.5
+-----
