@@ -101,33 +101,53 @@
 
 ## 8. Table:
 
+| Service                     | Packet Size (Bytes) | Jumps | Jumps Back | Avg RTT (ms) | Avg RTT per Jump (ms) |
+|:---------------------------:|----------:|:-----:|:----------:|------------:|---------------------:|
+| kiribati.gov.ki             | 64 &nbsp;&emsp;&emsp;&emsp;          |  27   |     17     |     415.3    |         15.4         |
+| (very far away)             | 1024 &nbsp;&emsp;&emsp;&emsp;      |  27   |     17     |     428.7    |         15.9         |
+|                             | 1500&nbsp;&emsp;&emsp;&emsp;       |  25   |     16     |     481.3    |         17.8         |
+| cs.pwr.edu.pl               | 64   &nbsp;&emsp;&emsp;&emsp;      |   5   |     2      |      76.3    |         15.3         |
+| (very close)                | 1024  &nbsp;&emsp;&emsp;&emsp;     |   5   |     2      |      2.1     |         0.3          |
+|                             | 1500 &nbsp;&emsp;&emsp;&emsp;      |   5   |     2      |      3.5     |         0.5          |
+| olx.pl                      | 64  &nbsp;&emsp;&emsp;&emsp;       |   7   |     12     |      58.1    |         8.3          |
+| (close)                     | 1024 &nbsp;&emsp;&emsp;&emsp;      |   7   |     12     |      61.2    |         8.7          |
+|                             | 1500 &nbsp;&emsp;&emsp;&emsp;      |   ❌   |     ❌     | Stopped Responding |        N/A         |
+| google.com                  | 64 &nbsp;&emsp;&emsp;&emsp;        |   6   |     18     |     136.4    |         22.7         |
+| (big service, relatively close) | 1024&nbsp;&emsp;&emsp;&emsp;   |   6   |     18     |     140.9    |         23.5         |
+|                             | 1500&nbsp;&emsp;&emsp;&emsp;       |   ❌   |     ❌     | Stopped Responding |        N/A         |
+| id.wikipedia.org            | 64  &nbsp;&emsp;&emsp;&emsp;       |  16   |     12     |     100.8    |         6.3          |
+| (far away)                  | 1024  &nbsp;&emsp;&emsp;&emsp;     |  16   |     12     |     104.1    |         6.5          |
+|                             | 1500  &nbsp;&emsp;&emsp;&emsp;     |   ❌   |     ❌     | Stopped Responding |        N/A         |
+| tierradelfuego.org.ar       | 64 &nbsp;&emsp;&emsp;&emsp;        |  22   |     22     |     395.5    |         18.0         |
+| (very far away)             | 1024   &nbsp;&emsp;&emsp;&emsp;    |  22   |     22     |     405.7    |         18.4         |
+|                             | 1500   &nbsp;&emsp;&emsp;&emsp;    |  29   |     31     |     547.3    |         19.2         |
+| cocosseaview.com            | 64    &nbsp;&emsp;&emsp;&emsp;     |  22   |     22     |     510.0    |         23.2         |
+| (small private hosting very far away) | 1024 &nbsp;&emsp;&emsp;&emsp; |  22   |     22     |     523.5    |         23.8         |
+|                             | 1500   &nbsp;&emsp;&emsp;&emsp;     |  27   |     31     |     659.3    |         22.1         |
+
+
+---------------------------------------------------------------------------------------------------------
 | Service                     | Packet Size | Jumps | Jumps Back | Avg RTT (ms) | Avg RTT per Jump (ms) |
-|:---------------------------:|:----------:|:-----:|:----------:|:------------:|:---------------------:|
-| kiribati.gov.ki             | 64B        |  27   |     17     |     415.3    |         15.4         |
-| (very far away)             | 1024B      |  27   |     17     |     428.7    |         15.9         |
-|                             | 1500B      |  25   |     16     |     481.3    |         17.8         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| cs.pwr.edu.pl               | 64B        |   5   |     2      |      76.3    |         15.3         |
-| (very close)                | 1024B      |   5   |     2      |      2.1     |         0.3          |
-|                             | 1500B      |   5   |     2      |      3.5     |         0.5          |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| olx.pl                      | 64B        |   7   |     12     |      58.1    |         8.3          |
-| (close)                     | 1024B      |   7   |     12     |      61.2    |         8.7          |
-|                             | 1500B      |   ❌   |     ❌     | Stopped Responding |        N/A         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| google.com                  | 64B        |   6   |     18     |     136.4    |         22.7         |
-| (big service, relatively close) | 1024B  |   6   |     18     |     140.9    |         23.5         |
-|                             | 1500B      |   ❌   |     ❌     | Stopped Responding |        N/A         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| id.wikipedia.org            | 64B        |  16   |     12     |     100.8    |         6.3          |
-| (far away)                  | 1024B      |  16   |     12     |     104.1    |         6.5          |
-|                             | 1500B      |   ❌   |     ❌     | Stopped Responding |        N/A         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| tierradelfuego.org.ar       | 64B        |  22   |     22     |     395.5    |         18.0         |
-| (very far away)             | 1024B      |  22   |     22     |     405.7    |         18.4         |
-|                             | 1500B      |  29   |     31     |     547.3    |         19.2         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
-| cocosseaview.com            | 64B        |  22   |     22     |     510.0    |         23.2         |
-| (small private hosting very far away) | 1024B |  22   |     22     |     523.5    |         23.8         |
-|                             | 1500B      |  27   |     31     |     659.3    |         22.1         |
-|                             | 2MB        |   ❌   |     ❌     | Stopped Responding |        N/A         |
+|-----------------------------|------------|-------|------------|--------------|------------------------|
+| kiribati.gov.ki             | 64 B       |  27   |     17     |     415.3    |         15.4          |
+| (very far away)             | 1024 B     |  27   |     17     |     428.7    |         15.9          |
+|                             | 1500 B     |  25   |     16     |     481.3    |         17.8          |
+| cs.pwr.edu.pl               | 64 B       |   5   |      2     |      76.3    |         15.3          |
+| (very close)                | 1024 B     |   5   |      2     |       2.1    |          0.3          |
+|                             | 1500 B     |   5   |      2     |       3.5    |          0.5          |
+| olx.pl                      | 64 B       |   7   |     12     |      58.1    |          8.3          |
+| (close)                     | 1024 B     |   7   |     12     |      61.2    |          8.7          |
+|                             | 1500 B     |   ❌  |     ❌     |       ❌     |          ❌           |
+| google.com                  | 64 B       |   6   |     18     |     136.4    |         22.7          |
+| (big service,               | 1024 B     |   6   |     18     |     140.9    |         23.5          |
+|  relatively close)          | 1500 B     |   ❌  |     ❌     |       ❌     |          ❌           |
+| id.wikipedia.org            | 64 B       |  16   |     12     |     100.8    |          6.3          |
+| (far away)                  | 1024 B     |  16   |     12     |     104.1    |          6.5          |
+|                             | 1500 B     |   ❌  |     ❌     |      ❌      |          ❌           |
+| tierradelfuego.org.ar       | 64 B       |  22   |     22     |     395.5    |         18.0          |
+| (very far away)             | 1024 B     |  22   |     22     |     405.7    |         18.4          |
+|                             | 1500 B     |  29   |     31     |     547.3    |         19.2          |
+| cocosseaview.com            | 64 B       |  22   |     22     |     510.0    |         23.2          |
+| (small private hosting,     | 1024 B     |  22   |     22     |     523.5    |         23.8          |
+|  very far away)             | 1500 B     |  27   |     31     |     659.3    |         22.1          |
+--------------------------------------------------------------------------------------------------------
