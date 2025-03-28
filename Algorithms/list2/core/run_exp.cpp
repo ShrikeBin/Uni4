@@ -17,10 +17,10 @@ int main(int argc, char* argv[])
     {
         {"quick", quick_sort},
         {"dpquick", dual_pivot_quick_sort},
-        {"hybrid", hybrid_sort},
         {"altmerge", alt_merge_sort},
         {"merge", merge_sort},
-        {"dpcquick", DPCQsort}
+        {"dpcquick", DPCQsort},
+        {"hybrid", hybrid_sort}
     };
 
     run_full_experiment(k, sort_map);

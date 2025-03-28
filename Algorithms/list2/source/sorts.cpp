@@ -284,7 +284,7 @@ void hybrid_sort(std::vector<int>& arr, SortStats& stats)
         {
             return;
         }
-        if (right - left < 10) 
+        if (right - left < 15) 
         {
             insort(left, right);
             return;

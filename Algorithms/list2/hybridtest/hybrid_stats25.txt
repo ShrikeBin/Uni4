@@ -1,0 +1,21 @@
+N: 50000 mode: random
+Avg Time: 0.00892816 sec.
+Comparisons: 720015
+Swaps: 373845
+Comparisons/n: 14.4003
+Swaps/n: 7.4769
+-----
+N: 50000 mode: asc
+Avg Time: 0.002262 sec.
+Comparisons: 545917
+Swaps: 50000
+Comparisons/n: 10.9183
+Swaps/n: 1
+-----
+N: 50000 mode: desc
+Avg Time: 0.00253034 sec.
+Comparisons: 495928
+Swaps: 75000
+Comparisons/n: 9.91856
+Swaps/n: 1.5
+-----
