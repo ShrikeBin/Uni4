@@ -10,11 +10,11 @@ const std::unordered_map<std::string, std::function<void(std::vector<int>&, Sort
 {
     {"std", std_sort},
     {"insertion", insertion_sort},
-    {"quick", quick_sort},
-    {"dpquick", dual_pivot_quick_sort},
+    {"quick", print_quick_sort},
+    {"dpquick", print_dual_pivot_quick_sort},
     {"hybrid", hybrid_sort},
     {"altmerge", alt_merge_sort},
-    {"merge", merge_sort},
+    {"merge", print_merge_sort},
     {"dpcquick", DPCQsort}
 };
 

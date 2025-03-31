@@ -479,3 +479,167 @@ void alt_merge_sort(std::vector<int>& arr, SortStats& stats)
         }
     }
 }
+
+// ETC
+
+void print_array(const std::vector<int>& arr) {
+    for (int val : arr) std::cout << val << " ";
+    std::cout << "\n";
+}
+
+void print_quick_sort(std::vector<int>& arr, SortStats& stats)
+{
+    std::function<void(int, int)> quick_rec = [&](int left, int right)
+    {
+        if (left >= right) 
+            return;
+        
+        int pivot = arr[(left + right) / 2];
+        int i = left;
+        int j = right;
+        
+        while (i <= j)
+        {
+            while (arr[i] < pivot)
+            {
+                ++i;
+                ++stats.comparisons;
+            }
+            while (arr[j] > pivot)
+            {
+                --j;
+                ++stats.comparisons;
+            }
+            
+            if (i <= j)
+            {
+                std::swap(arr[i], arr[j]);
+                ++stats.swaps;
+                if (arr.size() < 40) print_array(arr);
+                ++i;
+                --j;
+            }
+            ++stats.comparisons;
+        }
+        
+        quick_rec(left, j);
+        quick_rec(i, right);
+    };
+    
+    quick_rec(0, arr.size() - 1);
+}
+
+void print_dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
+{
+    std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right)
+    {
+        if (left >= right) return;
+        
+        if (arr[left] > arr[right]) {
+            std::swap(arr[left], arr[right]);
+            stats.swaps++;
+            if (arr.size() < 40) print_array(arr);
+        }
+        
+        int pivot1 = arr[left], pivot2 = arr[right];
+        int i = left + 1, lt = left + 1, gt = right - 1;
+        
+        while (i <= gt) 
+        {
+            stats.comparisons++;
+            if (arr[i] < pivot1) 
+            {
+                std::swap(arr[i], arr[lt]);
+                stats.swaps++;
+                if (arr.size() < 40) print_array(arr);
+                lt++;
+            } 
+            else if (arr[i] > pivot2) 
+            {
+                stats.comparisons++;
+                while (i < gt && arr[gt] > pivot2) 
+                {
+                    stats.comparisons++;
+                    gt--;
+                }
+                std::swap(arr[i], arr[gt]);
+                stats.swaps++;
+                if (arr.size() < 40) print_array(arr);
+                gt--;
+                stats.comparisons++;
+                if (arr[i] < pivot1) 
+                {
+                    std::swap(arr[i], arr[lt]);
+                    stats.swaps++;
+                    if (arr.size() < 40) print_array(arr);
+                    lt++;
+                }
+            }
+            i++;
+        }
+        
+        lt--;
+        gt++;
+        std::swap(arr[left], arr[lt]);
+        std::swap(arr[right], arr[gt]);
+        stats.swaps += 2;
+        if (arr.size() < 40) print_array(arr);
+        
+        dual_pivot_quick_sort_impl(left, lt - 1);
+        dual_pivot_quick_sort_impl(lt + 1, gt - 1);
+        dual_pivot_quick_sort_impl(gt + 1, right);
+    };
+    
+    dual_pivot_quick_sort_impl(0, arr.size() - 1);
+}
+
+void print_merge_sort(std::vector<int>& arr, SortStats& stats)
+{
+    std::function<void(int, int)> merge_sort_rec = [&](int left, int right)
+    {
+        if (left >= right) 
+            return;
+        
+        int mid = (left + right) / 2;
+        merge_sort_rec(left, mid);
+        merge_sort_rec(mid + 1, right);
+
+        std::vector<int> tmp(right - left + 1);
+        int i = left, j = mid + 1, k = 0;
+        
+        while (i <= mid && j <= right) 
+        {
+            if (arr[i] < arr[j]) 
+            {
+                tmp[k++] = arr[i++];
+                ++stats.comparisons;
+            } 
+            else 
+            {
+                tmp[k++] = arr[j++];
+                ++stats.comparisons;
+            }
+        }
+    
+        while (i <= mid) 
+        {
+            tmp[k++] = arr[i++];
+            ++stats.swaps;
+        }
+        while (j <= right) 
+        {
+            tmp[k++] = arr[j++];
+            ++stats.swaps;
+        }
+        
+        for (int i = 0; i < k; ++i) 
+        {
+            arr[left + i] = tmp[i];
+            ++stats.swaps;
+        }
+        if (arr.size() < 40) print_array(arr);
+    };
+    
+    merge_sort_rec(0, arr.size() - 1);
+}
+
