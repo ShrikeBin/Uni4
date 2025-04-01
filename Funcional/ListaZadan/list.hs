@@ -1,4 +1,4 @@
-import Data.List (permutations)
+import Data.List
 
 -- zad 4
 sum' = \a b -> a+b
@@ -146,11 +146,11 @@ factorialzeroes n = sum [div n (5^x) | x <- [1..floor (logBase 5 (fromIntegral n
 
 -- zad 28
 -- partition
-partition::(a->Bool)->[a]->([a],[a])
-partition _ [] = ([],[])
-partition p (i:arr) = if p i then (i:l, r) 
+partition'::(a->Bool)->[a]->([a],[a])
+partition' _ [] = ([],[])
+partition' p (i:arr) = if p i then (i:l, r) 
                             else (l, i:r)
-                            where (l, r) = partition p arr
+                            where (l, r) = partition' p arr
 -- Insertion Sort
 inSort [] = []
 inSort (x:xs) = l ++ [x] ++ r
@@ -182,3 +182,14 @@ subCard :: Int -> [a] -> [[a]]
 subCard 0 _ = [[]]
 subCard _ [] = []
 subCard k (i:arr) = map (i:) (subCard (k-1) arr) ++ subCard k arr
+
+
+-- zad 42
+fastfactorial :: Integer -> Integer
+fastfactorial 0 = 1
+fastfactorial n = foldl (*) (1) [1..n]
+
+approx :: Integer -> Double
+approx n = foldr (foo) (0) (map fromIntegral [1..n])
+            where   foo :: Double -> Double -> Double
+                    foo l p = (1/l)*(1 + (p))
