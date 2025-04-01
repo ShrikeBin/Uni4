@@ -30,7 +30,7 @@ void alt_merge_sort(std::vector<int>& arr, SortStats& stats);
 
 void print_array(const std::vector<int>& arr);
 void print_merge_sort(std::vector<int>& arr, SortStats& stats);
-void print_quick_sort(const std::vector<int>& arr, SortStats& stats);
-void print_dual_pivot_quick_sort(const std::vector<int>& arr, SortStats& stats);
+void print_quick_sort(std::vector<int>& arr, SortStats& stats);
+void print_dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats);
 
 #endif
