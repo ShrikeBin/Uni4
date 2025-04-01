@@ -2,49 +2,121 @@ module W4 where
 
 import Data.List
 
-sum' arr = foldl (+) 0 arr
-product' arr = foldl (*) 1 arr
-minimum' arr = foldl1 min arr
--- foldl1 bieże jako e(neutralny) 1'szy element z listy
--- itp
+sum'       xs  = foldl (+) 0 xs
+product'   xs  = foldl (*) 1 xs 
+minimum'   xs  = foldl1 min xs
 
-{-- Automaty Skończone --}
+-- fold1 f (x:xs) = foldl f x xs
+and'       xs  = foldl (&&) True xs
+or'        xs  = foldl (||) False xs
+concat'    xxs = foldl (++) [] xxs
+concatMap' f   = foldl ((++).f) []
 
--- AUTOMAT DETERMINISTYCZNY
--- wyglada jak fold!
+{-- Automaty skonczone --}
 
-runDFA::(s -> c -> s) -> s -> [c] -> s
--- runDFA delta start cs = foldl delta start cs 
+-- AUTOMAT DETERMINISTYCZNY 
+runDFA :: (s -> c -> s) -> s -> [c] -> s
+--runDFA delta start cs = foldl delta start cs
 runDFA = foldl
 
--- automat na parzystą liczbę jedynek
+acceptDFA :: (s -> c -> s) -> s -> (s -> Bool) -> [c] -> Bool
+acceptDFA delta start accept cs = accept (runDFA delta start cs)
+ 
+-- przyklad: parzysta liczba jedynek
 
 delta 1 '1' = 2
-delta 1 _ = 1
+delta 1 _   = 1
 delta 2 '1' = 1
-delta 2 _ = 2
-delta _ _ = 1
+delta 2 _   = 2
+delta _ _   = 1  
 
---runDFA delta 1 "101" (policzy czy jest parzysta liczba 1)
-{-
-    -- nie skonczcone, jest na stronie
-acceptDFA::(s -> c -> s) -> s -> (s -> Bool)-> [c] -> s
-acceptDFA delta start cs = runDFA
--}
+-- AUTOMAT NIEDETRMINISTYCZNY 
+-- procedure przekonwertowania automatu niedeterministyczngo
+-- na automat deterministyczny
+convertDelta :: (Eq s)=>(s->c->[s]) -> ([s]->c->[s]) 
+convertDelta delta ss c  = nub (concat(map (\s -> delta s c) ss))
+        
+runNFA :: (Eq s) => (s->c->[s]) -> s -> [c] -> [s]
+runNFA delta start cs = 
+  runDFA deltaS [start] cs 
+  where deltaS = convertDelta delta
 
--- AUTOMAT NIEDETERMINISTYCZNY
--- nub - usuwa duplikaty
+convertAcc :: (s->Bool) -> ([s]->Bool)
+convertAcc acc ss = or (map acc ss)
 
+acceptNFA :: (Eq s) => (s->c->[s]) -> s -> (s->Bool) -> [c]->Bool
+acceptNFA delta start acc cs = 
+  accS (runNFA delta start cs)
+  where accS = convertAcc acc
+   
+-- ciagi konczace sie jedynka
+rho :: Int -> Char ->[Int]
+rho 1 '1' = [1,2]
+rho 1  _  = [1]
+rho 2 '1' = [2]
+rho 2   _ = [1]
+           
+{-- "Infinite streams" --}
 
--- Nieskończone
 myrepeat x = x:myrepeat x
-repeat' x = xs where xs = x:xs
 
--- ...bedzie na stronie Cichonia
+myrepeat' x = xs where xs = x : xs
+
+cycle' []  = error "cycle: emptyList"
+cycle' xs  = xs' where xs' = xs ++ xs'
 
 iterate' :: (a -> a) -> a -> [a]
-iterate' f x = x : iterate f (f x)
--- approx sqr (jakiś Newtonowski coś na obliczeniach naukowych)
-approSqrt:: Double -> [Double]
-approSqrt a = iterate (\x -> (x+a/x)/2) a
+iterate' f x =  x : iterate f (f x)
 
+approSqrt:: Double->[Double]
+approSqrt a = iterate (\x->(x+a/x)/2) a
+
+-- liczby fibonacciego
+fibb = 0:1: zipWith (+) fibb (tail fibb)
+
+-- liczby pierwsze
+sieve (p:xs) = p : sieve (filter (\n -> mod n p /= 0) xs)
+primes = sieve [2..]
+
+better_sieve (p:xs) = p: sieve (filter(\n -> n<p*p ||(mod n p /= 0)) xs)
+
+addGF xs ys = zipWith (+) xs ys
+
+
+
+--Konstrukcja "type"
+
+type Point = (Double,Double)
+type Vector = (Double,Double)
+type Time = Double
+
+constG = 9.80655
+
+-- lokalna funkcje
+generalMove :: Point -> Vector -> Time -> Double -> Point
+generalMove (x,y) (vx,vy) t acc = (x+vx*t, y + vy*t + acc*t*t/2)
+
+-- upublicznione 
+move :: Point -> Vector -> Time -> Point
+move p v t = generalMove p v t 0 
+
+translate :: Point -> Vector -> Point
+translate p v = generalMove p v 1 0
+
+moveInGF :: Point -> Vector -> Time -> Point
+moveInGF p v t = generalMove p v t (-constG)
+
+
+{-- Typy numerowane --}
+data DOW = Po|Wt|Sr|Cz|Pi|So|Ni deriving (Eq,Ord,Enum,Bounded)
+
+instance Show DOW where
+  show Po = "Poniedziałek"
+  show Wt = "Wtorek"
+  show Sr = "Środa"
+  show Cz = "Czwartek"
+  show Pi = "Piatek"
+  show So = "Sobota"
+  show Ni = "Niedziela"
+
+dniPracujace = [Po .. Pi] -- efekt Enum 
