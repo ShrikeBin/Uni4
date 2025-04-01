@@ -44,7 +44,7 @@ func (p *Position) MoveLeft() {
 	p.X = (p.X + BoardWidth - 1) % BoardWidth
 }
 
-// Trace of traveler 
+// Trace of traveler
 type Trace struct {
 	TimeStamp int64
 	ID        int
@@ -52,7 +52,7 @@ type Trace struct {
 	Symbol    rune
 }
 
-// PositionMutex -> single board position 
+// PositionMutex -> single board position
 type PositionMutex struct {
 	sync.Mutex
 	occupied   bool
@@ -76,64 +76,63 @@ func Printer(reportChannel <-chan []Trace, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for traces := range reportChannel {
 		for _, trace := range traces {
-			fmt.Printf("%v %d %d %d %c\n", 
-				trace.TimeStamp, 
-				trace.ID, 
-				trace.Position.X, 
-				trace.Position.Y, 
+			fmt.Printf("%v %d %d %d %c\n",
+				trace.TimeStamp,
+				trace.ID,
+				trace.Position.X,
+				trace.Position.Y,
 				trace.Symbol)
 		}
 	}
 }
 
-
 func (t *Traveler) tryMove(newPos Position, maxDelay time.Duration) bool {
-    deadline := time.Now().Add(maxDelay)
-    
-    for time.Now().Before(deadline) {
-        
-        if board[newPos.X][newPos.Y].TryLock() {
-            
-            if board[newPos.X][newPos.Y].occupied {
-                board[newPos.X][newPos.Y].Unlock()
-                // wait for it to maybe free
-                time.Sleep(1 * time.Millisecond)
-                continue
-            }
+	deadline := time.Now().Add(maxDelay)
 
-            acquiredCurrentNode := false
-            select {
-            case <-time.After(time.Until(deadline)):
-                board[newPos.X][newPos.Y].Unlock()
-                return false
-            default:
-                if board[t.Position.X][t.Position.Y].TryLock() {
-                    acquiredCurrentNode = true
-                }
-            }
+	for time.Now().Before(deadline) {
 
-            if acquiredCurrentNode {
-                // Perform the move
-                board[t.Position.X][t.Position.Y].occupied = false
-                board[t.Position.X][t.Position.Y].occupantID = -1
-                board[t.Position.X][t.Position.Y].Unlock()
+		if board[newPos.X][newPos.Y].TryLock() {
 
-                t.Position = newPos
-                board[newPos.X][newPos.Y].occupied = true
-                board[newPos.X][newPos.Y].occupantID = t.ID
-                board[newPos.X][newPos.Y].Unlock()
-                return true
-            }
+			if board[newPos.X][newPos.Y].occupied {
+				board[newPos.X][newPos.Y].Unlock()
+				// wait for it to maybe free
+				time.Sleep(1 * time.Millisecond)
+				continue
+			}
 
-            // Failed to acquire current position
-            board[newPos.X][newPos.Y].Unlock()
-        }
+			acquiredCurrentNode := false
+			select {
+			case <-time.After(time.Until(deadline)):
+				board[newPos.X][newPos.Y].Unlock()
+				return false
+			default:
+				if board[t.Position.X][t.Position.Y].TryLock() {
+					acquiredCurrentNode = true
+				}
+			}
 
-        // Small sleep to prevent CPU spin
-        time.Sleep(1 * time.Millisecond)
-    }
-    
-    return false
+			if acquiredCurrentNode {
+				// Perform the move
+				board[t.Position.X][t.Position.Y].occupied = false
+				board[t.Position.X][t.Position.Y].occupantID = -1
+				board[t.Position.X][t.Position.Y].Unlock()
+
+				t.Position = newPos
+				board[newPos.X][newPos.Y].occupied = true
+				board[newPos.X][newPos.Y].occupantID = t.ID
+				board[newPos.X][newPos.Y].Unlock()
+				return true
+			}
+
+			// Failed to acquire current position
+			board[newPos.X][newPos.Y].Unlock()
+		}
+
+		// Small sleep to prevent CPU spin
+		time.Sleep(1 * time.Millisecond)
+	}
+
+	return false
 }
 
 // Traveler behavior as a goroutine
@@ -246,3 +245,5 @@ func main() {
 	// Wait for the printer to finish
 	printWg.Wait()
 }
+
+// SPRAWDZ STATEFUL GOROUTINES Z GO BY EXAMPLE (NP TABLICE GORUTYN) taki serwerek na inofrmacje, poczytac w seci
