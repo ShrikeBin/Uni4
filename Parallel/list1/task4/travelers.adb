@@ -14,7 +14,7 @@ procedure Travelers is
   Seeds : Seed_Array_Type(1..Constants.Nr_Of_Travelers) := Make_Seeds(Constants.Nr_Of_Travelers);
 
   -- Protected type for each position on the board
-  protected type Position_Mutex is
+   protected type Position_Mutex is
       function Is_Occupied return Boolean;
       procedure Set;
       procedure Clear;
@@ -128,11 +128,12 @@ procedure Travelers is
 
   task body Traveler_Task_Type is
     G: Generator;
+    MoveType : Integer;
     Traveler: Traveler_Type;
     Time_Stamp: Duration;
     Nr_of_Steps: Integer;
-    Traces: Traces_Sequence_Type;
-    Timeout: Duration := Constants.Max_Delay; 
+    Traces: Traces_Sequence_Type; 
+    Timeout: Duration := Constants.Max_Delay;
 
     procedure Store_Trace is
     begin  
@@ -146,7 +147,6 @@ procedure Travelers is
     end Store_Trace;
     
     function Make_Step return Boolean is
-      N: Integer; 
       New_Position: Position_Type.Position_Type;
       Moved: Boolean := False;
 
@@ -162,19 +162,18 @@ procedure Travelers is
       end To_Lower;
 
     begin
-      N := Integer(Float'Floor(4.0 * Random(G)));
       New_Position := Traveler.Position;    
-      case N is
-         when 0 => 
-            Move_Up(New_Position);
+      case MoveType is
          when 1 => 
-            Move_Down(New_Position);
-         when 2 => 
             Move_Left(New_Position);
-         when 3 => 
+         when 2 => 
             Move_Right(New_Position);
+         when 3 => 
+            Move_Up(New_Position);
+         when 4 => 
+            Move_Down(New_Position);
          when others => 
-            Put_Line(" ?????????????? " & Integer'Image(N));
+            Put_Line(" ?????????????? " & Integer'Image(MoveType));
             return False;
       end case;
       
@@ -196,7 +195,7 @@ procedure Travelers is
             return False;  -- Timeout expired
          end if;
       end if;
-      end loop;
+   end loop;
     end Make_Step;
 
   begin
@@ -206,11 +205,12 @@ procedure Travelers is
       Traveler.Symbol := Symbol;
       -- Random initial position:
       Traveler.Position := (
-          X => Integer(Float'Floor(Float(Constants.Board_Width) * Random(G))),
-          Y => Integer(Float'Floor(Float(Constants.Board_Height) * Random(G)))          
+          X => Id,
+          Y => Id          
         );
       -- Occupy initial position
       Board(Traveler.Position.X, Traveler.Position.Y).Set;
+
       
       Store_Trace; -- store starting position
       -- Number of steps to be made by the traveler  
@@ -219,6 +219,24 @@ procedure Travelers is
       -- Time_Stamp of initialization
       Time_Stamp := To_Duration(Clock - Start_Time);
     end Init;
+    
+    -- determine the move
+    if Traveler.Id mod 2 = 0 then
+            -- Even ID: move Up(3) or Down(4)
+            if Integer(Float'Floor(2.0 * Random(G))) = 1 then
+               MoveType := 3;  -- Up
+            else
+               MoveType := 4;  -- Down
+            end if;
+         else
+            -- Odd ID: move Left(1) or Right(2)
+            if Integer(Float'Floor(2.0 * Random(G))) = 1 then
+               MoveType := 1;  -- Left
+            else
+               MoveType := 2;  -- Right
+            end if;
+         end if;
+
     
     -- wait for initialisations of the remaining tasks:
     accept Start do
@@ -233,8 +251,6 @@ procedure Travelers is
       Store_Trace;
       Time_Stamp := To_Duration(Clock - Start_Time);
     end loop;
-    -- just to be sure after termination
-    Store_Trace;
 
     Printer.Report(Traces);
   end Traveler_Task_Type;

@@ -83,6 +83,7 @@ type Traveler struct {
 	ID       int
 	Symbol   rune
 	Position Position
+	MoveType int
 	Rand     *rand.Rand
 	Traces   []Trace
 }
@@ -149,14 +150,14 @@ func (t *Traveler) Travel(reportChannel chan<- []Trace, wg *sync.WaitGroup) {
 
 		// Random movement
 		newPos := t.Position
-		switch t.Rand.Intn(4) {
-		case 0:
-			newPos.MoveUp()
+		switch t.MoveType {
 		case 1:
-			newPos.MoveDown()
+			newPos.MoveUp()
 		case 2:
-			newPos.MoveLeft()
+			newPos.MoveDown()
 		case 3:
+			newPos.MoveLeft()
+		case 4:
 			newPos.MoveRight()
 		}
 
@@ -210,13 +211,32 @@ func main() {
 	travelers := make([]*Traveler, NrOfTravelers)
 	symbol := 'A'
 
+	rand.Seed(time.Now().UnixNano()) // Initialize seed
+
+	var tmp = 0;
+
 	for i := 0; i < NrOfTravelers; i++ {
+		if i/2 == 0 {	// even ID
+			if rand.Intn(2) == 0 {
+				tmp = 1	// UP
+			} else {
+				tmp = 2	// DOWN
+			}
+		} else {	// odd ID
+			if rand.Intn(2) == 0 {
+				tmp = 3	// LEFT
+			} else {
+				tmp = 4	// RIGHT
+			}
+		}
+
 		randSource := rand.NewSource(time.Now().UnixNano() + int64(i))
 
 		travelers[i] = &Traveler{
 			ID:       i,
 			Symbol:   symbol,
-			Position: Position{rand.Intn(BoardWidth), rand.Intn(BoardHeight)},
+			Position: Position{i, i},
+			MoveType:     tmp,
 			Rand:     rand.New(randSource),
 		}
 		symbol++
