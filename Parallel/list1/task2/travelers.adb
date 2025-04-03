@@ -178,20 +178,18 @@ procedure Travelers is
             return False;
       end case;
       
-      Timeout := Constants.Max_Delay;
+      Timeout := Constants.Deadlock_Delay;
       -- Try to acquire the new position
       loop
       -- If the position is not occupied, move the traveler
       if not Board(New_Position.X, New_Position.Y).Is_Occupied then
-         -- Release the current position
-         Board(Traveler.Position.X, Traveler.Position.Y).Clear;
-         -- Occupy the new position
          Board(New_Position.X, New_Position.Y).Set;
+         Board(Traveler.Position.X, Traveler.Position.Y).Clear;
          Traveler.Position := New_Position;
          return True;
       end if;
-         delay 0.1;
-         Timeout := Timeout - 0.1;
+         delay 0.01;
+         Timeout := Timeout - 0.01;
          if Timeout <= 0.0 then
             Traveler.Symbol := To_Lower(Traveler.Symbol);
             return False;  -- Timeout expired

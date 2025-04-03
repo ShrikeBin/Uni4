@@ -10,6 +10,7 @@ package Constants is
 
   Min_Delay : constant Duration := 0.01;
   Max_Delay : constant Duration := 0.05;
+  Deadlock_Delay : constant Duration := 0.1;
 
 -- 2D Board with torus topology
 
