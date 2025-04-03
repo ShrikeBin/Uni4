@@ -15,7 +15,7 @@ procedure Travelers is
 
   -- Protected type for each position on the board
   protected type Position_Mutex is
-    entry Acquire;
+    entry Acquire;    -- zostawiam Aquire bo to mi daje możliwosc 'select' i zeby czekać na konkretny 'delay' (mimo że jest protected i nie potrzeba entry)
     procedure Release;
     function Is_Occupied return Boolean;
     procedure Set_Occupant(Id: Integer);
