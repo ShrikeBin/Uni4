@@ -132,7 +132,7 @@ procedure Travelers is
     Time_Stamp: Duration;
     Nr_of_Steps: Integer;
     Traces: Traces_Sequence_Type;
-    Timeout: Duration := Constants.Max_Delay; 
+    Timeout: Duration;
 
     procedure Store_Trace is
     begin  
@@ -178,6 +178,7 @@ procedure Travelers is
             return False;
       end case;
       
+      Timeout := Constants.Max_Delay;
       -- Try to acquire the new position
       loop
       -- If the position is not occupied, move the traveler
@@ -188,14 +189,13 @@ procedure Travelers is
          Board(New_Position.X, New_Position.Y).Set;
          Traveler.Position := New_Position;
          return True;
-      else
+      end if;
          delay 0.1;
          Timeout := Timeout - 0.1;
          if Timeout <= 0.0 then
             Traveler.Symbol := To_Lower(Traveler.Symbol);
             return False;  -- Timeout expired
          end if;
-      end if;
       end loop;
     end Make_Step;
 
