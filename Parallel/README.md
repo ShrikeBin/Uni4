@@ -1,1 +1,1 @@
-# Współbierzne
+# Współbieżne
