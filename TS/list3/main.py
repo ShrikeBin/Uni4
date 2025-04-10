@@ -124,6 +124,9 @@ def save_graph_with_table(G, N, c, a, reliability, filename="best_network.png"):
     labeled_N.to_csv("best_N.csv", sep='|', encoding='utf-8')
 
 # Przykład użycia
+
+# zedytuje tak żeby sie dało edytowac w trakcie:
+# tj dodawać krawędzie i zmieniać przepustowości
 if __name__ == "__main__":
     (G, N, c, a), reliability = best_configuration(k=150, T_max=0.05, p=0.95)
     print(f"Najlepsza niezawodność: {reliability:.4f}")
