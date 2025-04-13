@@ -10,6 +10,8 @@ uint16_t heuristics(State state)
 NeighborList getNeighbors(State state, uint16_t g)
 {
     uint8_t zero_pos = 0;
+    // TODO FIX IT
+    // that's a wrong way of checking equality....
     while(state >> (zero_pos*4) == 0x0 && zero_pos<= 15)
     {
         ++zero_pos;
