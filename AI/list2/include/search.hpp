@@ -31,6 +31,7 @@ struct Node
 // each position valid moves representation
 // 16 values (0..15) going the same as the state
 // 0b(right)(left)(up)(down)
+// NEEDS FIXES CHAT IS STUPID!!;;;;
 static constexpr std::array<uint8_t, 16> valid_moves = 
 {{
     0b1001,  // Position [0,0] valid: right, down
@@ -39,7 +40,7 @@ static constexpr std::array<uint8_t, 16> valid_moves =
     0b0111,  // Position [3,0] valid: left, down
     0b1011,  // Position [0,1] valid: right, down, left
     0b1110,  // Position [1,1] valid: right, down, left
-    0b1110,  // Position [2,1] valid: right, down, left
+    0b1111,  // Position [2,1] valid: right, down, left
     0b0111,  // Position [3,1] valid: left, down
     0b1101,  // Position [0,2] valid: right, left, up
     0b1110,  // Position [1,2] valid: right, left, up
