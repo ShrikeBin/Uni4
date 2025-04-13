@@ -46,7 +46,7 @@ void printState(const std::vector<std::vector<int>>& state)
 
 bool isSolved(State state) 
 {
-    return state == 0x123456789ABCDEF0;
+    return state == GOAL;
 }
 
 bool isSolvable(State state) 

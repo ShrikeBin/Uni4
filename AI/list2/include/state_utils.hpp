@@ -21,6 +21,7 @@
 // 16 * 4 bits
 // 0 - 15
 
+const uint64_t GOAL = 0x123456789ABCDEF0;
 using State = uint64_t;
 
 State convertToState(const std::vector<std::vector<int>>& state);

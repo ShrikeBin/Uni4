@@ -1,108 +1,73 @@
+#include "search.hpp"
 #include <unordered_map>
-#include <queue>
-#include <vector>
-#include <set>
-#include "state_utils.hpp"
 
-struct Node {
-    State state;
-    int g; // cost so far
-    int f; // total = g + h
-
-    bool operator>(const Node& other) const {
-        return f > other.f;
-    }
-};
-
-std::vector<State> getNeighbors(State state); // you implement this
-int heuristic(State state); // declared elsewhere
-
-State start = ...;
-std::priority_queue<Node, std::vector<Node>, std::greater<>> open;
-std::unordered_map<State, int> gScore;
-std::unordered_map<State, State> cameFrom;
-
-gScore[start] = 0;
-open.push({start, 0, heuristic(start)});
-
-while (!open.empty()) {
-    Node current = open.top();
-    open.pop();
-
-    if (isSolved(current.state)) {
-        // reconstruct path if you want
-        break;
-    }
-
-    for (State neighbor : getNeighbors(current.state)) {
-        int tentative_g = gScore[current.state] + 1; // every move = cost 1
-
-        if (!gScore.count(neighbor) || tentative_g < gScore[neighbor]) {
-            gScore[neighbor] = tentative_g;
-            int f = tentative_g + heuristic(neighbor);
-            open.push({neighbor, tentative_g, f});
-            cameFrom[neighbor] = current.state;
-        }
-    }
+// very temporary
+uint16_t heuristics(State state)
+{
+    return 0;
 }
 
-
-struct FastHasher {
-    size_t operator()(uint64_t x) const {
-        x ^= x >> 33;
-        x *= 0xff51afd7ed558ccdULL;
-        x ^= x >> 33;
-        x *= 0xc4ceb9fe1a85ec53ULL;
-        x ^= x >> 33;
-        return x;
+NeighborList getNeighbors(State state, uint16_t g)
+{
+    uint8_t zero_pos = 0;
+    while(state >> (zero_pos*4) == 0x0 && zero_pos<= 15)
+    {
+        ++zero_pos;
     }
-};
+    // found 0 position
+    uint8_t move_mask = valid_moves[zero_pos];
+    NeighborList neighbors = {};
+    
+    // just so you know:
+    // ^= AND
+    // |= OR
 
-std::vector<State> getNeighbors(State state) {
-    std::vector<State> neighbors;
+    //  lets say i have state = 0xAAAAAAAAAAAAAAA0
+    //  if left:
+    //  0xAAAAAAAAAAAAAAAA (set where 0 is to what left of 0 was)
+    //  and then
+    //  0xAAAAAAAAAAAAAA0A (set the left of 0 was to 0)
 
-    // Find index of 0 (blank)
-    int zeroIndex = -1;
-    for (int i = 0; i < 16; ++i) {
-        if (((state >> (i * 4)) & 0xF) == 0) {
-            zeroIndex = i;
-            break;
-        }
-    }
-
-    int row = zeroIndex / 4;
-    int col = zeroIndex % 4;
-
-    const int dir[4][2] = {
-        {-1, 0}, // up
-        {1, 0},  // down
-        {0, -1}, // left
-        {0, 1}   // right
-    };
-
-    for (auto& d : dir) {
-        int newRow = row + d[0];
-        int newCol = col + d[1];
-
-        if (newRow >= 0 && newRow < 4 && newCol >= 0 && newCol < 4) {
-            int newIndex = newRow * 4 + newCol;
-
-            // Swap blank (0) with neighbor tile
-            State tile = (state >> (newIndex * 4)) & 0xF;
-
-            State nextState = state;
-
-            // Set new blank
-            nextState &= ~(0xFULL << (newIndex * 4)); // clear neighbor
-            nextState |= (0ULL << (newIndex * 4));    // write 0 (blank)
-
-            // Move tile into old blank
-            nextState &= ~(0xFULL << (zeroIndex * 4)); // clear blank
-            nextState |= (tile << (zeroIndex * 4));    // move tile in
-
-            neighbors.push_back(nextState);
-        }
+    if (move_mask & 0b1000) // right is valid (1st bit)
+    {
+    State new_state = state;
+    
+    // Step 1: Remove the 4 bits at `zero_pos`
+    new_state ^= (0xF << (zero_pos * 4)); // Clear the 4 bits at `zero_pos`
+    
+    // Step 2: Set the 4 bits at `zero_pos + 1` to the value of the current position
+    new_state |= (0xF << ((zero_pos + 1) * 4)); // Set the 4 bits at `zero_pos + 1`
+    
+    // Step 3: Set the 4 bits at `zero_pos` to 0 (since it's now moved)
+    new_state ^= (0xF << ((zero_pos + 1) * 4)); // Clear the 4 bits at `zero_pos + 1` to avoid duplicates
+    
+    neighbors[0] = Node{new_state, g + 1, heuristics(new_state)}; 
     }
 
-    return neighbors;
+    if (move_mask & 0b0100) // left is valid (2nd bit)
+    {
+        State new_state = state;
+        new_state ^= (0xF << (zero_pos * 4));
+        new_state |= (0xF << ((zero_pos - 1) * 4));
+
+        neighbors[1] = Node{new_state, g + 1, heuristics(new_state)}; 
+    }
+
+    if (move_mask & 0b0010) // up is valid (3rd bit)
+    {
+        State new_state = state;
+        new_state ^= (0xF << (zero_pos * 4));
+        new_state |= (0xF << ((zero_pos - 4) * 4));
+
+        neighbors[2] = Node{new_state, g + 1, heuristics(new_state)}; 
+    }
+
+    if (move_mask & 0b0001) // down is valid (4th bit)
+    {
+        State new_state = state;
+        new_state ^= (0xF << (zero_pos * 4));
+        new_state |= (0xF << ((zero_pos + 4) * 4));
+
+        neighbors[3] = Node{new_state, g + 1, heuristics(new_state)}; 
+    }
 }
