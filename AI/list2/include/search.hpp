@@ -14,9 +14,7 @@ struct Node
     
     Node(State s, uint16_t G, uint16_t H)
     :state(s), g(G), h(H), f(G+H) {}
-
-    Node()
-    :state(0), g(0), h(0), f(0) {}
+    ~Node() = default;
 
     bool operator > (const Node& other) const 
     {
@@ -31,28 +29,31 @@ struct Node
 // each position valid moves representation
 // 16 values (0..15) going the same as the state
 // 0b(right)(left)(up)(down)
-// NEEDS FIXES CHAT IS STUPID!!;;;;
 static constexpr std::array<uint8_t, 16> valid_moves = 
 {{
-    0b1001,  // Position [0,0] valid: right, down
-    0b1101,  // Position [1,0] valid: right, left, down
-    0b1110,  // Position [2,0] valid: right, left, down
-    0b0111,  // Position [3,0] valid: left, down
-    0b1011,  // Position [0,1] valid: right, down, left
-    0b1110,  // Position [1,1] valid: right, down, left
-    0b1111,  // Position [2,1] valid: right, down, left
-    0b0111,  // Position [3,1] valid: left, down
-    0b1101,  // Position [0,2] valid: right, left, up
-    0b1110,  // Position [1,2] valid: right, left, up
-    0b1110,  // Position [2,2] valid: right, left, up
-    0b0111,  // Position [3,2] valid: left, up
-    0b1011,  // Position [0,3] valid: right, up, left
-    0b1101,  // Position [1,3] valid: right, left, up
-    0b1110,  // Position [2,3] valid: right, left, up
-    0b0110   // Position [3,3] valid: left, up
+    0b1001, // [0,0] → right, down
+    0b1101, // [0,1] → right, left, down
+    0b1101, // [0,2] → right, left, down
+    0b0101, // [0,3] → left, down
+
+    0b1011, // [1,0] → right, up, down
+    0b1111, // [1,1] → all directions
+    0b1111, // [1,2] → all directions
+    0b0111, // [1,3] → left, up, down
+
+    0b1011, // [2,0] → right, up, down
+    0b1111, // [2,1] → all directions
+    0b1111, // [2,2] → all directions
+    0b0111, // [2,3] → left, up, down
+
+    0b1010, // [3,0] → right, up
+    0b1110, // [3,1] → right, left, up
+    0b1110, // [3,2] → right, left, up
+    0b0110  // [3,3] → left, up
 }};
 
-typedef std::array<Node, 4> NeighborList;
-NeighborList getNeighbors(State state);
+
+typedef std::array<Node*, 4> NeighborList;
+NeighborList getNeighbors(State state, uint16_t g);
 
 #endif // SEARCH_HPP
