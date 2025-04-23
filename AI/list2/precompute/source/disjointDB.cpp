@@ -45,6 +45,10 @@ void DisjointPatternDB::build_pattern_1()
     pattern_db_1.insert(encode1(goal, 0));
 
     // cholera wie co tu jest mam dość
+    // ten BFS działa za krótko
+    const int dx[4] = {-1, 1, 0, 0};
+    const int dy[4] = {0, 0, -1, 1};
+
     while (!q.empty()) 
     {
         std::array<uint8_t, 16> state = q.front().first;
@@ -63,11 +67,10 @@ void DisjointPatternDB::build_pattern_1()
 
         int x = zero_pos % 4;
         int y = zero_pos / 4;
-        const int dx[4] = {-1, 1, 0, 0};
-        const int dy[4] = {0, 0, -1, 1};
 
         for (int d = 0; d < 4; ++d) 
         {
+            // to nie jest opytmakne chyba
             int nx = x + dx[d];
             int ny = y + dy[d];
             if (nx < 0 || ny < 0 || nx >= 4 || ny >= 4) continue;
@@ -77,10 +80,12 @@ void DisjointPatternDB::build_pattern_1()
             // Only allow swapping with actual tiles (1-15 or 0xFF), block garbage
             if (state[npos] != 0 && state[npos] != 0xFF && state[npos] > 15) continue;
 
+            // czy ten swap serio ma tak działać?
             std::array<uint8_t, 16> new_state = state;
             std::swap(new_state[zero_pos], new_state[npos]);
 
             uint32_t code = encode1(new_state, dist + 1);
+            // no ale mam wrzucić najtańszy więc chyba nie tak....
             if (pattern_db_1.count(code) == 0) 
             {
                 pattern_db_1.insert(code);
