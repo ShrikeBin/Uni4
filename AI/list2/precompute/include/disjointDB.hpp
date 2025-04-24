@@ -1,7 +1,7 @@
 #ifndef DISJOINTDB_HPP
 #define DISJOINTDB_HPP
 
-#include <set>
+#include <vector>
 #include <queue>
 #include <array>
 #include <string>
@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <fstream>
 #include <cstring> // for memset
+#include <map>
 
 class DisjointPatternDB 
 {
@@ -19,9 +20,9 @@ public:
 private:
     // 32-bit encoded (20 pattern | 4 pad | 8 heuristic)
     // Temporary variables to store each pattern database
-    std::set<uint32_t> pattern_db_1;
-    std::set<uint32_t> pattern_db_2;
-    std::set<uint32_t> pattern_db_3;
+    std::vector<uint32_t> pattern_db_1;
+    std::vector<uint32_t> pattern_db_2;
+    std::vector<uint32_t> pattern_db_3;
 
     void build_pattern_1();
     void build_pattern_2();
