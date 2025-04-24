@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <bitset>
+#include <string>
 
 const int EXPECTED_SIZE = 16*15*14*13*12; // Expected size of the pattern database
 

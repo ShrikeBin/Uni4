@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <fstream>
 #include <map>
+#include <string>
 
 class DisjointPatternDB 
 {

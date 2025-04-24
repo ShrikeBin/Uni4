@@ -8,11 +8,11 @@
 struct Node 
 {
     State state;
-    uint16_t g;
-    uint16_t h;
-    uint16_t f; 
+    uint8_t g;
+    uint8_t h;
+    uint8_t f; 
     
-    Node(State s, uint16_t G, uint16_t H)
+    Node(State s, uint8_t G, uint8_t H)
     :state(s), g(G), h(H), f(G+H) {}
     ~Node() = default;
 
@@ -54,6 +54,6 @@ static constexpr std::array<uint8_t, 16> valid_moves =
 
 
 typedef std::array<Node*, 4> NeighborList;
-NeighborList getNeighbors(State state, uint16_t g);
+NeighborList getNeighbors(State state, uint8_t g);
 
 #endif // SEARCH_HPP
