@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.gridspec import GridSpec
 
+
 # Generowanie grafu G
 def generate_graph():
     while True:
@@ -89,7 +90,7 @@ def best_configuration(k=10, T_max=0.05, p=0.95):
     return best_data, best_reliability
 
 # Zapis grafu i statystyk do pliku PNG z tabelką
-def save_graph_with_table(G, N, c, a, reliability, filename="best_network.png"):
+def save_graph_with_table(G, N, c, a, reliability, T_max ,filename="best_network.png"):
     fig = plt.figure(figsize=(16, 10))
     gs = GridSpec(1, 2, width_ratios=[1.2, 2])
 
@@ -110,7 +111,7 @@ def save_graph_with_table(G, N, c, a, reliability, filename="best_network.png"):
     ax1 = fig.add_subplot(gs[1])
     pos = nx.spring_layout(G, seed=42)
     nx.draw(G, pos, ax=ax1, with_labels=True, node_color='skyblue', node_size=700, edge_color='gray')
-    ax1.set_title(f"Topologia sieci | Niezawodność: {reliability:.4f}")
+    ax1.set_title(f"Topologia sieci | Niezawodność: {reliability:.4f} | T_max: {T_max}")
     ax1.axis('off')
 
     plt.tight_layout()
@@ -123,14 +124,75 @@ def save_graph_with_table(G, N, c, a, reliability, filename="best_network.png"):
                                 index=[f"v({i})" for i in range(size)])
     labeled_N.to_csv("best_N.csv", sep='|', encoding='utf-8')
 
-# Przykład użycia
 
-# zedytuje tak żeby sie dało edytowac w trakcie:
-# tj dodawać krawędzie i zmieniać przepustowości
+def test_reliability_vs_traffic(G, N, c, a, T_max=0.02, p=0.95, steps=50):
+    results = []
+    for factor in np.linspace(1, 5, steps):
+        N_scaled = (N * factor).astype(int)
+        reliability = simulate_reliability(G, c, a, N_scaled, T_max, p)
+        results.append((factor, reliability))
+    plot_results(results, 'Skalowanie natężeń (x)', 'Niezawodność', 'Niezawodność vs Skalowanie natężeń')
+    return results
+
+def test_reliability_vs_capacity(G, N, c, a, T_max=0.02, p=0.95, steps=50):
+    results = []
+    for factor in np.linspace(1, 5, steps):
+        c_scaled = {e: int(cap * factor) for e, cap in c.items()}
+        reliability = simulate_reliability(G, c_scaled, a, N, T_max, p)
+        results.append((factor, reliability))
+    plot_results(results, 'Skalowanie przepustowości (x)', 'Niezawodność', 'Niezawodność vs Skalowanie przepustowości')
+    return results
+
+def test_reliability_vs_topology(G_init, N, c_init, a_init, T_max=0.02, p=0.95, steps=20):
+    G = G_init.copy()
+    c = c_init.copy()
+    a = a_init.copy()
+    pos = list(G.nodes())
+    avg_capacity = int(np.mean(list(c.values())))
+    added = 0
+    results = []
+
+    while added < steps:
+        i, j = np.random.choice(pos, 2, replace=False)
+        if not G.has_edge(i, j):
+            G.add_edge(i, j)
+            edge = tuple(sorted((i, j)))
+            c[edge] = avg_capacity
+            a[edge] = 0
+            reliability = simulate_reliability(G, c, a, N, T_max, p)
+            results.append((G.number_of_edges(), reliability))
+            added += 1
+    plot_results(results, 'Liczba krawędzi', 'Niezawodność', 'Niezawodność vs Zmiany topologii')
+    return results
+
+def plot_results(results, xlabel, ylabel, title):
+    x_vals, y_vals = zip(*results)
+    plt.figure(figsize=(8, 5))
+    plt.plot(x_vals, y_vals, marker='o', linestyle='-', color='tab:blue')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f"{title.replace(' ', '_').lower()}.png", dpi=300)
+    plt.close()
+
+
 if __name__ == "__main__":
-    (G, N, c, a), reliability = best_configuration(k=150, T_max=0.05, p=0.95)
+    (G, N, c, a), reliability = best_configuration(k=150, T_max=0.02, p=0.95)
     print(f"Najlepsza niezawodność: {reliability:.4f}")
 
-    save_graph_with_table(G, N, c, a, reliability)
+    save_graph_with_table(G, N, c, a, reliability, T_max=0.02)
     print("Wizualizacja z tabelą zapisana do 'best_network.png'")
     print("Macierz natężeń zapisana do 'best_N.csv'")
+
+    print("Uruchamianie testów niezawodności...")
+
+    test_reliability_vs_traffic(G, N, c, a)
+    print("Zapisano wykres: niezawodność vs skalowanie natężeń")
+
+    test_reliability_vs_capacity(G, N, c, a)
+    print("Zapisano wykres: niezawodność vs skalowanie przepustowości")
+
+    test_reliability_vs_topology(G, N, c, a)
+    print("Zapisano wykres: niezawodność vs zmiany topologii")
