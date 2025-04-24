@@ -7,6 +7,8 @@ uint8_t jointPatternDatabase(State state)
     return 0;
 }
 
+
+// TODO make it max{MD, Inversion Distance} - cheaper!!
 // to be fixed when you'll be aware of what you are doing...
 uint8_t mdlinear(uint64_t state) 
 {
