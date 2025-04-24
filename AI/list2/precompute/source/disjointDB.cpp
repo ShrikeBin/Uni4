@@ -9,10 +9,10 @@ void DisjointPatternDB::build()
 {
     pattern_db_1.reserve(EXPECTED_SIZE);
     build_pattern_1();
-    //pattern_db_2.reserve(EXPECTED_SIZE);
-    //build_pattern_2();
-    //pattern_db_3.reserve(EXPECTED_SIZE);
-    //build_pattern_3();
+    pattern_db_2.reserve(EXPECTED_SIZE);
+    build_pattern_2();
+    pattern_db_3.reserve(EXPECTED_SIZE);
+    build_pattern_3();
 }
 
 void DisjointPatternDB::save(const std::string& prefix) 
@@ -48,11 +48,11 @@ void DisjointPatternDB::build_pattern_1()
     };
 
     std::queue<std::pair<std::array<uint8_t, 16>, uint8_t>> q;
-    std::map<std::array<uint8_t, 16>, uint8_t> cost_map; // map encoded state (without cost) -> min cost
+    std::map<std::array<uint8_t, 16>, uint8_t> count_map; // map encoded state (without cost) -> min cost
 
     q.push({goal, 0});
     uint32_t start_code = encode1(goal, 0);
-    cost_map[goal] = 0;
+    count_map[goal] = 0;
 
     const int dx[4] = {-1, 1, 0, 0};
     const int dy[4] = {0, 0, -1, 1};
@@ -93,35 +93,57 @@ void DisjointPatternDB::build_pattern_1()
             }
 
             auto new_state = state;
-            std::swap(new_state[zero_pos], new_state[npos]);
-            uint8_t new_cost = dist + 1;
 
-            // to zero tutaj coś psuje mocno ale już nie mam siły naprawić
-            // TODO tu jest błąd, z dodawaniem do mapy
-            // bo się powtarzają stany
-            // sprawdzić czy już jest w mapie i do save'a dodać bez 0 dlatego się wali
-
-            // Dobra już wiem co -> może dotrzeć do danego state na różne sposoby więc rózni się zerami, potrzeuję kolejnej mapy
-            // w której będę trzymał stany i ich koszt ale bez zer
-            // i tam mogę updateować bez zer o powtórki i będzie ok
-            if (!cost_map.count(new_state)) 
+            // we touched something important
+            uint8_t new_cost = dist;
+            if(new_state[npos] != 0xFF)
             {
-                cost_map.insert(std::make_pair(new_state, new_cost));
+                ++new_cost;
+            }
+
+            std::swap(new_state[zero_pos], new_state[npos]);
+
+            if (!count_map.count(new_state)) 
+            {
+                count_map.insert(std::make_pair(new_state, new_cost));
                 q.push({new_state, new_cost});
             }
-            else if(cost_map.count(new_state) && new_cost < cost_map[new_state])
+            else if(count_map.count(new_state) && new_cost < count_map[new_state])
             {
-                cost_map[new_state] = new_cost;
+                count_map[new_state] = new_cost;
                 q.push({new_state, new_cost});
             }
         }
-        //std::cout<<"Queue size: " << q.size() << "\n";
+    }
+
+    // Remove duplicate entries and keep the minimum cost
+    std::map<std::array<uint8_t, 16>, uint8_t> min_cost_map;
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry: count_map)
+    {
+        // Remove that annoying 0;
+        std::array<uint8_t, 16> state = entry.first;
+        for (uint8_t& val : state) 
+        {
+            if (val == 0) 
+            {
+                val = 0xFF;
+            }
+        }
+
+        if(!min_cost_map.count(state))
+        {
+            min_cost_map.insert(std::make_pair(state, entry.second));
+        }
+        else if (entry.second < min_cost_map[state])
+        {
+            min_cost_map[state] = entry.second;
+        }
     }
 
     std::ofstream outfile("pattern_1.txt");
-
-    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : cost_map)
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : min_cost_map)
     {   
+        
         for (int i = 0; i < 16; ++i){outfile << (int)entry.first[i] << " ";}
         outfile << "\nEncoded value: " << std::hex << std::bitset<32>(encode1(entry.first, entry.second)) << std::dec;
         outfile << "\nValue: " << (int)entry.second;
@@ -132,6 +154,7 @@ void DisjointPatternDB::build_pattern_1()
             else outfile << std::setw(2) << std::setfill(' ') << (int)entry.first[i] << " ";
         }
         outfile << "\n";
+        
         pattern_db_1.emplace_back(encode1(entry.first, entry.second));
     }
 }
@@ -148,33 +171,17 @@ void DisjointPatternDB::build_pattern_2()
     };
 
     std::queue<std::pair<std::array<uint8_t, 16>, uint8_t>> q;
-    std::map<std::array<uint8_t, 16>, uint8_t> cost_map; // map encoded state (without cost) -> min cost
+    std::map<std::array<uint8_t, 16>, uint8_t> count_map; // map encoded state (without cost) -> min cost
 
     q.push({goal, 0});
     uint32_t start_code = encode2(goal, 0);
-    cost_map[goal] = 0;
+    count_map[goal] = 0;
 
     const int dx[4] = {-1, 1, 0, 0};
     const int dy[4] = {0, 0, -1, 1};
 
     while (!q.empty()) 
     {
-        /*auto q_copy = q; // copy the queue
-
-        while (!q_copy.empty()) {
-            const auto& [state, cost] = q_copy.front();
-
-            std::cout << "Cost: " << (int)cost << "\nState:\n";
-            for (int i = 0; i < 16; ++i) {
-                if (i % 4 == 0) std::cout << "\n";
-                if (state[i] == 0xFF) std::cout << " . ";
-                else std::cout << std::setw(2) << std::setfill(' ') << (int)state[i] << " ";
-            }
-            std::cout << "\n\n";
-
-            q_copy.pop();
-        }*/
-
         auto [state, dist] = q.front();
         q.pop();
 
@@ -209,31 +216,69 @@ void DisjointPatternDB::build_pattern_2()
             }
 
             auto new_state = state;
-            std::swap(new_state[zero_pos], new_state[npos]);
-            /*std::cout << "New State:\n";
-            for (int i = 0; i < 16; ++i) {
-                if (i % 4 == 0) std::cout << "\n";  // New line every 4 elements for grid format
-                if (new_state[i] == 0xFF) 
-                    std::cout << " . ";  // Representing 0xFF as a dot
-                else
-                    std::cout << std::setw(2) << std::setfill(' ') << (int)new_state[i] << " ";
-            }
-            std::cout << "\n\n";*/
 
-            uint8_t new_cost = dist + 1;
-
-            if (!cost_map.count(new_state) || new_cost < cost_map[new_state]) 
+            // we touched something important
+            uint8_t new_cost = dist;
+            if(new_state[npos] != 0xFF)
             {
-                cost_map[new_state] = new_cost;
+                ++new_cost;
+            }
+
+            std::swap(new_state[zero_pos], new_state[npos]);
+
+            if (!count_map.count(new_state)) 
+            {
+                count_map.insert(std::make_pair(new_state, new_cost));
+                q.push({new_state, new_cost});
+            }
+            else if(count_map.count(new_state) && new_cost < count_map[new_state])
+            {
+                count_map[new_state] = new_cost;
                 q.push({new_state, new_cost});
             }
         }
-        std::cout<<"Queue size: " << q.size() << "\n";
     }
 
-    for (const auto& [code, cost] : cost_map)
+    // Remove duplicate entries and keep the minimum cost
+    std::map<std::array<uint8_t, 16>, uint8_t> min_cost_map;
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry: count_map)
     {
-        pattern_db_2.emplace_back(encode2(code, cost));
+        // Remove that annoying 0;
+        std::array<uint8_t, 16> state = entry.first;
+        for (uint8_t& val : state) 
+        {
+            if (val == 0) 
+            {
+                val = 0xFF;
+            }
+        }
+
+        if(!min_cost_map.count(state))
+        {
+            min_cost_map.insert(std::make_pair(state, entry.second));
+        }
+        else if (entry.second < min_cost_map[state])
+        {
+            min_cost_map[state] = entry.second;
+        }
+    }
+
+    std::ofstream outfile("pattern_2.txt");
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : min_cost_map)
+    {   
+        
+        for (int i = 0; i < 16; ++i){outfile << (int)entry.first[i] << " ";}
+        outfile << "\nEncoded value: " << std::hex << std::bitset<32>(encode2(entry.first, entry.second)) << std::dec;
+        outfile << "\nValue: " << (int)entry.second;
+        outfile << "\nState:";
+        for (int i = 0; i < 16; ++i) {
+            if (i % 4 == 0) outfile << "\n";
+            if (entry.first[i] == 0xFF || entry.first[i] == 0) outfile << " . ";
+            else outfile << std::setw(2) << std::setfill(' ') << (int)entry.first[i] << " ";
+        }
+        outfile << "\n";
+        
+        pattern_db_2.emplace_back(encode2(entry.first, entry.second));
     }
 }
 
@@ -247,33 +292,17 @@ void DisjointPatternDB::build_pattern_3()
     };
 
     std::queue<std::pair<std::array<uint8_t, 16>, uint8_t>> q;
-    std::map<std::array<uint8_t, 16>, uint8_t> cost_map; // map encoded state (without cost) -> min cost
+    std::map<std::array<uint8_t, 16>, uint8_t> count_map; // map encoded state (without cost) -> min cost
 
     q.push({goal, 0});
     uint32_t start_code = encode3(goal, 0);
-    cost_map[goal] = 0;
+    count_map[goal] = 0;
 
     const int dx[4] = {-1, 1, 0, 0};
     const int dy[4] = {0, 0, -1, 1};
 
     while (!q.empty()) 
     {
-        /*auto q_copy = q; // copy the queue
-
-        while (!q_copy.empty()) {
-            const auto& [state, cost] = q_copy.front();
-
-            std::cout << "Cost: " << (int)cost << "\nState:\n";
-            for (int i = 0; i < 16; ++i) {
-                if (i % 4 == 0) std::cout << "\n";
-                if (state[i] == 0xFF) std::cout << " . ";
-                else std::cout << std::setw(2) << std::setfill(' ') << (int)state[i] << " ";
-            }
-            std::cout << "\n\n";
-
-            q_copy.pop();
-        }*/
-
         auto [state, dist] = q.front();
         q.pop();
 
@@ -308,31 +337,69 @@ void DisjointPatternDB::build_pattern_3()
             }
 
             auto new_state = state;
-            std::swap(new_state[zero_pos], new_state[npos]);
-            /*std::cout << "New State:\n";
-            for (int i = 0; i < 16; ++i) {
-                if (i % 4 == 0) std::cout << "\n";  // New line every 4 elements for grid format
-                if (new_state[i] == 0xFF) 
-                    std::cout << " . ";  // Representing 0xFF as a dot
-                else
-                    std::cout << std::setw(2) << std::setfill(' ') << (int)new_state[i] << " ";
-            }
-            std::cout << "\n\n";*/
 
-            uint8_t new_cost = dist + 1;
-
-            if (!cost_map.count(new_state) || new_cost < cost_map[new_state]) 
+            // we touched something important
+            uint8_t new_cost = dist;
+            if(new_state[npos] != 0xFF)
             {
-                cost_map[new_state] = new_cost;
+                ++new_cost;
+            }
+            
+            std::swap(new_state[zero_pos], new_state[npos]);
+
+            if (!count_map.count(new_state)) 
+            {
+                count_map.insert(std::make_pair(new_state, new_cost));
+                q.push({new_state, new_cost});
+            }
+            else if(count_map.count(new_state) && new_cost < count_map[new_state])
+            {
+                count_map[new_state] = new_cost;
                 q.push({new_state, new_cost});
             }
         }
-        std::cout<<"Queue size: " << q.size() << "\n";
     }
 
-    for (const auto& [code, cost] : cost_map)
+    // Remove duplicate entries and keep the minimum cost
+    std::map<std::array<uint8_t, 16>, uint8_t> min_cost_map;
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry: count_map)
     {
-        pattern_db_3.emplace_back(encode3(code, cost));
+        // Remove that annoying 0;
+        std::array<uint8_t, 16> state = entry.first;
+        for (uint8_t& val : state) 
+        {
+            if (val == 0) 
+            {
+                val = 0xFF;
+            }
+        }
+
+        if(!min_cost_map.count(state))
+        {
+            min_cost_map.insert(std::make_pair(state, entry.second));
+        }
+        else if (entry.second < min_cost_map[state])
+        {
+            min_cost_map[state] = entry.second;
+        }
+    }
+
+    std::ofstream outfile("pattern_3.txt");
+    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : min_cost_map)
+    {   
+        
+        for (int i = 0; i < 16; ++i){outfile << (int)entry.first[i] << " ";}
+        outfile << "\nEncoded value: " << std::hex << std::bitset<32>(encode3(entry.first, entry.second)) << std::dec;
+        outfile << "\nValue: " << (int)entry.second;
+        outfile << "\nState:";
+        for (int i = 0; i < 16; ++i) {
+            if (i % 4 == 0) outfile << "\n";
+            if (entry.first[i] == 0xFF || entry.first[i] == 0) outfile << " . ";
+            else outfile << std::setw(2) << std::setfill(' ') << (int)entry.first[i] << " ";
+        }
+        outfile << "\n";
+        
+        pattern_db_3.emplace_back(encode3(entry.first, entry.second));
     }
 }
 
@@ -359,11 +426,10 @@ uint32_t DisjointPatternDB::encode2(const std::array<uint8_t, 16>& state, uint8_
     {
         if (state[i] != 0 && state[i] != 0xFF) 
         {
-            // i chce zapisać state[i] to tam gdzie zapisuje tj state[4] niech będzie 1 to znaczy że na 1 chce zapisać 4
             pattern_bits |= (i << (20 - ((state[i]*4) - 5)));
         }
     }
-    pattern_bits <<= 12; // for 4-bit pad + 8-bit heuristic
+    pattern_bits <<= 12;
     pattern_bits |= heuristic;
     return pattern_bits;
 }
@@ -375,11 +441,10 @@ uint32_t DisjointPatternDB::encode3(const std::array<uint8_t, 16>& state, uint8_
     {
         if (state[i] != 0 && state[i] != 0xFF) 
         {
-            // i chce zapisać state[i] to tam gdzie zapisuje tj state[4] niech będzie 1 to znaczy że na 1 chce zapisać 4
             pattern_bits |= (i << (20 - ((state[i]*4) - 10)));
         }
     }
-    pattern_bits <<= 12; // for 4-bit pad + 8-bit heuristic
+    pattern_bits <<= 12;
     pattern_bits |= heuristic;
     return pattern_bits;
 }

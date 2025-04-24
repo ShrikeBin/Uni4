@@ -4,11 +4,8 @@
 #include <vector>
 #include <queue>
 #include <array>
-#include <string>
 #include <cstdint>
-#include <algorithm>
 #include <fstream>
-#include <cstring> // for memset
 #include <map>
 
 class DisjointPatternDB 
