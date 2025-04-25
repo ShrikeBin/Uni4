@@ -53,7 +53,7 @@ static constexpr std::array<uint8_t, 16> valid_moves =
 }};
 
 
-typedef std::array<Node*, 4> NeighborList;
+typedef std::array<Node, 4> NeighborList;
 NeighborList getNeighbors(State state, uint8_t g);
 
 #endif // SEARCH_HPP

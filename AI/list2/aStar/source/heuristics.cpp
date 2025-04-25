@@ -1,64 +1,52 @@
 #include "heuristics.hpp"
 
-uint8_t jointPatternDatabase(State state)
+uint8_t PatternDatabase(State state)
 {
-    // tutaj będzie wczytywanie z pliku do idk np 3 tabel?
-    // już nie pamiętam za dużo dzisiaj Walking Distance
+    // przypomnijmy zapis w bazie danych:
+    // 32 bity:
+    // pozycja 1 | pozycja 2 | pozycja 3 | pozycja 4 | pozycja 5 | 4 bity gówna | 8 bitów heurystyka
+    // pozycja 6 | pozycja 7 | pozycja 8 | pozycja 9 | pozycja 10 | 4 bity gówna | 8 bitów heurystyka
+    // pozycja 11 | pozycja 12 | pozycja 13 | pozycja 14 | pozycja 15 | 4 bity gówna | 8 bitów heurystyka
+
+    // pomysł jak to zrobić:
+    // masz stan 64 bity:
+    // zrób getTile(state, i) i w [0-15]
+    // zrób 3 tablice z pozycjami tj
+    // przeleć przez cały state i dodawaj do odpowiedniej tablicy
+    // po kolei ify
+    // jeśli getTile(state, i) == 0 continue;
+    // jeśli getTile(state, i) jest  < 6 dodaj do tablicy 1 i na miejscu [getTile(state, i) - 1]  !!
+    // jeśli getTile(state, i) jest  < 11 dodaj do tablicy 2 i na miejscu [getTile(state, i) - 6] !!
+    // jeśli getTile(state, i) jest else dodaj do tablicy 3 i na miejscu [getTile(state, i) - 11] !!
+    // (dla 1-5) dla np odwróconego: tiles1[5] = {15, 14, 13, 12, 11}
+    // dostajesz tablicę już sformatowaną po kolei(da się zamienić na to żeby to już był uint32_t)
+    // wyszukaj w bazie danych (która chyba będzie unordered_map <uint32_t, uint8_t>)
+    // posumuj
+    // zwróć wynik
+
     return 0;
 }
 
-
-// TODO make it max{MD, Inversion Distance} - cheaper!!
-// to be fixed when you'll be aware of what you are doing...
-uint8_t mdlinear(uint64_t state) 
+uint8_t MDID(uint64_t state) 
 {
-    int total = 0;
+    uint8_t totalMD = 0;
+    uint8_t totalID = 0;
 
     // Manhattan distance
-    for (int i = 0; i < 16; i++) {
-        uint8_t t = get_tile(state, i);
-        if (t == 0) continue;
-        int goal = t - 1;
-        int dx = (i / 4) - (goal / 4);
-        int dy = (i % 4) - (goal % 4);
-        total += fast_abs(dx) + fast_abs(dy);
+    for (int i = 0; i < 16; i++) 
+    {
+        uint8_t tile = get_tile(state, i);
+        if (tile == 0) continue;
+        uint8_t goal = tile - 1;
+        int8_t dx = (i / 4) - (goal / 4);
+        int8_t dy = (i % 4) - (goal % 4);
+        totalMD += fast_abs_i8(dx) + fast_abs_i8(dy);
     }
 
-    // Linear conflict - rows
-    for (int row = 0; row < 4; row++) {
-        for (int i = 0; i < 4; i++) {
-            int idx_i = row * 4 + i;
-            uint8_t t_i = get_tile(state, idx_i);
-            if (t_i == 0 || (t_i - 1) / 4 != row) continue;
+    // Inversion distance
+    uint8_t horizontal = inversionsH(state);
+    uint8_t vertical = inversionsV(state);
+    totalID = horizontal/3 + horizontal%3 + vertical/3 + vertical%3;
 
-            for (int j = i + 1; j < 4; j++) {
-                int idx_j = row * 4 + j;
-                uint8_t t_j = get_tile(state, idx_j);
-                if (t_j == 0 || (t_j - 1) / 4 != row) continue;
-
-                if ((t_i - 1) % 4 > (t_j - 1) % 4)
-                    total += 2;
-            }
-        }
-    }
-
-    // Linear conflict - columns
-    for (int col = 0; col < 4; col++) {
-        for (int i = 0; i < 4; i++) {
-            int idx_i = i * 4 + col;
-            uint8_t t_i = get_tile(state, idx_i);
-            if (t_i == 0 || (t_i - 1) % 4 != col) continue;
-
-            for (int j = i + 1; j < 4; j++) {
-                int idx_j = j * 4 + col;
-                uint8_t t_j = get_tile(state, idx_j);
-                if (t_j == 0 || (t_j - 1) % 4 != col) continue;
-
-                if ((t_i - 1) / 4 > (t_j - 1) / 4)
-                    total += 2;
-            }
-        }
-    }
-
-    return (uint8_t)total;
+    return totalMD > totalID ? totalMD : totalID;
 }

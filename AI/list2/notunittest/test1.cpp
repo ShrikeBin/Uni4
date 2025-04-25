@@ -1,12 +1,5 @@
-#ifndef HEURISTICS_HPP
-#define HEURISTICS_HPP
-
-#include "state_utils.hpp"
 #include <stdint.h>
-
-uint8_t heuristics(State state);
-uint8_t PatternDatabase(State state);
-uint8_t MDID(State state);
+#include <iostream>
 
 static inline uint8_t get_tile(uint64_t state, int idx) 
 {
@@ -25,7 +18,6 @@ const uint8_t VERTICAL_POSITION[16]= {15,0,4,8,12,1,5,9,13,2,6,10,14,3,7,11};  /
 //                                                                             // [2] = 4 bo na 4 miejscu jest 2
 //                                                                             // [3] = 8 bo na 8 miejscu jest 3
 
-// XD
 static inline uint64_t makeVertical(const uint64_t perm) 
 {
     uint64_t vperm = 0x0000000000000000;
@@ -101,4 +93,39 @@ static inline uint8_t inversionsH(const uint64_t perm)
     return inversions;
 }
 
-#endif // HEURISTICS_HPP
+uint8_t MDID(uint64_t state) 
+{
+    uint8_t totalMD = 0;
+    uint8_t totalID = 0;
+
+    // Manhattan distance
+    for (int i = 0; i < 16; i++) 
+    {
+        uint8_t tile = get_tile(state, i);
+        if (tile == 0) continue;
+        uint8_t goal = tile - 1;
+        int8_t dx = (i / 4) - (goal / 4);
+        int8_t dy = (i % 4) - (goal % 4);
+        totalMD += fast_abs_i8(dx) + fast_abs_i8(dy);
+    }
+
+    // Inversion distance
+    uint8_t horizontal = inversionsH(state);
+    uint8_t vertical = inversionsV(state);
+    totalID = horizontal/3 + horizontal%3 + vertical/3 + vertical%3;
+
+    return totalMD > totalID ? totalMD : totalID;
+}
+
+int main() 
+{
+    uint64_t state = 0x0FEDCBA987654321; // Example state
+    uint8_t inversions_h = inversionsH(state);
+    uint8_t inversions_v = inversionsV(state);
+
+    std::cout << "Inversions H: " << static_cast<int>(inversions_h) << std::endl;
+    std::cout << "Inversions V: " << static_cast<int>(inversions_v) << std::endl;
+    std::cout << "MDID: " << static_cast<int>(MDID(state)) << std::endl;
+
+    return 0;
+}
