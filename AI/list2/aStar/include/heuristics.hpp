@@ -3,11 +3,33 @@
 
 #include "state_utils.hpp"
 #include <stdint.h>
+#include <array>
+#include <string>
+#include <fstream>
 
 uint8_t heuristics(State state);
-uint8_t PatternDatabase(State state);
 uint8_t MDID(State state);
 
+class DisjointPatternDB 
+{
+    public:
+        static std::array<uint8_t, 1 << 20> pattern_db_1;
+        static std::array<uint8_t, 1 << 20> pattern_db_2;
+        static std::array<uint8_t, 1 << 20> pattern_db_3;
+    
+    public:
+        static void load1(const std::string& filename);
+        static void load2(const std::string& filename);
+        static void load3(const std::string& filename);
+    
+        static uint8_t get_heuristic(State state);
+};
+    
+
+
+
+// INLINE FUNCTIONS
+// These functions are defined inline for performance reasons.
 static inline uint8_t get_tile(uint64_t state, int idx) 
 {
     return (state >> ((15 - idx) * 4)) & 0xF;

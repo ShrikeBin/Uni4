@@ -26,6 +26,19 @@ struct Node
     }
 };
 
+class BucketQueue 
+{
+    private:
+        std::array<std::vector<Node>, 81> buckets;
+        int current = 0;
+    
+    public:
+        size_t size = 0;
+        void push(const Node& node); 
+        bool empty(); 
+        Node pop();
+};
+
 // each position valid moves representation
 // 16 values (0..15) going the same as the state
 // 0b(right)(left)(up)(down)

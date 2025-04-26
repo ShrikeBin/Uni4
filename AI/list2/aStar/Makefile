@@ -1,6 +1,6 @@
 all:
 	mkdir -p ./app
-	clang++ -I./include source/*.cpp core/main.cpp -o ./app/main
+	clang++ -o2 -I./include source/*.cpp core/main.cpp -o ./app/main
 
 run:
 	./app/main

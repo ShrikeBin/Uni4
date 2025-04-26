@@ -4,83 +4,101 @@
 #include <array>
 #include <fstream>
 #include <bitset>
+#include <string>
+#include <algorithm>
 
+std::array<uint8_t, 1 << 20> pattern_db_1{};
+std::array<uint8_t, 1 << 20> pattern_db_2{};
+std::array<uint8_t, 1 << 20> pattern_db_3{};
 
-void print_state_and_cost(const uint32_t entry) 
+void load1(const std::string& filename) 
 {
-    // Extract the heuristic cost (rightmost 8 bits)
-    uint8_t heuristic_cost = entry & 0xFF;
-
-    // Extract the positions of tiles (the remaining 24 bits)
-    uint32_t positions = entry >> 12;
-
-    std::cout << "Heuristic Cost: " << (int)heuristic_cost << "\nState:\n";
-
-    // Create an array to hold the positions of the tiles in a 4x4 grid
-    std::array<uint8_t, 16> state;
-    
-    // Initially, set all positions to 0xFF (representing empty spots)
-    state.fill(0xFF);
-
-    // Fill in the state based on the positions encoded in the 24 bits
-    for (int i = 0; i < 5; ++i) 
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
     {
-        int pos = (positions >> (4 * (4 - i)) & 0xF);  // Extract the position of tile i (0-4)
-        if (pos < 16) 
-        {  // Ensure valid position (within the 4x4 grid)
-            state[pos] = i + 1;  // Place the tile number (1-5)
-        }
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;     
+        pattern_db_1[key] = value;
     }
-
-    // Print the state as a 4x4 grid
-    for (int i = 0; i < 16; ++i) {
-        if (i % 4 == 0) std::cout << "\n";  // New line every 4 elements for grid format
-        if (state[i] == 0xFF)
-            std::cout << " . ";  // Representing empty spots (0xFF) as a dot
-        else
-            std::cout << std::setw(2) << std::setfill(' ') << (int)state[i] << " ";
-    }
-
-    std::cout << "\n\n";
 }
 
-void read_entries_from_file(const std::string& filename, size_t num_entries) {
-    // Open the binary file in read mode
-    std::ifstream infile(filename, std::ios::binary);
-    
-    // Check if the file was opened successfully
-    if (!infile) {
-        std::cerr << "Error opening file: " << filename << std::endl;
-        return;
+void load2(const std::string& filename) 
+{
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
+    {
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;
+        pattern_db_2[key] = value;
     }
-
-    uint32_t entry;
-    size_t count = 0;
-
-    // Read the specified number of 32-bit entries from the file
-    while (count < num_entries && infile.read(reinterpret_cast<char*>(&entry), sizeof(entry))) {
-        // Print the entry (you can also process it or print the state and cost as needed)
-        std::cout << "Entry " << count + 1 << ": " << std::bitset<32>(entry) << std::endl;
-        
-        print_state_and_cost(entry);
-
-        count++;
-    }
-
-    // If we haven't read enough entries, notify the user
-    if (count < num_entries) {
-        std::cerr << "Not enough entries in the file. Read " << count << " entries." << std::endl;
-    }
-
-    infile.close();
 }
+
+void load3(const std::string& filename) 
+{
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
+    {
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;
+        pattern_db_3[key] = value;
+    }
+}
+
+static inline uint8_t get_tile(uint64_t state, int idx) 
+{
+    return (state >> ((15 - idx) * 4)) & 0xF;
+}
+
+uint8_t get_heuristic(uint64_t state)
+{
+    uint64_t positions = 0x0000000000000000;
+    for(uint8_t i = 0; i < 16; i++)
+    {
+        uint8_t tile = get_tile(state, i);
+        if (tile == 0) continue;
+        positions |=(((uint64_t)i) << (60 - (tile * 4)));
+    }
+
+    uint32_t key1 = 0x00000000;
+    uint32_t key2 = 0x00000000;
+    uint32_t key3 = 0x00000000;
+
+    key1 |= (((uint32_t)get_tile(positions, 1)) << 16);
+    key1 |= (((uint32_t)get_tile(positions, 5)) << 12);
+    key1 |= (((uint32_t)get_tile(positions, 6)) << 8);
+    key1 |= (((uint32_t)get_tile(positions, 9)) << 4);
+    key1 |= ((uint32_t)get_tile(positions, 10));
+
+    key2 |= (((uint32_t)get_tile(positions, 2)) << 16);
+    key2 |= (((uint32_t)get_tile(positions, 3)) << 12);
+    key2 |= (((uint32_t)get_tile(positions, 4)) << 8);
+    key2 |= (((uint32_t)get_tile(positions, 7)) << 4);
+    key2 |= ((uint32_t)get_tile(positions, 8));
+
+    key3 |= (((uint32_t)get_tile(positions, 11)) << 16);
+    key3 |= (((uint32_t)get_tile(positions, 12)) << 12);
+    key3 |= (((uint32_t)get_tile(positions, 13)) << 8);
+    key3 |= (((uint32_t)get_tile(positions, 14)) << 4);
+    key3 |= ((uint32_t)get_tile(positions, 15));
+
+    uint8_t total = pattern_db_1[key1] + pattern_db_2[key2] + pattern_db_3[key3];
+    return total;
+}
+
 
 int main() 
 {
-    // Example usage: Read 10 entries from a file named "pattern_1.bin"
-    std::string filename = "../precompute/disjoint_pattern_1.bin";
-    size_t num_entries = 10;
-    read_entries_from_file(filename, num_entries);
+    std::cout << "Loading pattern databases...\n";
+    load1("../precompute/disjoint_pattern_1.bin");
+    load2("../precompute/disjoint_pattern_2.bin");
+    load3("../precompute/disjoint_pattern_3.bin");
+    std::cout << "Loaded pattern databases.\n";
 
+    uint64_t state = 0x0FEDCBA987654321;
+    uint64_t state2 = 0x123056789ABCDEF4;
+    std::cout << "heuristic: " << std::dec << (int)get_heuristic(state2) << "\n";
     return 0;
 }

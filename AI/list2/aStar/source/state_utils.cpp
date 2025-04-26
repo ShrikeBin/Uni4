@@ -49,13 +49,9 @@ bool isSolved(State state)
     return state == GOAL;
 }
 
+// DOESNT WORK ?????
 bool isSolvable(State state) 
-{
-    if(state << 60 != 0) 
-    {
-        return false; // Invalid state, 0 is not in the last position
-    }
-    
+{   
     int inversions = 0;
     std::vector<int> flatState(16);
 
@@ -75,5 +71,5 @@ bool isSolvable(State state)
         }
     }
 
-    return inversions % 2 == 1;
+    return inversions % 2 == 0;
 }

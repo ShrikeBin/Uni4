@@ -1,30 +1,91 @@
 #include "heuristics.hpp"
 
-uint8_t PatternDatabase(State state)
+
+uint8_t heuristics(State state) 
 {
-    // przypomnijmy zapis w bazie danych:
-    // 32 bity:
-    // pozycja 1 | pozycja 2 | pozycja 3 | pozycja 4 | pozycja 5 | 4 bity gówna | 8 bitów heurystyka
-    // pozycja 6 | pozycja 7 | pozycja 8 | pozycja 9 | pozycja 10 | 4 bity gówna | 8 bitów heurystyka
-    // pozycja 11 | pozycja 12 | pozycja 13 | pozycja 14 | pozycja 15 | 4 bity gówna | 8 bitów heurystyka
+    //uint8_t mdid = MDID(state);
+    uint8_t disjoint = DisjointPatternDB::get_heuristic(state);
 
-    // pomysł jak to zrobić:
-    // masz stan 64 bity:
-    // zrób getTile(state, i) i w [0-15]
-    // zrób 3 tablice z pozycjami tj
-    // przeleć przez cały state i dodawaj do odpowiedniej tablicy
-    // po kolei ify
-    // jeśli getTile(state, i) == 0 continue;
-    // jeśli getTile(state, i) jest  < 6 dodaj do tablicy 1 i na miejscu [getTile(state, i) - 1]  !!
-    // jeśli getTile(state, i) jest  < 11 dodaj do tablicy 2 i na miejscu [getTile(state, i) - 6] !!
-    // jeśli getTile(state, i) jest else dodaj do tablicy 3 i na miejscu [getTile(state, i) - 11] !!
-    // (dla 1-5) dla np odwróconego: tiles1[5] = {15, 14, 13, 12, 11}
-    // dostajesz tablicę już sformatowaną po kolei(da się zamienić na to żeby to już był uint32_t)
-    // wyszukaj w bazie danych (która chyba będzie unordered_map <uint32_t, uint8_t>)
-    // posumuj
-    // zwróć wynik
+    //return mdid > disjoint ? mdid : disjoint;
+    //return mdid;
+    return disjoint;
+}
 
-    return 0;
+std::array<uint8_t, 1 << 20> DisjointPatternDB::pattern_db_1{};
+std::array<uint8_t, 1 << 20> DisjointPatternDB::pattern_db_2{};
+std::array<uint8_t, 1 << 20> DisjointPatternDB::pattern_db_3{};
+
+void DisjointPatternDB::load1(const std::string& filename) 
+{
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
+    {
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;     
+        pattern_db_1[key] = value;
+    }
+}
+
+void DisjointPatternDB::load2(const std::string& filename) 
+{
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
+    {
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;
+        pattern_db_2[key] = value;
+    }
+}
+
+void DisjointPatternDB::load3(const std::string& filename) 
+{
+    std::ifstream file(filename, std::ios::binary);
+    uint32_t data;
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) 
+    {
+        uint32_t key = data >> 12;
+        uint8_t value = data & 0xFF;
+        pattern_db_3[key] = value;
+    }
+}
+
+
+uint8_t DisjointPatternDB::get_heuristic(State state)
+{
+    uint64_t positions = 0x0000000000000000;
+    for(uint8_t i = 0; i < 16; i++)
+    {
+        uint8_t tile = get_tile(state, i);
+        if (tile == 0) continue;
+        positions |=(((uint64_t)i) << (60 - (tile * 4)));
+    }
+
+    uint32_t key1 = 0x00000000;
+    uint32_t key2 = 0x00000000;
+    uint32_t key3 = 0x00000000;
+
+    key1 |= (((uint32_t)get_tile(positions, 1)) << 16);
+    key1 |= (((uint32_t)get_tile(positions, 5)) << 12);
+    key1 |= (((uint32_t)get_tile(positions, 6)) << 8);
+    key1 |= (((uint32_t)get_tile(positions, 9)) << 4);
+    key1 |= ((uint32_t)get_tile(positions, 10));
+
+    key2 |= (((uint32_t)get_tile(positions, 2)) << 16);
+    key2 |= (((uint32_t)get_tile(positions, 3)) << 12);
+    key2 |= (((uint32_t)get_tile(positions, 4)) << 8);
+    key2 |= (((uint32_t)get_tile(positions, 7)) << 4);
+    key2 |= ((uint32_t)get_tile(positions, 8));
+
+    key3 |= (((uint32_t)get_tile(positions, 11)) << 16);
+    key3 |= (((uint32_t)get_tile(positions, 12)) << 12);
+    key3 |= (((uint32_t)get_tile(positions, 13)) << 8);
+    key3 |= (((uint32_t)get_tile(positions, 14)) << 4);
+    key3 |= ((uint32_t)get_tile(positions, 15));
+
+    uint8_t total = pattern_db_1[key1] + pattern_db_2[key2] + pattern_db_3[key3];
+    return total;
 }
 
 uint8_t MDID(uint64_t state) 

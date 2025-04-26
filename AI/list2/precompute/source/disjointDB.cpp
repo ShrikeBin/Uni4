@@ -42,9 +42,9 @@ void DisjointPatternDB::save(const std::string& prefix)
 void DisjointPatternDB::build_pattern_1() 
 {
     std::array<uint8_t, 16> goal = {
-        1, 2, 3, 4,
-        5, 0xFF, 0xFF, 0xFF,
-        0xFF, 0xFF, 0xFF, 0xFF,
+        1, 0xFF, 0xFF, 0xFF,
+        5, 6, 0xFF, 0xFF,
+        9, 10, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0
     };
 
@@ -165,9 +165,9 @@ void DisjointPatternDB::build_pattern_1()
 void DisjointPatternDB::build_pattern_2() 
 {
     std::array<uint8_t, 16> goal = {
+        0xFF, 2, 3, 4,
+        0xFF, 0xFF, 7, 8,
         0xFF, 0xFF, 0xFF, 0xFF,
-        0xFF, 6, 7, 8,
-        9, 10, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0
     };
 
@@ -406,13 +406,29 @@ void DisjointPatternDB::build_pattern_3()
 
 uint32_t DisjointPatternDB::encode1(const std::array<uint8_t, 16>& state, uint8_t heuristic)
 {
+    // 1,5,6,9,10
     uint32_t pattern_bits = 0;
     for(uint8_t i = 0; i < 16; ++i) 
     {
-        if (state[i] != 0 && state[i] != 0xFF) 
+        if(state[i] == 1)
         {
-            // i chce zapisać state[i] to tam gdzie zapisuje tj state[4] niech będzie 1 to znaczy że na 1 chce zapisać 4
-            pattern_bits |= (i << (20 - (state[i]*4)));
+            pattern_bits |= (i << 16);
+        }
+        else if(state[i] == 5)
+        {
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 6)
+        {
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 9)
+        {
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 10)
+        {
+            pattern_bits |= i;
         }
     }
     pattern_bits <<= 12; // for 4-bit pad + 8-bit heuristic
@@ -422,12 +438,29 @@ uint32_t DisjointPatternDB::encode1(const std::array<uint8_t, 16>& state, uint8_
 
 uint32_t DisjointPatternDB::encode2(const std::array<uint8_t, 16>& state, uint8_t heuristic)
 {
+    //2,3,4,7,8
     uint32_t pattern_bits = 0;
     for(uint8_t i = 0; i < 16; ++i) 
     {
-        if (state[i] != 0 && state[i] != 0xFF) 
+        if(state[i] == 2)
         {
-            pattern_bits |= (i << (20 - ((state[i]*4) - 5)));
+            pattern_bits |= (i << 16);
+        }
+        else if(state[i] == 3)
+        {
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 4)
+        {
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 7)
+        {
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 8)
+        {
+            pattern_bits |= i;
         }
     }
     pattern_bits <<= 12;
@@ -440,9 +473,25 @@ uint32_t DisjointPatternDB::encode3(const std::array<uint8_t, 16>& state, uint8_
     uint32_t pattern_bits = 0;
     for(uint8_t i = 0; i < 16; ++i) 
     {
-        if (state[i] != 0 && state[i] != 0xFF) 
+        if(state[i] == 11)
         {
-            pattern_bits |= (i << (20 - ((state[i]*4) - 10)));
+            pattern_bits |= (i << 16);
+        }
+        else if(state[i] == 12)
+        {
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 13)
+        {
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 14)
+        {
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 15)
+        {   
+            pattern_bits |= i;
         }
     }
     pattern_bits <<= 12;
