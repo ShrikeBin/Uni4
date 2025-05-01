@@ -8,14 +8,7 @@
 
 const std::unordered_map<std::string, std::function<void(std::vector<int>&, SortStats&)>> sort_map = 
 {
-    {"std", std_sort},
-    {"insertion", insertion_sort},
-    {"quick", print_quick_sort},
-    {"dpquick", print_dual_pivot_quick_sort},
     {"hybrid", hybrid_sort},
-    {"altmerge", alt_merge_sort},
-    {"merge", print_merge_sort},
-    {"dpcquick", DPCQsort}
 };
 
 int main(int argc, char* argv[]) 

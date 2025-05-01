@@ -1,123 +1,111 @@
 #include "select.hpp"
-#include "sorts.hpp"
 #include <algorithm>
 
 // na pewno da się szybciej to wszystko zrobić
-int RandomSelect(std::vector<int>& arr, int place) 
+int RandomSelect(std::vector<int>& arr, int place, SortStats& stats) 
 {
-    std::function<int(std::vector<int>&, int)> randomSelect = [&](std::vector<int>& arr, int place) -> int {
-        if (arr.size() == 1) return arr[0];
+    if (arr.empty() || place < 0 || place >= static_cast<int>(arr.size())) {
+        return -1; // Handle error as needed
+    }
 
-        int pivot = arr[std::rand() % arr.size()];
-        std::vector<int> left, right;
-        int equalCount = 0;
+    std::vector<int> working_arr = arr;
 
-        for (int val : arr) {
-            if (val < pivot) left.push_back(val);
-            else if (val > pivot) right.push_back(val);
-            else equalCount++;
-        }
+    std::function<int(int, int, int)> randomSelectImpl = [&](int start, int end, int k) -> int {
+        while (true) {
+            if (start + 1 == end) {
+                return working_arr[start];
+            }
 
-        if (place < left.size()) {
-            return randomSelect(left, place);
-        } else if (place < left.size() + equalCount) {
-            return pivot;
-        } else {
-            return randomSelect(right, place - left.size() - equalCount);
+            int pivot_idx = std::rand() % (end - start) + start;
+            int pivot = working_arr[pivot_idx];
+
+            // Three-way partition (Dutch National Flag)
+            int low = start;
+            int mid = start;
+            int high = end - 1;
+
+            while (mid <= high) {
+                if (working_arr[mid] < pivot) {
+                    std::swap(working_arr[low], working_arr[mid]);
+                    ++low;
+                    ++mid;
+                } else if (working_arr[mid] == pivot) {
+                    ++mid;
+                } else {
+                    std::swap(working_arr[mid], working_arr[high]);
+                    --high;
+                }
+            }
+
+            int left_size = low - start;
+            int equal_size = (high + 1) - low;
+
+            if (k < left_size) {
+                end = low; // Recurse on left partition
+            } else if (k < left_size + equal_size) {
+                return pivot; // Found in equal partition
+            } else {
+                k -= (left_size + equal_size);
+                start = high + 1; // Recurse on right partition
+            }
         }
     };
 
-    return randomSelect(arr, place);
+    return randomSelectImpl(0, working_arr.size()-1, place);
 }
 
-int Select(std::vector<int>& arr, int place) {
-    const int base = 5;
+int Select(std::vector<int>& arr, int place, SortStats& stats) {
+    
+    return ParametrizedSelect(arr, place, 5, stats);
+}
 
-    std::function<int(std::vector<int>&)> getMedian = [&](std::vector<int>& group) -> int {
-        std::sort(group.begin(), group.end());
-        return group[group.size() / 2];
+int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, SortStats& stats) 
+{
+    if (arr.empty() || place < 0 || place >= static_cast<int>(arr.size()) || parameter < 1) {
+        return -1; // Handle error appropriately
+    }
+
+    auto getMedian = [&](std::vector<int> group) { // Copy intentional
+        hybrid_sort(group, stats);
+        return group[group.size()/2];
     };
 
-    std::function<int(std::vector<int>&)> medianOfMedians = [&](std::vector<int>& arr) -> int {
-        if (arr.size() <= base) return getMedian(arr);
+    std::function<int(std::vector<int>, int)> select = [&](std::vector<int> nums, int k) -> int
+    {
+        if (nums.size() <= parameter) 
+        {
+            hybrid_sort(nums, stats);
+            return nums[k];
+        }
 
+        // Create groups and collect medians
         std::vector<int> medians;
-        for (size_t i = 0; i < arr.size(); i += base) {
-            std::vector<int> group;
-            for (size_t j = i; j < i + base && j < arr.size(); ++j)
-                group.push_back(arr[j]);
+        for (size_t i = 0; i < nums.size(); i += parameter) 
+        {
+            auto start = nums.begin() + i;
+            auto end = (i + parameter <= nums.size()) ? start + parameter : nums.end();
+            std::vector<int> group(start, end);
             medians.push_back(getMedian(group));
         }
 
-        return Select(medians, medians.size() / 2);
-    };
+        // Recursively find median of medians
+        int mom = select(medians, medians.size()/2);
 
-    std::function<int(std::vector<int>&, int)> deterministicSelect = [&](std::vector<int>& arr, int place) -> int {
-        if (arr.size() == 1) return arr[0];
-
-        int pivot = medianOfMedians(arr);
+        // Three-way partition
         std::vector<int> left, right;
-        int equalCount = 0;
-
-        for (int val : arr) {
-            if (val < pivot) left.push_back(val);
-            else if (val > pivot) right.push_back(val);
-            else equalCount++;
+        int equal_count = 0;
+        for (int num : nums) 
+        {
+            if (num < mom) left.push_back(num);
+            else if (num > mom) right.push_back(num);
+            else equal_count++;
         }
 
-        if (place < left.size()) {
-            return deterministicSelect(left, place);
-        } else if (place < left.size() + equalCount) {
-            return pivot;
-        } else {
-            return deterministicSelect(right, place - left.size() - equalCount);
-        }
+        // Determine partition to recurse on
+        if (k < left.size()) return select(left, k);
+        if (k < left.size() + equal_count) return mom;
+        return select(right, k - left.size() - equal_count);
     };
 
-    return deterministicSelect(arr, place);
-}
-
-int ParametrizedSelect(std::vector<int>& arr, int place, int parameter) {
-    std::function<int(std::vector<int>&)> getMedian = [&](std::vector<int>& group) -> int {
-        std::sort(group.begin(), group.end());
-        return group[group.size() / 2];
-    };
-
-    std::function<int(std::vector<int>&, int)> medianOfMedians = [&](std::vector<int>& arr, int parameter) -> int {
-        if (arr.size() <= parameter) return getMedian(arr);
-
-        std::vector<int> medians;
-        for (size_t i = 0; i < arr.size(); i += parameter) {
-            std::vector<int> group;
-            for (size_t j = i; j < i + parameter && j < arr.size(); ++j)
-                group.push_back(arr[j]);
-            medians.push_back(getMedian(group));
-        }
-
-        return ParametrizedSelect(medians, medians.size() / 2, parameter);
-    };
-
-    std::function<int(std::vector<int>&, int, int)> selectParam = [&](std::vector<int>& arr, int place, int parameter) -> int {
-        if (arr.size() == 1) return arr[0];
-
-        int pivot = medianOfMedians(arr, parameter);
-        std::vector<int> left, right;
-        int equalCount = 0;
-
-        for (int val : arr) {
-            if (val < pivot) left.push_back(val);
-            else if (val > pivot) right.push_back(val);
-            else equalCount++;
-        }
-
-        if (place < left.size()) {
-            return selectParam(left, place, parameter);
-        } else if (place < left.size() + equalCount) {
-            return pivot;
-        } else {
-            return selectParam(right, place - left.size() - equalCount, parameter);
-        }
-    };
-
-    return selectParam(arr, place, parameter);
+    return select(arr, place);
 }
