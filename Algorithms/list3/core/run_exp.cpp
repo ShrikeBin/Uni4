@@ -12,17 +12,5 @@ int main(int argc, char* argv[])
 
     int k = std::stoi(argv[1]);
 
-
-    const std::unordered_map<std::string, std::function<void(std::vector<int>&, SortStats&)>> sort_map = 
-    {
-        {"quick", quick_sort},
-        {"dpquick", dual_pivot_quick_sort},
-        {"altmerge", alt_merge_sort},
-        {"merge", merge_sort},
-        {"dpcquick", DPCQsort},
-        {"hybrid", hybrid_sort}
-    };
-
-    run_full_experiment(k, sort_map);
     return 0;
 }

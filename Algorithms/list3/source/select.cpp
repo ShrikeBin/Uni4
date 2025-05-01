@@ -1,37 +1,57 @@
 #include "select.hpp"
 #include <algorithm>
+#include <functional>
+#include "sorts.hpp"
+#include <iostream>
 
-// na pewno da się szybciej to wszystko zrobić
-int RandomSelect(std::vector<int>& arr, int place, SortStats& stats) 
+
+int RandomSelect(std::vector<int>& arr, int place, Stats& stats) 
 {
     if (arr.empty() || place < 0 || place >= static_cast<int>(arr.size())) {
-        return -1; // Handle error as needed
+        std::cout<< "Invalid order value: " << place << "\n";
+        std::cout<< "Array size: " << arr.size() << "\n";
+        std::cout<< "you're tupid - PC's count from 0" << "\n";
+        return -1; // Handle error appropriately
     }
 
     std::vector<int> working_arr = arr;
 
     std::function<int(int, int, int)> randomSelectImpl = [&](int start, int end, int k) -> int {
-        while (true) {
-            if (start + 1 == end) {
+        while (true) 
+        {
+            if (start + 1 == end) 
+            {
                 return working_arr[start];
             }
 
             int pivot_idx = std::rand() % (end - start) + start;
             int pivot = working_arr[pivot_idx];
 
-            // Three-way partition (Dutch National Flag)
+            // Three-way partition (Dutch National Flag) or smth
             int low = start;
             int mid = start;
             int high = end - 1;
 
-            while (mid <= high) {
-                if (working_arr[mid] < pivot) {
+            while (mid <= high) 
+            {
+                if (working_arr[mid] < pivot) 
+                {
+                    stats.comparisons++;
+                    stats.swaps++;
                     std::swap(working_arr[low], working_arr[mid]);
                     ++low;
                     ++mid;
-                } else if (working_arr[mid] == pivot) {
+                } else if (working_arr[mid] == pivot) 
+                {
+                    stats.comparisons++;
+                    stats.comparisons++; // bo wszedł najpierw do ifa
                     ++mid;
-                } else {
+                } 
+                else 
+                {
+                    stats.comparisons++;
+                    stats.comparisons++;
+                    stats.swaps++;
                     std::swap(working_arr[mid], working_arr[high]);
                     --high;
                 }
@@ -40,28 +60,53 @@ int RandomSelect(std::vector<int>& arr, int place, SortStats& stats)
             int left_size = low - start;
             int equal_size = (high + 1) - low;
 
-            if (k < left_size) {
+            if (k < left_size) 
+            {
                 end = low; // Recurse on left partition
-            } else if (k < left_size + equal_size) {
+            } 
+            else if (k < left_size + equal_size) 
+            {
                 return pivot; // Found in equal partition
-            } else {
+            } 
+            else 
+            {
                 k -= (left_size + equal_size);
                 start = high + 1; // Recurse on right partition
             }
         }
     };
+    int result = randomSelectImpl(0, working_arr.size(), place);
 
-    return randomSelectImpl(0, working_arr.size()-1, place);
+    /*{
+        std::vector<int> sorted_arr = arr;
+        hybrid_sort(sorted_arr, stats);
+
+        std::cout << "Array before selection: ";
+        for(auto num : arr) std::cout << num << " ";
+        std::cout << "\n";
+        std::cout << place << "th order statistic is: " << result << "\n";
+
+        if(sorted_arr[place] == result) std::cout << " - correct\n";
+        else std::cout << " - incorrect\n";
+
+        std::cout << "In sorted order: ";
+        for(auto num : sorted_arr) std::cout << num << " ";
+    }*/
+
+    return result;
 }
 
-int Select(std::vector<int>& arr, int place, SortStats& stats) {
+int Select(std::vector<int>& arr, int place, Stats& stats) {
     
     return ParametrizedSelect(arr, place, 5, stats);
 }
 
-int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, SortStats& stats) 
+int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& stats) 
 {
     if (arr.empty() || place < 0 || place >= static_cast<int>(arr.size()) || parameter < 1) {
+        std::cout<< "Invalid order value: " << place << "\n";
+        std::cout<< "Array size: " << arr.size() << "\n";
+        std::cout<< "you're tupid - PC's count from 0" << "\n";
         return -1; // Handle error appropriately
     }
 
@@ -96,9 +141,20 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, SortStat
         int equal_count = 0;
         for (int num : nums) 
         {
-            if (num < mom) left.push_back(num);
-            else if (num > mom) right.push_back(num);
-            else equal_count++;
+            if (num < mom) 
+            {
+                stats.comparisons++;
+                left.push_back(num);
+            }
+            else if (num > mom) 
+            {
+                stats.comparisons++;
+                right.push_back(num);
+            }
+            else 
+            {
+                equal_count++;
+            }
         }
 
         // Determine partition to recurse on
@@ -107,5 +163,24 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, SortStat
         return select(right, k - left.size() - equal_count);
     };
 
-    return select(arr, place);
+    int result = select(arr, place);
+
+    /*{
+        std::vector<int> sorted_arr = arr;
+        hybrid_sort(sorted_arr, stats);
+
+        std::cout << "Array before selection: ";
+        for(auto num : arr) std::cout << num << " ";
+        std::cout << "\n";
+        std::cout << place << "th order statistic is: " << result << "\n";
+
+        if(sorted_arr[place] == result) std::cout << " - correct\n";
+        else std::cout << " - incorrect\n";
+        std::cout << "parameter was: " << parameter << "\n";
+
+        std::cout << "In sorted order: ";
+        for(auto num : sorted_arr) std::cout << num << " ";
+    }*/
+
+    return result;
 }

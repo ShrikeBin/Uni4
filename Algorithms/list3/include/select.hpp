@@ -2,10 +2,10 @@
 #define SELECT_HPP
 
 #include <vector>
-#include "sorts.hpp"
+#include "stats.hpp"
 
-int Select(std::vector<int>& arr, int place, SortStats& stats);
-int RandomSelect(std::vector<int>& arr, int place, SortStats& stats);
-int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, SortStats& stats);
+int Select(std::vector<int>& arr, int place, Stats& stats);
+int RandomSelect(std::vector<int>& arr, int place, Stats& stats);
+int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& stats);
 
 #endif

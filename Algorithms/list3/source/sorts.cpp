@@ -8,7 +8,7 @@
 #include "sorts.hpp"
 #include "select.hpp"
 
-void better_quick_sort(std::vector<int>& arr, SortStats& stats)
+void better_quick_sort(std::vector<int>& arr, Stats& stats)
 {
     std::function<void(int, int)> quick_rec = [&](int left, int right)
     {
@@ -17,7 +17,7 @@ void better_quick_sort(std::vector<int>& arr, SortStats& stats)
             return;
         }
         
-        int pivot = Select(arr, (left + right) / 2); // TODO add stats
+        int pivot = Select(arr, (left + right) / 2, stats); // TODO add stats
         int i = left;
         int j = right;
         
@@ -51,7 +51,7 @@ void better_quick_sort(std::vector<int>& arr, SortStats& stats)
     quick_rec(0, arr.size() - 1);
 }
 
-void better_dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats) 
+void better_dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats) 
 {
     std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right) 
     {
@@ -62,8 +62,8 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
             stats.swaps++;
         }
         
-        int pivot1 = Select(arr, left + (right - left) / 3);    // TODO add stats
-        int pivot2 = Select(arr, left + 2 * (right - left) / 3);    // TODO add stats
+        int pivot1 = Select(arr, left + (right - left) / 3, stats);    // TODO add stats
+        int pivot2 = Select(arr, left + 2 * (right - left) / 3, stats);    // TODO add stats
         int i = left + 1, lt = left + 1, gt = right - 1;
         
         while (i <= gt) 
@@ -112,7 +112,7 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
 }
 
 
-void quick_sort(std::vector<int>& arr, SortStats& stats)
+void quick_sort(std::vector<int>& arr, Stats& stats)
 {
     std::function<void(int, int)> quick_rec = [&](int left, int right)
     {
@@ -155,7 +155,7 @@ void quick_sort(std::vector<int>& arr, SortStats& stats)
     quick_rec(0, arr.size() - 1);
 }
 
-void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats) 
+void dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats) 
 {
     std::function<void(int, int)> dual_pivot_quick_sort_impl = [&](int left, int right) 
     {
@@ -215,7 +215,7 @@ void dual_pivot_quick_sort(std::vector<int>& arr, SortStats& stats)
 }
 
 
-void hybrid_sort(std::vector<int>& arr, SortStats& stats)
+void hybrid_sort(std::vector<int>& arr, Stats& stats)
 {
     std::function<void(int, int)> insort = [&](int left, int right)
     {

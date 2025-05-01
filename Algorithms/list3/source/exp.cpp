@@ -37,7 +37,7 @@ std::vector<int> generate_descending(int n)
     return vec;
 }
 
-void write_stats_to_file(const std::string& filename, const SortStats& stats, int n, std::string mode, double time) 
+void write_stats_to_file(const std::string& filename, const Stats& stats, int n, std::string mode, double time) 
 {
     std::ofstream file(filename, std::ios::app);
     file << "N: " << n << " mode: " << mode << std::endl;
@@ -50,7 +50,7 @@ void write_stats_to_file(const std::string& filename, const SortStats& stats, in
 }
 
 
-void run_experiment(int n, int k, const std::string& mode, const std::unordered_map<std::string, std::function<void(std::vector<int>&, SortStats&)>>& sort_map) 
+void run_experiment(int n, int k, const std::string& mode, const std::unordered_map<std::string, std::function<void(std::vector<int>&, Stats&)>>& sort_map) 
 {
     std::vector<int> data;
     
@@ -59,7 +59,7 @@ void run_experiment(int n, int k, const std::string& mode, const std::unordered_
         const std::string& sort_type = entry.first;
         const auto& sort_func = entry.second;
         
-        SortStats total_stats;
+        Stats total_stats;
         double total_time = 0.0;
 
         if (mode == "random") 
@@ -68,7 +68,7 @@ void run_experiment(int n, int k, const std::string& mode, const std::unordered_
             {
                 data = generate_random(n);
                 std::vector<int> numbers = data;
-                SortStats stats;
+                Stats stats;
 
                 auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -91,7 +91,7 @@ void run_experiment(int n, int k, const std::string& mode, const std::unordered_
             data = generate_ascending(n);
 
             std::vector<int> numbers = data;
-            SortStats stats;
+            Stats stats;
 
             auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -109,7 +109,7 @@ void run_experiment(int n, int k, const std::string& mode, const std::unordered_
             data = generate_descending(n);
 
             std::vector<int> numbers = data;
-            SortStats stats;
+            Stats stats;
 
             auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -127,7 +127,7 @@ void run_experiment(int n, int k, const std::string& mode, const std::unordered_
     }
 }
 
-void run_full_experiment(int k, const std::unordered_map<std::string, std::function<void(std::vector<int>&, SortStats&)>>& sort_map) 
+void run_full_experiment(int k, const std::unordered_map<std::string, std::function<void(std::vector<int>&, Stats&)>>& sort_map) 
 {
     for(int n = 1000; n < 51000; n += 1000)
     {
