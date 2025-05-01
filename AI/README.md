@@ -5,3 +5,10 @@
     - numpy
     - scikit-learn
     - pillow
+
+##  list 2:
+- A* implementation for 15 puzzle
+    - Dependencies:
+        - sanity
+        - bit switches
+        - lots of Ram
