@@ -19,18 +19,18 @@ int main()
     DisjointPatternDB::load2("../precompute/disjoint_pattern_2.bin");
     DisjointPatternDB::load3("../precompute/disjoint_pattern_3.bin");
 
-    std::vector<std::vector<int>> initial_state1 = {
-        {0, 15, 14, 13},
-        {12, 11, 10, 9},
-        {8,7,6,5},
-        {4,3,2,1}
+    std::array<uint8_t, 16> initial_state1 = {
+        0, 15, 14, 13,
+        12, 11, 10, 9,
+        8, 7, 6, 5,
+        4, 3, 2, 1
     };
 
-    std::vector<std::vector<int>> initial_state2 = {
-        {15,14,8,12},
-        {10,11,9,13},
-        {2,6,5,1},
-        {3,7,4,0}
+    std::array<uint8_t, 16> initial_state2 = {
+        15, 14, 8, 12,
+        10, 11, 9, 13,
+        2, 6, 5, 1,
+        3, 7, 4, 0
     };
 
     State start = convertToState(initial_state2);
@@ -107,21 +107,23 @@ int main()
         {
             outfile << "Step " << i << ":\n";
             const auto state = convertState(path[i]);
-            for (const auto& row : state) 
+
+            for (int row = 0; row < 4; ++row) 
             {
-                for (const auto& val : row) 
+                for (int col = 0; col < 4; ++col) 
                 {
-                    if(val == 0) 
+                    if(state[row * 4 + col] == 0) 
                     {
                         outfile << ". ";
                     } 
                     else 
                     {
-                        outfile << val << " ";
+                        outfile << static_cast<int> (state[row * 4 + col]) << " ";
                     }
                 }
-                outfile << "\n";
+                std::cout << '\n';
             }
+            outfile << "\n";           
             outfile << "--------------------\n";
         }
     } 

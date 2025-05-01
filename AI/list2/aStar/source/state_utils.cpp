@@ -2,43 +2,41 @@
 #include <iostream>
 #include <stdexcept>
 
-State convertToState(const std::vector<std::vector<int>>& state) 
+State convertToState(const std::array<uint8_t, 16>& state) 
 {
-    if(state.size() != 4 || state[0].size() != 4) 
-    {
-        throw std::invalid_argument("State must be a 4x4 matrix.");
-    }
-
     State result = 0;
     for (int i = 0; i < 16; ++i) 
     {
-        result |= ((State) state[3 - (i / 4)][3 - (i % 4)] << (i * 4));
+        result |= static_cast<State>(state[15 - i] & 0xF) << (i * 4);
     }
     return result;
 }
 
-std::vector<std::vector<int>> convertState(State state) 
+// Convert 64-bit State back to 4x4 matrix stored in flat array
+std::array<uint8_t, 16> convertState(State state) 
 {
-    std::vector<std::vector<int>> result(4, std::vector<int>(4));
+    std::array<uint8_t, 16> result;
     for (int i = 0; i < 16; ++i) 
     {
-        result[3 - (i / 4)][3 - (i % 4)] = (state >> (i * 4)) & 0xF;
+        result[15 - i] = (state >> (i * 4)) & 0xF;
     }
     return result;
 }
 
+// Print State in hex format
 void printStateHex(State state) 
 {
-    std::cout << "State: 0x" << std::hex << std::uppercase << state << std::endl;
+    std::cout << "State: 0x" << std::hex << std::uppercase << state << std::dec << std::endl;
 }
 
-void printState(const std::vector<std::vector<int>>& state) 
+// Print flat 4x4 matrix in matrix layout
+void printState(const std::array<uint8_t, 16>& state) 
 {
-    for (const auto& row : state) 
+    for (int row = 0; row < 4; ++row) 
     {
-        for (const auto& val : row) 
+        for (int col = 0; col < 4; ++col) 
         {
-            std::cout << val << " ";
+            std::cout << static_cast<int>(state[row * 4 + col]) << ' ';
         }
         std::cout << '\n';
     }
@@ -53,12 +51,7 @@ bool isSolved(State state)
 bool isSolvable(State state) 
 {   
     int inversions = 0;
-    std::vector<int> flatState(16);
-
-    for (int i = 0; i < 16; ++i) 
-    {
-        flatState[i] = (state >> (i * 4)) & 0xF;
-    }
+    std::array<uint8_t, 16> flatState = convertState(state);
 
     for (int i = 0; i < 15; ++i) 
     {
