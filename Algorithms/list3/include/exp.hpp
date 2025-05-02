@@ -8,13 +8,19 @@
 #include <chrono>
 #include "sorts.hpp" 
 
-void run_experiment(int n, int k, const std::string& mode, const std::unordered_map<std::string, std::function<void(std::vector<int>&, Stats&)>>& sort_map);
-void run_full_experiment(int k, const std::unordered_map<std::string, std::function<void(std::vector<int>&, Stats&)>>& sort_map); 
+void run_full(int k); 
 
 std::vector<int> generate_random(int n);
 std::vector<int> generate_ascending(int n);
 std::vector<int> generate_descending(int n);
 
 void write_stats_to_file(const std::string& filename, const Stats& stats, int n, std::string mode, double time); 
+
+void run_select(int n, int repeats);
+void run_rselect(int n, int repeats);
+void run_pselect(int n, int repeats, int parameter);
+void run_binsearch(int n, int repeats);
+void run_quick(int n, int repeats);
+void run_dpquick(int n, int repeats);
 
 #endif

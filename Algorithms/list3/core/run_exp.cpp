@@ -12,5 +12,13 @@ int main(int argc, char* argv[])
 
     int k = std::stoi(argv[1]);
 
+    if(k <= 0) 
+    {
+        std::cerr << "k must be greater than 0." << std::endl;
+        return 1;
+    }
+
+    run_full(k);
+
     return 0;
 }

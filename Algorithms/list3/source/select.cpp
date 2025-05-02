@@ -41,7 +41,8 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
                     std::swap(working_arr[low], working_arr[mid]);
                     ++low;
                     ++mid;
-                } else if (working_arr[mid] == pivot) 
+                } 
+                else if (working_arr[mid] == pivot) 
                 {
                     stats.comparisons++;
                     stats.comparisons++; // bo wszedł najpierw do ifa
