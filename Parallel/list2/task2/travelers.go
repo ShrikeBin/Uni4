@@ -92,13 +92,6 @@ func (p *Printer) Start() {
 		}
 
 		p.Done <- true
-
-		for i := 0; i < NrOfTraps; i++ {
-			traces := <-p.TraceChannel
-			Print_Traces(traces)
-		}
-
-		p.Done <- true
 	}()
 }
 
@@ -199,9 +192,7 @@ func (n *Node) Start() {
 						}
 
 						if nodeResponse != Fail {
-							if nodeResponse != Trapped {
-								wild.RelocateChannel <- RelocateRequest{newPosition, Success}
-							}
+							wild.RelocateChannel <- RelocateRequest{newPosition, Success}
 							n.traveler = Request.Traveler
 							Request.ResponseChannel <- Success
 						} else {
@@ -210,9 +201,6 @@ func (n *Node) Start() {
 					} else { // if not legal trying to get in - refuse
 						Request.ResponseChannel <- Fail
 					}
-				} else if trap, ok := n.traveler.(*Trap); ok {
-					// if trap move logic into the trap
-					trap.TrapChannel <- TrapRequest{Request.Traveler, Request.ResponseChannel}
 				} else {
 					Request.ResponseChannel <- Fail
 				}
@@ -249,13 +237,6 @@ func (t *Legal) Init(id int, symbol rune) {
 		t.response = <-request.ResponseChannel
 	}
 
-	if t.response == Trapped {
-		t.Position = Position{
-			X: BoardWidth,
-			Y: BoardHeight,
-		}
-	}
-
 	t.timeStamp = time.Since(StartTime)
 	t.Store_Trace()
 }
@@ -263,7 +244,7 @@ func (t *Legal) Init(id int, symbol rune) {
 func (t *Legal) Start() {
 	go func() {
 		for i := 0; i < t.steps; i++ {
-			if t.response == Trapped || t.response == Deadlock {
+			if t.response == Deadlock {
 				break
 			}
 			time.Sleep(MinDelay + time.Duration(rand.Int63n(int64(MaxDelay-MinDelay))))
@@ -304,12 +285,6 @@ func (t *Legal) Start() {
 			case Success:
 				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
 				t.Position = newPosition
-			case Trapped:
-				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
-				t.Position = Position{
-					X: BoardWidth,
-					Y: BoardHeight,
-				}
 			case Deadlock:
 				t.Symbol = unicode.ToLower(t.Symbol)
 			}
@@ -354,7 +329,7 @@ func (t *Wild) Start() {
 		// main loop
 		t.RelocateChannel = make(chan RelocateRequest) // clear out init tries
 		for true {
-			if t.response == Trapped || time.Since(StartTime) > t.timeDisappear {
+			if time.Since(StartTime) > t.timeDisappear {
 				break
 			}
 
@@ -369,89 +344,14 @@ func (t *Wild) Start() {
 		}
 
 		// free the board
-		if t.response != Trapped {
-			Board[t.Position.X][t.Position.Y].LeaveChannel <- true
-			t.Position = Position{
-				X: BoardWidth,
-				Y: BoardHeight,
-			}
-			t.timeStamp = time.Since(StartTime)
-			t.Store_Trace()
-		}
-
-		printer.TraceChannel <- t.traces
-	}()
-}
-
-func (t *Trap) Init(id int, symbol rune) {
-	t.TrapChannel = make(chan TrapRequest, 4)
-	t.Done = make(chan bool)
-	t.Id = id
-	t.Symbol = '#'
-	t.traveler = nil
-
-	// try to move in
-	t.response = Fail
-	for t.response == Fail {
+		Board[t.Position.X][t.Position.Y].LeaveChannel <- true
 		t.Position = Position{
-			X: rand.Intn(BoardWidth),
-			Y: rand.Intn(BoardHeight),
+			X: BoardWidth,
+			Y: BoardHeight,
 		}
-
-		request := EnterRequest{t, make(chan Response, 1)}
-		Board[t.Position.X][t.Position.Y].EnterChannel <- request
-		t.response = <-request.ResponseChannel
-	}
-
-	t.timeStamp = time.Since(StartTime)
-	t.Store_Trace()
-
-	t.Start()
-}
-
-func (t *Trap) Start() {
-	go func() {
-		// main loop
-		for true {
-			if t.response == Deadlock {
-				break
-			}
-
-			select {
-			case Request := <-t.TrapChannel:
-				switch v := Request.Traveler.(type) {
-				case *Legal:
-					t.response = Trapped
-					t.Symbol = unicode.ToLower(v.Symbol)
-				case *Wild:
-					select {
-					case v.RelocateChannel <- RelocateRequest{Position{BoardWidth, BoardHeight}, Trapped}:
-						t.response = Trapped
-						t.Symbol = '*'
-					case <-time.After(100 * time.Millisecond):
-						t.response = Fail
-					}
-				default:
-					t.response = Fail
-				}
-
-				Request.ResponseChannel <- t.response
-
-				// if traveller caught
-				if t.response == Trapped {
-					t.timeStamp = time.Since(StartTime)
-					t.Store_Trace()
-
-					time.Sleep(2 * MaxDelay)
-
-					t.Symbol = '#'
-					t.timeStamp = time.Since(StartTime)
-					t.Store_Trace()
-				}
-			case <-t.Done:
-				t.response = Deadlock // to exit loop
-			}
-		}
+		t.timeStamp = time.Since(StartTime)
+		t.Store_Trace()
+		
 
 		printer.TraceChannel <- t.traces
 	}()
