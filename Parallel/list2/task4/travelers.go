@@ -3,480 +3,532 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"sort"
-	"sync"
 	"time"
 	"unicode"
 )
 
-// Constants matching Ada version
 const (
-	NrOfTravelers      = 15
-	NrOfWildTravelers  = 10
-	NrOfTraps          = 10
-	MinSteps           = 10
-	MaxSteps           = 100
-	BoardWidth         = 15
-	BoardHeight        = 15
-	MaxStepsTrace      = 1000
-	MinDelay           = 10 * time.Millisecond
-	MaxDelay           = 50 * time.Millisecond
-	DeadlockTimeout    = 300 * time.Millisecond
-	RelocationAttempts = 4
+	NrOfTravelers     = 15
+	NrOfWildTravelers = 10
+	NrOfTraps         = 10
+	MinSteps          = 10
+	MaxSteps          = 100
+	MinDelay          = 10 * time.Millisecond
+	MaxDelay          = 50 * time.Millisecond
+	BoardWidth        = 15
+	BoardHeight       = 15
 )
 
-// Global start time
-var startTime = time.Now()
+var (
+	StartTime = time.Now()
+	printer   = Printer{}
+	Board     = [BoardWidth][BoardHeight]Node{}
+)
 
-// Position type matches Ada's Position_Type
 type Position struct {
 	X, Y int
 }
 
-// Trace type matches Trace_Type
+func Move_Down(pos *Position) {
+	pos.Y = (pos.Y + 1) % BoardHeight
+}
+
+func Move_Up(pos *Position) {
+	pos.Y = (pos.Y + BoardHeight - 1) % BoardHeight
+}
+
+func Move_Right(pos *Position) {
+	pos.X = (pos.X + 1) % BoardWidth
+}
+
+func Move_Left(pos *Position) {
+	pos.X = (pos.X + BoardWidth - 1) % BoardWidth
+}
+
+func Move_Direction(pos *Position, direction int) {
+	switch direction {
+	case 0:
+		Move_Up(pos)
+	case 1:
+		Move_Down(pos)
+	case 2:
+		Move_Left(pos)
+	case 3:
+		Move_Right(pos)
+	}
+}
+
 type Trace struct {
-	Timestamp time.Duration
-	ID        int
+	TimeStamp time.Duration
+	Id        int
 	Position  Position
 	Symbol    rune
 }
 
-// TravelerType corresponds to Traveler_Variant
-type TravelerType int
-
-const (
-	Normal TravelerType = iota
-	Wild
-	Trap
-	None
-)
-
-// ResponseType matches Response_Type
-type ResponseType int
-
-const (
-	Success ResponseType = iota
-	Fail
-	TrapResponse
-	Deadlock
-)
-
-// Node represents a board position with concurrency control
-type Node struct {
-	mu         sync.Mutex
-	position   Position
-	occupant   *Occupant
-	cmdChan    chan interface{}
-	quit       chan struct{}
-}
-
-type Occupant struct {
-	ID       int
-	Symbol   rune
-	Type     TravelerType
-	Response chan ResponseType
-}
-
-// Printer service collects and prints traces
-type Printer struct {
-	tracesChan chan []Trace
-	done       chan struct{}
-	wg         sync.WaitGroup
-}
-
-func NewPrinter() *Printer {
-	p := &Printer{
-		tracesChan: make(chan []Trace, NrOfTravelers+NrOfWildTravelers+NrOfTraps),
-		done:       make(chan struct{}),
-	}
-	p.wg.Add(NrOfTravelers + NrOfWildTravelers + NrOfTraps)
-	go p.processTraces()
-	return p
-}
-
-func (p *Printer) Report(traces []Trace) {
-	p.tracesChan <- traces
-	p.wg.Done()
-}
-
-func (p *Printer) processTraces() {
-	defer close(p.done)
-	
-	var allTraces []Trace
-	for traces := range p.tracesChan {
-		allTraces = append(allTraces, traces...)
-	}
-
-	// Sort by timestamp
-	sort.Slice(allTraces, func(i, j int) bool {
-		return allTraces[i].Timestamp < allTraces[j].Timestamp
-	})
-
-	// Print header
-	fmt.Printf("-1 %d %d %d\n",
-		NrOfTravelers+NrOfWildTravelers+NrOfTraps,
-		BoardWidth,
-		BoardHeight,
-	)
-
-	// Print traces
-	for _, t := range allTraces {
-		fmt.Printf("%v %d %d %d %c\n",
-			t.Timestamp,
-			t.ID,
-			t.Position.X,
-			t.Position.Y,
-			t.Symbol,
+func Print_Traces(traces []Trace) {
+	for _, trace := range traces {
+		fmt.Printf("%f %d %d %d %c\n",
+			float64(trace.TimeStamp)/float64(time.Second),
+			trace.Id,
+			trace.Position.X,
+			trace.Position.Y,
+			trace.Symbol,
 		)
 	}
 }
 
-func NewNode(pos Position) *Node {
-	n := &Node{
-		position: pos,
-		cmdChan:  make(chan interface{}),
-		quit:     make(chan struct{}),
-	}
-	go n.run()
-	return n
+type Printer struct {
+	TraceChannel chan []Trace
+	Done         chan bool
 }
 
-func (n *Node) run() {
-	for {
-		select {
-		case cmd := <-n.cmdChan:
-			n.handleCommand(cmd)
-		case <-n.quit:
-			return
+func (p *Printer) Start() {
+	p.TraceChannel = make(chan []Trace, NrOfTravelers)
+	p.Done = make(chan bool)
+
+	go func() {
+		for i := 0; i < NrOfTravelers+NrOfWildTravelers; i++ {
+			traces := <-p.TraceChannel
+			Print_Traces(traces)
 		}
-	}
+
+		p.Done <- true
+
+		for i := 0; i < NrOfTraps; i++ {
+			traces := <-p.TraceChannel
+			Print_Traces(traces)
+		}
+
+		p.Done <- true
+	}()
 }
 
-func (n *Node) handleCommand(cmd interface{}) {
-	switch req := cmd.(type) {
-	case *EnterRequest:
-		n.handleEnter(req)
-	case *LeaveRequest:
-		n.handleLeave(req)
-	}
+type GeneralTraveler interface {
+	Init(id int, symbol rune)
+	Start()
+	Store_Trace()
+}
+
+type Response int
+
+const (
+	Success Response = iota
+	Fail
+	Trapped
+	Deadlock
+)
+
+type Traveler struct {
+	Id       int
+	Symbol   rune
+	Position Position
+
+	traces    []Trace
+	timeStamp time.Duration
+	response  Response
+}
+
+type Legal struct {
+	Traveler
+	steps int
+}
+
+type RelocateRequest struct {
+	Position Position
+	Status   Response
+}
+type Wild struct {
+	Traveler
+	RelocateChannel chan RelocateRequest
+
+	timeAppear    time.Duration
+	timeDisappear time.Duration
+}
+
+type TrapRequest struct {
+	Traveler        GeneralTraveler
+	ResponseChannel chan Response
+}
+type Trap struct {
+	Traveler
+	TrapChannel chan TrapRequest
+	Done        chan bool
+
+	traveler GeneralTraveler
 }
 
 type EnterRequest struct {
-	ID       int
-	Symbol   rune
-	Type     TravelerType
-	Response chan ResponseType
+	Traveler        GeneralTraveler
+	ResponseChannel chan Response
+}
+type Node struct {
+	EnterChannel chan EnterRequest
+	LeaveChannel chan bool
+
+	position Position
+	traveler GeneralTraveler
+	waiting  []EnterRequest
 }
 
-type LeaveRequest struct{}
+func (n *Node) Init(position Position) {
+	n.EnterChannel = make(chan EnterRequest)
+	n.LeaveChannel = make(chan bool)
 
-func (n *Node) handleEnter(req *EnterRequest) {
-	n.mu.Lock()
-	defer n.mu.Unlock()
+	n.position = position
+	n.traveler = nil
 
-	if n.occupant == nil {
-		n.occupant = &Occupant{
-			ID:     req.ID,
-			Symbol: req.Symbol,
-			Type:   req.Type,
-		}
-		req.Response <- Success
-		return
-	}
+	n.Start()
+}
 
-	switch n.occupant.Type {
-	case Wild:
-		if req.Type == Normal {
-			// Try to relocate wild traveler
-			if newPos := n.tryRelocateWild(); newPos != nil {
-				n.occupant.Response <- Success
-				n.occupant = &Occupant{
-					ID:     req.ID,
-					Symbol: req.Symbol,
-					Type:   req.Type,
+func (n *Node) Start() {
+	go func() {
+		for true {
+			// handle requests like a true server
+			select {
+			case Request := <-n.EnterChannel:
+				// enter
+				if n.traveler == nil {
+					// if empty - assign traveler
+					n.traveler = Request.Traveler
+					Request.ResponseChannel <- Success
+				} else if _, ok := n.traveler.(*Legal); ok {
+					// if legal - noone can enter
+					Request.ResponseChannel <- Fail
+				} else if wild, ok := n.traveler.(*Wild); ok {
+					// if wild - try to move him
+					if _, ok := Request.Traveler.(*Legal); ok {
+						var newPosition Position
+						var nodeResponse Response
+						directions := []int{0, 1, 2, 3}
+						for _, dir := range directions {
+							newPosition := n.position
+							Move_Direction(&newPosition, dir)
+
+							request := EnterRequest{n.traveler, make(chan Response)}
+							Board[newPosition.X][newPosition.Y].EnterChannel <- request
+							nodeResponse = <-request.ResponseChannel
+							if nodeResponse != Fail {
+								break
+							}
+						}
+
+						if nodeResponse != Fail {
+							if nodeResponse != Trapped {
+								wild.RelocateChannel <- RelocateRequest{newPosition, Success}
+							}
+							n.traveler = Request.Traveler
+							Request.ResponseChannel <- Success
+						} else {
+							Request.ResponseChannel <- Fail
+						}
+					} else { // if not legal trying to get in - refuse
+						Request.ResponseChannel <- Fail
+					}
+				} else if trap, ok := n.traveler.(*Trap); ok {
+					// if trap move logic into the trap
+					trap.TrapChannel <- TrapRequest{Request.Traveler, Request.ResponseChannel}
+				} else {
+					Request.ResponseChannel <- Fail
 				}
-				req.Response <- Success
-				return
+			case <-n.LeaveChannel:
+				n.traveler = nil
 			}
 		}
-	case Trap:
-		req.Response <- TrapResponse
-		return
-	}
-
-	req.Response <- Fail
+	}()
 }
 
-func (n *Node) tryRelocateWild() *Position {
-	// Implementation of relocation logic
-	// Try 4 directions randomly
-	directions := []Position{
-		{0, 1}, {0, -1}, {1, 0}, {-1, 0},
-	}
-	rand.Shuffle(len(directions), func(i, j int) {
-		directions[i], directions[j] = directions[j], directions[i]
-	})
-
-	for _, d := range directions {
-		newX := (n.position.X + d.X + BoardWidth) % BoardWidth
-		newY := (n.position.Y + d.Y + BoardHeight) % BoardHeight
-
-		// Simplified: Need access to board to check other nodes
-		// This would require passing board reference to Node
-		// For brevity, assume relocation succeeds
-		return &Position{newX, newY}
-	}
-	return nil
-}
-
-func (n *Node) handleLeave(req *LeaveRequest) {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-	n.occupant = nil
-}
-
-// Base traveler implementation
-type Traveler struct {
-	ID       int
-	Symbol   rune
-	Type     TravelerType
-	Position Position
-	printer  *Printer
-	rand     *rand.Rand
-	traces   []Trace
-	board    [][]*Node
-	quit     chan struct{}
-}
-
-func NewTraveler(id int, symbol rune, t TravelerType, seed int64, printer *Printer, board [][]*Node) *Traveler {
-	return &Traveler{
-		ID:      id,
-		Symbol:  symbol,
-		Type:    t,
-		printer: printer,
-		rand:    rand.New(rand.NewSource(seed)),
-		board:   board,
-		quit:    make(chan struct{}),
-	}
-}
-
-func (t *Traveler) recordTrace() {
+func (t *Traveler) Store_Trace() {
 	t.traces = append(t.traces, Trace{
-		Timestamp: time.Since(startTime),
-		ID:        t.ID,
+		TimeStamp: t.timeStamp,
+		Id:        t.Id,
 		Position:  t.Position,
 		Symbol:    t.Symbol,
 	})
 }
 
-// Normal traveler implementation
-type NormalTraveler struct {
-	*Traveler
-	steps int
-}
+func (t *Legal) Init(id int, symbol rune) {
+	t.Id = id
+	t.Symbol = symbol
+	t.steps = MinSteps + rand.Intn(MaxSteps-MinSteps+1)
 
-func NewNormalTraveler(t *Traveler) *NormalTraveler {
-	steps := MinSteps + t.rand.Intn(MaxSteps-MinSteps)
-	return &NormalTraveler{
-		Traveler: t,
-		steps:    steps,
-	}
-}
-
-func (nt *NormalTraveler) Run() {
-	defer nt.printer.Report(nt.traces)
-
-	// Initial position
-	nt.initializePosition()
-	nt.recordTrace()
-
-	for i := 0; i < nt.steps; i++ {
-		select {
-		case <-nt.quit:
-			return
-		default:
-			nt.moveStep()
-		}
-	}
-}
-
-func (nt *NormalTraveler) initializePosition() {
-	response := make(chan ResponseType)
-	
-	for {
-		nt.Position = Position{
-			X: nt.rand.Intn(BoardWidth),
-			Y: nt.rand.Intn(BoardHeight),
-		}
-		
-		req := &EnterRequest{
-			ID:       nt.ID,
-			Symbol:   nt.Symbol,
-			Type:     Normal,
-			Response: response,
+	t.response = Fail
+	for t.response == Fail {
+		t.Position = Position{
+			X: rand.Intn(BoardWidth),
+			Y: rand.Intn(BoardHeight),
 		}
 
-		nt.board[nt.Position.X][nt.Position.Y].cmdChan <- req
-		res := <-response
+		request := EnterRequest{t, make(chan Response, 1)}
+		Board[t.Position.X][t.Position.Y].EnterChannel <- request
+		t.response = <-request.ResponseChannel
+	}
 
-		if res == Success {
-			return
+	if t.response == Trapped {
+		t.Position = Position{
+			X: BoardWidth,
+			Y: BoardHeight,
 		}
 	}
+
+	t.timeStamp = time.Since(StartTime)
+	t.Store_Trace()
 }
 
-func (nt *NormalTraveler) moveStep() {
-	delay := MinDelay + time.Duration(nt.rand.Float64()*float64(MaxDelay-MinDelay))
-	time.Sleep(delay)
+func (t *Legal) Start() {
+	go func() {
+		for i := 0; i < t.steps; i++ {
+			if t.response == Trapped || t.response == Deadlock {
+				break
+			}
+			time.Sleep(MinDelay + time.Duration(rand.Int63n(int64(MaxDelay-MinDelay))))
 
-	// Calculate new position
-	newPos := nt.calculateNewPosition()
+			// try to move
+			successChannel := make(chan bool, 1)
+			deadlockChannel := make(chan bool, 1)
 
-	response := make(chan ResponseType)
-	req := &EnterRequest{
-		ID:       nt.ID,
-		Symbol:   nt.Symbol,
-		Type:     Normal,
-		Response: response,
-	}
+			var newPosition Position
+			go func() {
+				t.response = Fail
+				for t.response == Fail {
+					newPosition = t.Position
+					Move_Direction(&newPosition, rand.Intn(4))
+					request := EnterRequest{t, make(chan Response, 1)}
+					Board[newPosition.X][newPosition.Y].EnterChannel <- request
+					select {
+					case t.response = <-request.ResponseChannel:
+						if t.response != Fail {
+							successChannel <- true
+						} else {
+							time.Sleep(time.Millisecond)
+						}
+					case <-deadlockChannel:
+						t.response = Deadlock
+					}
+				}
+			}()
 
-	select {
-	case nt.board[newPos.X][newPos.Y].cmdChan <- req:
-		select {
-		case res := <-response:
-			nt.handleResponse(res, newPos)
-		case <-time.After(DeadlockTimeout):
-			nt.handleDeadlock()
+			select {
+			case <-successChannel:
+			case <-time.After(6 * MaxDelay):
+				deadlockChannel <- true
+			}
+
+			// handle response
+			switch t.response {
+			case Success:
+				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
+				t.Position = newPosition
+			case Trapped:
+				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
+				t.Position = Position{
+					X: BoardWidth,
+					Y: BoardHeight,
+				}
+			case Deadlock:
+				t.Symbol = unicode.ToLower(t.Symbol)
+			}
+
+			// store trace
+			t.timeStamp = time.Since(StartTime)
+			t.Store_Trace()
 		}
-	case <-time.After(DeadlockTimeout):
-		nt.handleDeadlock()
-	}
 
-	nt.recordTrace()
+		printer.TraceChannel <- t.traces
+	}()
 }
 
-// Wild traveler implementation
-type WildTraveler struct {
-	*Traveler
-	appearTime    time.Duration
-	disappearTime time.Duration
-	relocateChan  chan Position
+func (t *Wild) Init(id int, symbol rune) {
+	t.RelocateChannel = make(chan RelocateRequest)
+	t.Id = id
+	t.Symbol = symbol
+	t.timeAppear = time.Duration(rand.Int63n(int64(MaxDelay * MaxSteps)))
+	t.timeDisappear = t.timeAppear + time.Duration(rand.Int63n(int64(MaxDelay*MaxSteps-t.timeAppear)))
 }
 
-func NewWildTraveler(t *Traveler) *WildTraveler {
-	appear := time.Duration(t.rand.Float64() * float64(MaxDelay)*float64(MaxSteps))
-	disappear := appear + time.Duration(t.rand.Float64()*float64(MaxDelay*MaxSteps))
-	
-	return &WildTraveler{
-		Traveler:      t,
-		appearTime:    appear,
-		disappearTime: disappear,
-		relocateChan:  make(chan Position, 1),
-	}
-}
+func (t *Wild) Start() {
+	go func() {
+		time.Sleep(t.timeAppear)
 
-func (wt *WildTraveler) Run() {
-	defer wt.printer.Report(wt.traces)
+		// try to move in
+		t.response = Fail
+		for t.response == Fail {
+			t.Position = Position{
+				X: rand.Intn(BoardWidth),
+				Y: rand.Intn(BoardHeight),
+			}
 
-	time.Sleep(wt.appearTime)
-	wt.initializePosition()
-	wt.recordTrace()
-
-	for {
-		select {
-		case <-time.After(wt.disappearTime - wt.appearTime):
-			wt.leaveBoard()
-			return
-		case newPos := <-wt.relocateChan:
-			wt.handleRelocation(newPos)
-		case <-wt.quit:
-			return
+			request := EnterRequest{t, make(chan Response)}
+			Board[t.Position.X][t.Position.Y].EnterChannel <- request
+			t.response = <-request.ResponseChannel
 		}
-	}
-}
 
-// Trap implementation
-type TrapTraveler struct {
-	*Traveler
-}
+		t.timeStamp = time.Since(StartTime)
+		t.Store_Trace()
 
-func NewTrapTraveler(t *Traveler) *TrapTraveler {
-	return &TrapTraveler{Traveler: t}
-}
+		// main loop
+		t.RelocateChannel = make(chan RelocateRequest) // clear out init tries
+		for true {
+			if t.response == Trapped || time.Since(StartTime) > t.timeDisappear {
+				break
+			}
 
-func (tt *TrapTraveler) Run() {
-	defer tt.printer.Report(tt.traces)
-	tt.initializePosition()
-	tt.recordTrace()
-
-	for {
-		select {
-		case <-tt.quit:
-			return
-		default:
-			// Trap logic would go here
-			time.Sleep(1 * time.Second)
+			select {
+			case Request := <-t.RelocateChannel:
+				t.response = Request.Status
+				t.Position = Request.Position
+				t.timeStamp = time.Since(StartTime)
+				t.Store_Trace()
+			case <-time.After(t.timeDisappear - time.Since(StartTime)):
+			}
 		}
-	}
+
+		// free the board
+		if t.response != Trapped {
+			Board[t.Position.X][t.Position.Y].LeaveChannel <- true
+			t.Position = Position{
+				X: BoardWidth,
+				Y: BoardHeight,
+			}
+			t.timeStamp = time.Since(StartTime)
+			t.Store_Trace()
+		}
+
+		printer.TraceChannel <- t.traces
+	}()
 }
 
-// Main function and initialization
+func (t *Trap) Init(id int, symbol rune) {
+	t.TrapChannel = make(chan TrapRequest, 4)
+	t.Done = make(chan bool)
+	t.Id = id
+	t.Symbol = '#'
+	t.traveler = nil
+
+	// try to move in
+	t.response = Fail
+	for t.response == Fail {
+		t.Position = Position{
+			X: rand.Intn(BoardWidth),
+			Y: rand.Intn(BoardHeight),
+		}
+
+		request := EnterRequest{t, make(chan Response, 1)}
+		Board[t.Position.X][t.Position.Y].EnterChannel <- request
+		t.response = <-request.ResponseChannel
+	}
+
+	t.timeStamp = time.Since(StartTime)
+	t.Store_Trace()
+
+	t.Start()
+}
+
+func (t *Trap) Start() {
+	go func() {
+		// main loop
+		for true {
+			if t.response == Deadlock {
+				break
+			}
+
+			select {
+			case Request := <-t.TrapChannel:
+				switch v := Request.Traveler.(type) {
+				case *Legal:
+					t.response = Trapped
+					t.Symbol = unicode.ToLower(v.Symbol)
+				case *Wild:
+					select {
+					case v.RelocateChannel <- RelocateRequest{Position{BoardWidth, BoardHeight}, Trapped}:
+						t.response = Trapped
+						t.Symbol = '*'
+					case <-time.After(100 * time.Millisecond):
+						t.response = Fail
+					}
+				default:
+					t.response = Fail
+				}
+
+				Request.ResponseChannel <- t.response
+
+				// if traveller caught
+				if t.response == Trapped {
+					t.timeStamp = time.Since(StartTime)
+					t.Store_Trace()
+
+					time.Sleep(2 * MaxDelay)
+
+					t.Symbol = '#'
+					t.timeStamp = time.Since(StartTime)
+					t.Store_Trace()
+				}
+			case <-t.Done:
+				t.response = Deadlock // to exit loop
+			}
+		}
+
+		printer.TraceChannel <- t.traces
+	}()
+}
+
 func main() {
-	printer := NewPrinter()
-	board := make([][]*Node, BoardWidth)
-	
-	// Initialize board nodes
-	for x := 0; x < BoardWidth; x++ {
-		board[x] = make([]*Node, BoardHeight)
-		for y := 0; y < BoardHeight; y++ {
-			board[x][y] = NewNode(Position{x, y})
+	var travelers [NrOfTraps + NrOfTravelers + NrOfWildTravelers]GeneralTraveler
+
+	fmt.Printf(
+		"-1 %d %d %d\n",
+		NrOfTraps+NrOfTravelers+NrOfWildTravelers,
+		BoardWidth,
+		BoardHeight,
+	)
+
+	printer.Start()
+
+	for i := 0; i < BoardWidth; i++ {
+		for j := 0; j < BoardHeight; j++ {
+			Board[i][j].Init(Position{i, j})
 		}
 	}
 
-	// Create seeds
-	seeds := make([]int64, NrOfTravelers+NrOfWildTravelers+NrOfTraps)
-	for i := range seeds {
-		seeds[i] = time.Now().UnixNano() + int64(i)
-	}
-
-	var wg sync.WaitGroup
-
-	// Create and start traps
+	id := 0
 	for i := 0; i < NrOfTraps; i++ {
-		t := NewTraveler(i, '#', Trap, seeds[i], printer, board)
-		tt := NewTrapTraveler(t)
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			tt.Run()
-		}()
+		travelers[id] = &Trap{}
+		travelers[id].Init(id, '#')
+		id++
 	}
 
-	// Create normal travelers
+	symbol := 'A'
 	for i := 0; i < NrOfTravelers; i++ {
-		id := NrOfTraps + i
-		t := NewTraveler(id, rune('A'+i), Normal, seeds[id], printer, board)
-		nt := NewNormalTraveler(t)
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			nt.Run()
-		}()
+		travelers[id] = &Legal{}
+		travelers[id].Init(id, symbol)
+		id++
+		symbol++
 	}
 
-	// Create wild travelers
+	symbol = '0'
 	for i := 0; i < NrOfWildTravelers; i++ {
-		id := NrOfTraps + NrOfTravelers + i
-		t := NewTraveler(id, rune('0'+i), Wild, seeds[id], printer, board)
-		wt := NewWildTraveler(t)
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			wt.Run()
-		}()
+		travelers[id] = &Wild{}
+		travelers[id].Init(id, symbol)
+		id++
+		symbol++
 	}
 
-	wg.Wait()
-	close(printer.tracesChan)
-	<-printer.done
+	id = NrOfTraps
+	for i := 0; i < NrOfTravelers; i++ {
+		travelers[id].Start()
+		id++
+	}
+
+	for i := 0; i < NrOfWildTravelers; i++ {
+		travelers[id].Start()
+		id++
+	}
+
+	<-printer.Done
+
+	for i := 0; i < NrOfTraps; i++ {
+		trap, _ := travelers[i].(*Trap)
+		trap.Done <- true
+	}
+
+	<-printer.Done
 }
