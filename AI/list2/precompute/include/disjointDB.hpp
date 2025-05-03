@@ -43,8 +43,10 @@ private:
     uint32_t encode2(const std::array<uint8_t, 16>& state, uint8_t heuristic);
     uint32_t encode3(const std::array<uint8_t, 16>& state, uint8_t heuristic);
 
-    BigPatternEntry encode7(const std::array<uint8_t, 16>& state, uint8_t heuristic);
-    BigPatternEntry encode8(const std::array<uint8_t, 16>& state, uint8_t heuristic);
+    uint32_t extract_position7(const std::array<uint8_t, 16>& state);
+    uint32_t extract_position8(const std::array<uint8_t, 16>& state);
+    BigPatternEntry encode7(const uint32_t& state, uint8_t heuristic);
+    BigPatternEntry encode8(const uint32_t& state, uint8_t heuristic);
 };
 
 #endif // DISJOINTDB_HPP

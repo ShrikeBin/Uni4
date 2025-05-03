@@ -443,11 +443,12 @@ void DisjointPatternDB::build_pattern_7()
     };
 
     std::queue<std::pair<std::array<uint8_t, 16>, uint8_t>> q;
-    std::map<std::array<uint8_t, 16>, uint8_t> count_map; // map encoded state (without cost) -> min cost
+    std::map<uint32_t, uint8_t> cost_map; // map encoded state (without cost) -> min cost
 
     q.push({goal, 0});
-    BigPatternEntry start_code = encode7(goal, 0);
-    count_map[goal] = 0;
+    BigPatternEntry start_code = encode7(0x89ABCDE0, 0);
+    pattern_db_7.emplace_back(start_code);
+    cost_map[0x89ABCDE0] = 0;
 
     const int dx[4] = {-1, 1, 0, 0};
     const int dy[4] = {0, 0, -1, 1};
@@ -498,44 +499,18 @@ void DisjointPatternDB::build_pattern_7()
 
             std::swap(new_state[zero_pos], new_state[npos]);
 
-            if (!count_map.count(new_state)) 
+            uint32_t new_key = extract_position7(new_state);
+
+            if (cost_map.count(new_key) == 0) 
             {
-                count_map.insert(std::make_pair(new_state, new_cost));
-                q.push({new_state, new_cost});
-            }
-            else if(count_map.count(new_state) && new_cost < count_map[new_state])
-            {
-                count_map[new_state] = new_cost;
+                cost_map.insert(std::make_pair(new_key, new_cost));
                 q.push({new_state, new_cost});
             }
         }
     }
 
-    // Remove duplicate entries and keep the minimum cost
-    std::map<std::array<uint8_t, 16>, uint8_t> min_cost_map;
-    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry: count_map)
-    {
-        // Remove that annoying 0;
-        std::array<uint8_t, 16> state = entry.first;
-        for (uint8_t& val : state) 
-        {
-            if (val == 0) 
-            {
-                val = 0xFF;
-            }
-        }
 
-        if(!min_cost_map.count(state))
-        {
-            min_cost_map.insert(std::make_pair(state, entry.second));
-        }
-        else if (entry.second < min_cost_map[state])
-        {
-            min_cost_map[state] = entry.second;
-        }
-    }
-
-    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : min_cost_map)
+    for (const auto& entry : cost_map)
     {        
         pattern_db_7.emplace_back(encode7(entry.first, entry.second));
     }
@@ -573,11 +548,12 @@ void DisjointPatternDB::build_pattern_8()
     };
 
     std::queue<std::pair<std::array<uint8_t, 16>, uint8_t>> q;
-    std::map<std::array<uint8_t, 16>, uint8_t> count_map; // map encoded state (without cost) -> min cost
+    std::map<uint32_t, uint8_t> cost_map; // map encoded state (with cost) -> min cost
 
     q.push({goal, 0});
-    BigPatternEntry start_code = encode8(goal, 0);
-    count_map[goal] = 0;
+    BigPatternEntry start_code = encode8(0x12345678, 0);
+    pattern_db_8.emplace_back(start_code);
+    cost_map[0x12345678] = 0;
 
     const int dx[4] = {-1, 1, 0, 0};
     const int dy[4] = {0, 0, -1, 1};
@@ -628,44 +604,17 @@ void DisjointPatternDB::build_pattern_8()
 
             std::swap(new_state[zero_pos], new_state[npos]);
 
-            if (!count_map.count(new_state)) 
+            uint32_t new_key = extract_position8(new_state);
+
+            if (cost_map.count(new_key) == 0) 
             {
-                count_map.insert(std::make_pair(new_state, new_cost));
-                q.push({new_state, new_cost});
-            }
-            else if(count_map.count(new_state) && new_cost < count_map[new_state])
-            {
-                count_map[new_state] = new_cost;
+                cost_map.insert(std::make_pair(new_key, new_cost));
                 q.push({new_state, new_cost});
             }
         }
     }
 
-    // Remove duplicate entries and keep the minimum cost
-    std::map<std::array<uint8_t, 16>, uint8_t> min_cost_map;
-    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry: count_map)
-    {
-        // Remove that annoying 0;
-        std::array<uint8_t, 16> state = entry.first;
-        for (uint8_t& val : state) 
-        {
-            if (val == 0) 
-            {
-                val = 0xFF;
-            }
-        }
-
-        if(!min_cost_map.count(state))
-        {
-            min_cost_map.insert(std::make_pair(state, entry.second));
-        }
-        else if (entry.second < min_cost_map[state])
-        {
-            min_cost_map[state] = entry.second;
-        }
-    }
-
-    for (const std::pair<const std::array<uint8_t, 16>, uint8_t>& entry : min_cost_map)
+    for (const std::pair<uint32_t,uint8_t> entry : cost_map)
     {   
         pattern_db_8.emplace_back(encode8(entry.first, entry.second));
     }
@@ -785,65 +734,77 @@ uint32_t DisjointPatternDB::encode3(const std::array<uint8_t, 16>& state, uint8_
     pattern_bits |= heuristic;
     return pattern_bits;
 }
-BigPatternEntry encode7(const std::array<uint8_t, 16>& state, uint8_t heuristic)
+
+uint32_t DisjointPatternDB::extract_position7(const std::array<uint8_t, 16>& state)
 {
-    BigPatternEntry result;
-    result.value32 = 0;
-    result.value8 = heuristic;
-    for (uint8_t i = 0; i < 16; ++i) 
+    uint32_t pattern_bits = 0;
+    for(uint8_t i = 0; i < 16; ++i) 
     {
-        if (state[i] == 11) 
+        if(state[i] == 1)
         {
-            result.value32 |= (i << 24);
-        } 
-        else if (state[i] == 12) 
+            pattern_bits |= (i << 16);
+        }
+        else if(state[i] == 2)
         {
-            result.value32 |= (i << 20);
-        } 
-        else if (state[i] == 13) 
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 3)
         {
-            result.value32 |= (i << 16);
-        } 
-        else if (state[i] == 14) 
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 4)
         {
-            result.value32 |= (i << 12);
-        } 
-        else if (state[i] == 15) 
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 5)
         {
-            result.value32 |= (i << 8);
+            pattern_bits |= i;
         }
     }
+    return pattern_bits;
+}
+
+BigPatternEntry DisjointPatternDB::encode7(const uint32_t& state, uint8_t heuristic)
+{
+    BigPatternEntry result;
+    result.value32 = state;
+    result.value8 = heuristic;
     return result;
 }
 
-BigPatternEntry encode8(const std::array<uint8_t, 16>& state, uint8_t heuristic)
+uint32_t DisjointPatternDB::extract_position8(const std::array<uint8_t, 16>& state)
 {
-    BigPatternEntry result;
-    result.value32 = 0;
-    result.value8 = heuristic;
-
-    for (uint8_t i = 0; i < 16; ++i) 
+    uint32_t pattern_bits = 0;
+    for(uint8_t i = 0; i < 16; ++i) 
     {
-        if (state[i] == 11) 
+        if(state[i] == 1)
         {
-            result.value32 |= (i << 20);
-        } 
-        else if (state[i] == 12) 
+            pattern_bits |= (i << 16);
+        }
+        else if(state[i] == 2)
         {
-            result.value32 |= (i << 16);
-        } 
-        else if (state[i] == 13) 
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 3)
         {
-            result.value32 |= (i << 12);
-        } 
-        else if (state[i] == 14) 
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 4)
         {
-            result.value32 |= (i << 8);
-        } 
-        else if (state[i] == 15) 
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 5)
         {
-            result.value32 |= (i << 4);
+            pattern_bits |= i;
         }
     }
+    return pattern_bits;
+}
+
+BigPatternEntry DisjointPatternDB::encode8(const uint32_t& state, uint8_t heuristic)
+{
+    BigPatternEntry result;
+    result.value32 = state;
+    result.value8 = heuristic;
     return result;
 }

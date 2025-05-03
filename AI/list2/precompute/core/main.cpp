@@ -3,8 +3,10 @@
 int main() 
 {
     DisjointPatternDB db;
-    db.build();
-    db.save("disjoint_");
+    db.build555();
+    db.save555("disjoint_");
+    db.build78();
+    db.save78("disjoint_");
 
     return 0;
 }
