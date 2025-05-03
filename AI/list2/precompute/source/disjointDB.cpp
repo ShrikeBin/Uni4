@@ -606,6 +606,7 @@ void DisjointPatternDB::build_pattern_8()
 
             uint32_t new_key = extract_position8(new_state);
 
+            // YEAH BUT LIKE 0 MOVED ONLY??? cmoon i have to fix this to actually work.... not today...
             if (cost_map.count(new_key) == 0) 
             {
                 cost_map.insert(std::make_pair(new_key, new_cost));
