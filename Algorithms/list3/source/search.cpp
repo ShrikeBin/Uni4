@@ -10,20 +10,18 @@ int binsearch(std::vector<int>& arr, int target, Stats& stats) {
     {
         int mid = left + (right - left) / 2;
 
+        stats.comparisons++;
         if (arr[mid] == target) 
         {
-            stats.comparisons++;
             return mid; // Target found
         } 
         else if (arr[mid] < target) 
         {
             stats.comparisons++;
-            stats.comparisons++;
             left = mid + 1; // Search in the right half
         } 
         else 
         {
-            stats.comparisons++;
             stats.comparisons++;
             right = mid - 1; // Search in the left half
         }

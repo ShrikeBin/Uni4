@@ -16,8 +16,10 @@ void better_quick_sort(std::vector<int>& arr, Stats& stats)
         {
             return;
         }
-        
-        int pivot = RandomSelect(arr, (left + right) / 2, stats);
+
+        std::vector<int> subarr(arr.begin() + left, arr.begin() + right + 1);
+        int pivot = RandomSelect(subarr, (subarr.size() - 1) / 2, stats);
+        stats.selects++;
         int i = left;
         int j = right;
         
@@ -56,20 +58,24 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
     {
         if (left >= right) return;
         
-        if (arr[left] > arr[right]) {
+        if (arr[left] > arr[right]) 
+        {
             std::swap(arr[left], arr[right]);
             stats.swaps++;
         }
         
-        int pivot1 = RandomSelect(arr, left + (right - left) / 3, stats);
-        int pivot2 = RandomSelect(arr, left + 2 * (right - left) / 3, stats);
+        std::vector<int> subarr(arr.begin() + left, arr.begin() + right + 1);
+
+        int pivot1 = RandomSelect(subarr, (subarr.size() - 1) / 3, stats);
+        int pivot2 = RandomSelect(subarr, ((subarr.size() - 1) * 2) / 3, stats);
+        stats.selects += 2;
         int i = left + 1, lt = left + 1, gt = right - 1;
         
         while (i <= gt) 
         {
+            ++stats.comparisons;
             if (arr[i] < pivot1) 
             {
-                stats.comparisons++;
                 std::swap(arr[i], arr[lt]);
                 stats.swaps++;
                 lt++;
@@ -77,22 +83,28 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
             else if (arr[i] > pivot2) 
             {
                 stats.comparisons++;
-                stats.comparisons++;
                 while (i < gt && arr[gt] > pivot2) 
                 {
                     stats.comparisons++;
                     gt--;
                 }
+
                 std::swap(arr[i], arr[gt]);
                 stats.swaps++;
+
                 gt--;
                 stats.comparisons++;
+
                 if (arr[i] < pivot1) 
                 {
                     std::swap(arr[i], arr[lt]);
                     stats.swaps++;
                     lt++;
                 }
+            }
+            else
+            {
+                stats.comparisons++;
             }
             i++;
         }
@@ -127,11 +139,14 @@ void quick_sort(std::vector<int>& arr, Stats& stats)
         
         while (i <= j)
         {
+            ++stats.comparisons;
             while (arr[i] < pivot)
             {
                 ++i;
                 ++stats.comparisons;
             }
+
+            ++stats.comparisons;
             while (arr[j] > pivot)
             {
                 --j;
@@ -170,16 +185,15 @@ void dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
         
         while (i <= gt) 
         {
+            stats.comparisons++;
             if (arr[i] < pivot1) 
             {
-                stats.comparisons++;
                 std::swap(arr[i], arr[lt]);
                 stats.swaps++;
                 lt++;
             } 
             else if (arr[i] > pivot2) 
             {
-                stats.comparisons++;
                 stats.comparisons++;
                 while (i < gt && arr[gt] > pivot2) 
                 {
@@ -196,6 +210,10 @@ void dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
                     stats.swaps++;
                     lt++;
                 }
+            }
+            else
+            {
+                stats.comparisons++;
             }
             i++;
         }
@@ -224,6 +242,7 @@ void hybrid_sort(std::vector<int>& arr, Stats& stats)
             int key = arr[i];
             int j = i - 1;
             
+            ++stats.comparisons;
             while (j >= 0 && arr[j] > key) 
             {
                 arr[j + 1] = arr[j];
@@ -255,11 +274,14 @@ void hybrid_sort(std::vector<int>& arr, Stats& stats)
         
         while (i <= j) 
         {
+            ++stats.comparisons;
             while (arr[i] < pivot) 
             {
                 ++i;
                 ++stats.comparisons;
             }
+
+            ++stats.comparisons;
             while (arr[j] > pivot) 
             {
                 --j;

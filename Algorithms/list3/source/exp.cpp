@@ -282,8 +282,8 @@ void run_binsearch(int n, int repeats)
         auto data = generate_ascending(n);
         int k = n + 10;
         binsearch(data, k, stats);
-        total_stats_start.comparisons += stats.comparisons;
-        total_stats_start.swaps += stats.swaps;
+        total_stats_notin.comparisons += stats.comparisons;
+        total_stats_notin.swaps += stats.swaps;
     }
     auto end_not = std::chrono::high_resolution_clock::now();
 
@@ -387,16 +387,20 @@ void run_dpquick(int n, int repeats)
 
 void run_full(int repeats) 
 {
-    for (int i = 1000; i <= 50000; i += 1000) 
+    for (int i = 1000; i <= 100000; i += 1000) 
     {
         std::cout << "Running for n = " << i << std::endl;
         run_select(i, repeats);
         run_rselect(i, repeats);
 
-        for(int j = 10; j <= 100; j += 20) 
-        {
-            run_pselect(i, repeats, j);
-        }
+        run_pselect(i, repeats, 3);
+        run_pselect(i, repeats, 5);
+        run_pselect(i, repeats, 10);
+        run_pselect(i, repeats, 15);
+        run_pselect(i, repeats, 20);
+        run_pselect(i, repeats, 30);
+        run_pselect(i, repeats, 50);
+        run_pselect(i, repeats, 80);
 
         run_binsearch(i, repeats);
         run_quick(i, repeats);

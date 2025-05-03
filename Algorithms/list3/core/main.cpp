@@ -68,6 +68,11 @@ int main(int argc, char* argv[])
         std::chrono::duration<double> duration = end - start;
 
         std::cout << "Time taken to do operation: " << duration.count() << " seconds\n";
+        std::cout << "Number of comparisons: " << stats.comparisons << "\n";
+        std::cout << "Number of swaps: " << stats.swaps << "\n";
+        std::cout << "Comparisons/n: " << (static_cast<double>(stats.comparisons) / numbers.size()) << "\n";
+        std::cout << "Swaps/n: " << (static_cast<double>(stats.swaps) / numbers.size()) << "\n";
+        std::cout << "Selects run: " << stats.selects << "\n";
     } 
     catch (const std::out_of_range&) 
     {

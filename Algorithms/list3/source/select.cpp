@@ -34,9 +34,9 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
 
             while (mid <= high) 
             {
+                stats.comparisons++;
                 if (working_arr[mid] < pivot) 
                 {
-                    stats.comparisons++;
                     stats.swaps++;
                     std::swap(working_arr[low], working_arr[mid]);
                     ++low;
@@ -45,12 +45,10 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
                 else if (working_arr[mid] == pivot) 
                 {
                     stats.comparisons++;
-                    stats.comparisons++; // bo wszedł najpierw do ifa
                     ++mid;
                 } 
                 else 
                 {
-                    stats.comparisons++;
                     stats.comparisons++;
                     stats.swaps++;
                     std::swap(working_arr[mid], working_arr[high]);
@@ -102,12 +100,13 @@ int Select(std::vector<int>& arr, int place, Stats& stats) {
     return ParametrizedSelect(arr, place, 5, stats);
 }
 
-int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& stats) 
+int ParametrizedSelect(std::vector<int>& SelectArr, int place, int parameter, Stats& stats) 
 {
-    if (arr.empty() || place < 0 || place >= static_cast<int>(arr.size()) || parameter < 1) {
+    if (SelectArr.empty() || place < 0 || place >= static_cast<int>(SelectArr.size()) || parameter <= 1) {
         std::cout<< "Invalid order value: " << place << "\n";
-        std::cout<< "Array size: " << arr.size() << "\n";
+        std::cout<< "Array size: " << SelectArr.size() << "\n";
         std::cout<< "you're tupid - PC's count from 0" << "\n";
+        std::cout<< "this parameter is dumb: " << parameter << "\n";
         return -1; // Handle error appropriately
     }
 
@@ -116,20 +115,20 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& s
         return group[group.size()/2];
     };
 
-    std::function<int(std::vector<int>, int)> select = [&](std::vector<int> nums, int k) -> int
+    std::function<int(std::vector<int>, int)> select = [&](std::vector<int> arr, int k) -> int
     {
-        if (nums.size() <= parameter) 
+        if (arr.size() <= parameter) 
         {
-            hybrid_sort(nums, stats);
-            return nums[k];
+            hybrid_sort(arr, stats);
+            return arr[k];
         }
 
         // Create groups and collect medians
         std::vector<int> medians;
-        for (size_t i = 0; i < nums.size(); i += parameter) 
+        for (size_t i = 0; i < arr.size(); i += parameter) 
         {
-            auto start = nums.begin() + i;
-            auto end = (i + parameter <= nums.size()) ? start + parameter : nums.end();
+            auto start = arr.begin() + i;
+            auto end = (i + parameter <= arr.size()) ? start + parameter : arr.end();
             std::vector<int> group(start, end);
             medians.push_back(getMedian(group));
         }
@@ -140,11 +139,11 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& s
         // Three-way partition
         std::vector<int> left, right;
         int equal_count = 0;
-        for (int num : nums) 
+        for (int num : arr) 
         {
+            stats.comparisons++;
             if (num < mom) 
             {
-                stats.comparisons++;
                 left.push_back(num);
             }
             else if (num > mom) 
@@ -154,6 +153,7 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& s
             }
             else 
             {
+                stats.comparisons++;
                 equal_count++;
             }
         }
@@ -164,7 +164,7 @@ int ParametrizedSelect(std::vector<int>& arr, int place, int parameter, Stats& s
         return select(right, k - left.size() - equal_count);
     };
 
-    int result = select(arr, place);
+    int result = select(SelectArr, place);
 
     /*{
         std::vector<int> sorted_arr = arr;
