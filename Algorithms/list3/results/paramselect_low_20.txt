@@ -1,0 +1,350 @@
+N: 1000 mode: paramselect low, p: 20
+Avg Time: 0.000194306 sec.
+Comparisons: 13641
+Swaps: 7736
+Comparisons/n: 13.641
+Swaps/n: 7.736
+-----
+N: 2000 mode: paramselect low, p: 20
+Avg Time: 0.000372785 sec.
+Comparisons: 28010
+Swaps: 15923
+Comparisons/n: 14.005
+Swaps/n: 7.9615
+-----
+N: 3000 mode: paramselect low, p: 20
+Avg Time: 0.000539723 sec.
+Comparisons: 42289
+Swaps: 23833
+Comparisons/n: 14.0963
+Swaps/n: 7.94433
+-----
+N: 4000 mode: paramselect low, p: 20
+Avg Time: 0.000713711 sec.
+Comparisons: 56653
+Swaps: 31902
+Comparisons/n: 14.1632
+Swaps/n: 7.9755
+-----
+N: 5000 mode: paramselect low, p: 20
+Avg Time: 0.00087961 sec.
+Comparisons: 70923
+Swaps: 40061
+Comparisons/n: 14.1846
+Swaps/n: 8.0122
+-----
+N: 6000 mode: paramselect low, p: 20
+Avg Time: 0.0010521 sec.
+Comparisons: 85763
+Swaps: 48302
+Comparisons/n: 14.2938
+Swaps/n: 8.05033
+-----
+N: 7000 mode: paramselect low, p: 20
+Avg Time: 0.00122503 sec.
+Comparisons: 99854
+Swaps: 56362
+Comparisons/n: 14.2649
+Swaps/n: 8.05171
+-----
+N: 8000 mode: paramselect low, p: 20
+Avg Time: 0.0014103 sec.
+Comparisons: 113694
+Swaps: 64112
+Comparisons/n: 14.2118
+Swaps/n: 8.014
+-----
+N: 9000 mode: paramselect low, p: 20
+Avg Time: 0.00159355 sec.
+Comparisons: 128484
+Swaps: 72266
+Comparisons/n: 14.276
+Swaps/n: 8.02956
+-----
+N: 10000 mode: paramselect low, p: 20
+Avg Time: 0.00177683 sec.
+Comparisons: 142870
+Swaps: 80425
+Comparisons/n: 14.287
+Swaps/n: 8.0425
+-----
+N: 11000 mode: paramselect low, p: 20
+Avg Time: 0.00195476 sec.
+Comparisons: 157419
+Swaps: 88748
+Comparisons/n: 14.3108
+Swaps/n: 8.068
+-----
+N: 12000 mode: paramselect low, p: 20
+Avg Time: 0.00208875 sec.
+Comparisons: 171556
+Swaps: 96607
+Comparisons/n: 14.2963
+Swaps/n: 8.05058
+-----
+N: 13000 mode: paramselect low, p: 20
+Avg Time: 0.00228368 sec.
+Comparisons: 186536
+Swaps: 104884
+Comparisons/n: 14.3489
+Swaps/n: 8.068
+-----
+N: 14000 mode: paramselect low, p: 20
+Avg Time: 0.00245788 sec.
+Comparisons: 200799
+Swaps: 113149
+Comparisons/n: 14.3428
+Swaps/n: 8.08207
+-----
+N: 15000 mode: paramselect low, p: 20
+Avg Time: 0.00261864 sec.
+Comparisons: 215279
+Swaps: 120982
+Comparisons/n: 14.3519
+Swaps/n: 8.06547
+-----
+N: 16000 mode: paramselect low, p: 20
+Avg Time: 0.00281157 sec.
+Comparisons: 230086
+Swaps: 129241
+Comparisons/n: 14.3804
+Swaps/n: 8.07756
+-----
+N: 17000 mode: paramselect low, p: 20
+Avg Time: 0.00295165 sec.
+Comparisons: 244437
+Swaps: 137451
+Comparisons/n: 14.3786
+Swaps/n: 8.08535
+-----
+N: 18000 mode: paramselect low, p: 20
+Avg Time: 0.00316171 sec.
+Comparisons: 258999
+Swaps: 145635
+Comparisons/n: 14.3888
+Swaps/n: 8.09083
+-----
+N: 19000 mode: paramselect low, p: 20
+Avg Time: 0.0033164 sec.
+Comparisons: 272351
+Swaps: 153146
+Comparisons/n: 14.3343
+Swaps/n: 8.06032
+-----
+N: 20000 mode: paramselect low, p: 20
+Avg Time: 0.00351567 sec.
+Comparisons: 287412
+Swaps: 161723
+Comparisons/n: 14.3706
+Swaps/n: 8.08615
+-----
+N: 21000 mode: paramselect low, p: 20
+Avg Time: 0.00369143 sec.
+Comparisons: 302426
+Swaps: 169951
+Comparisons/n: 14.4012
+Swaps/n: 8.0929
+-----
+N: 22000 mode: paramselect low, p: 20
+Avg Time: 0.00386746 sec.
+Comparisons: 315433
+Swaps: 177161
+Comparisons/n: 14.3379
+Swaps/n: 8.05277
+-----
+N: 23000 mode: paramselect low, p: 20
+Avg Time: 0.00405423 sec.
+Comparisons: 331063
+Swaps: 186099
+Comparisons/n: 14.394
+Swaps/n: 8.09126
+-----
+N: 24000 mode: paramselect low, p: 20
+Avg Time: 0.0041966 sec.
+Comparisons: 344916
+Swaps: 193590
+Comparisons/n: 14.3715
+Swaps/n: 8.06625
+-----
+N: 25000 mode: paramselect low, p: 20
+Avg Time: 0.00439552 sec.
+Comparisons: 359202
+Swaps: 201777
+Comparisons/n: 14.3681
+Swaps/n: 8.07108
+-----
+N: 26000 mode: paramselect low, p: 20
+Avg Time: 0.00456128 sec.
+Comparisons: 373643
+Swaps: 209778
+Comparisons/n: 14.3709
+Swaps/n: 8.06838
+-----
+N: 27000 mode: paramselect low, p: 20
+Avg Time: 0.0047394 sec.
+Comparisons: 388928
+Swaps: 218744
+Comparisons/n: 14.4047
+Swaps/n: 8.10163
+-----
+N: 28000 mode: paramselect low, p: 20
+Avg Time: 0.00492403 sec.
+Comparisons: 402827
+Swaps: 226305
+Comparisons/n: 14.3867
+Swaps/n: 8.08232
+-----
+N: 29000 mode: paramselect low, p: 20
+Avg Time: 0.00511661 sec.
+Comparisons: 418107
+Swaps: 235190
+Comparisons/n: 14.4175
+Swaps/n: 8.11
+-----
+N: 30000 mode: paramselect low, p: 20
+Avg Time: 0.00520262 sec.
+Comparisons: 432231
+Swaps: 242595
+Comparisons/n: 14.4077
+Swaps/n: 8.0865
+-----
+N: 31000 mode: paramselect low, p: 20
+Avg Time: 0.00541483 sec.
+Comparisons: 446881
+Swaps: 250971
+Comparisons/n: 14.4155
+Swaps/n: 8.09584
+-----
+N: 32000 mode: paramselect low, p: 20
+Avg Time: 0.00560199 sec.
+Comparisons: 460472
+Swaps: 258591
+Comparisons/n: 14.3897
+Swaps/n: 8.08097
+-----
+N: 33000 mode: paramselect low, p: 20
+Avg Time: 0.00580806 sec.
+Comparisons: 475585
+Swaps: 267281
+Comparisons/n: 14.4117
+Swaps/n: 8.09942
+-----
+N: 34000 mode: paramselect low, p: 20
+Avg Time: 0.00595966 sec.
+Comparisons: 489475
+Swaps: 274970
+Comparisons/n: 14.3963
+Swaps/n: 8.08735
+-----
+N: 35000 mode: paramselect low, p: 20
+Avg Time: 0.00616134 sec.
+Comparisons: 505065
+Swaps: 283689
+Comparisons/n: 14.4304
+Swaps/n: 8.1054
+-----
+N: 36000 mode: paramselect low, p: 20
+Avg Time: 0.00616656 sec.
+Comparisons: 518534
+Swaps: 291006
+Comparisons/n: 14.4037
+Swaps/n: 8.0835
+-----
+N: 37000 mode: paramselect low, p: 20
+Avg Time: 0.0065085 sec.
+Comparisons: 533624
+Swaps: 299937
+Comparisons/n: 14.4223
+Swaps/n: 8.10641
+-----
+N: 38000 mode: paramselect low, p: 20
+Avg Time: 0.00670603 sec.
+Comparisons: 548426
+Swaps: 308128
+Comparisons/n: 14.4323
+Swaps/n: 8.10863
+-----
+N: 39000 mode: paramselect low, p: 20
+Avg Time: 0.00687735 sec.
+Comparisons: 562754
+Swaps: 316316
+Comparisons/n: 14.4296
+Swaps/n: 8.11067
+-----
+N: 40000 mode: paramselect low, p: 20
+Avg Time: 0.00704026 sec.
+Comparisons: 576560
+Swaps: 323761
+Comparisons/n: 14.414
+Swaps/n: 8.09403
+-----
+N: 41000 mode: paramselect low, p: 20
+Avg Time: 0.0073427 sec.
+Comparisons: 590051
+Swaps: 331602
+Comparisons/n: 14.3915
+Swaps/n: 8.08785
+-----
+N: 42000 mode: paramselect low, p: 20
+Avg Time: 0.00736381 sec.
+Comparisons: 605933
+Swaps: 340662
+Comparisons/n: 14.427
+Swaps/n: 8.111
+-----
+N: 43000 mode: paramselect low, p: 20
+Avg Time: 0.00751721 sec.
+Comparisons: 620575
+Swaps: 348715
+Comparisons/n: 14.432
+Swaps/n: 8.10965
+-----
+N: 44000 mode: paramselect low, p: 20
+Avg Time: 0.00769544 sec.
+Comparisons: 633720
+Swaps: 355940
+Comparisons/n: 14.4027
+Swaps/n: 8.08955
+-----
+N: 45000 mode: paramselect low, p: 20
+Avg Time: 0.00785385 sec.
+Comparisons: 648318
+Swaps: 363981
+Comparisons/n: 14.4071
+Swaps/n: 8.08847
+-----
+N: 46000 mode: paramselect low, p: 20
+Avg Time: 0.00805548 sec.
+Comparisons: 663738
+Swaps: 372948
+Comparisons/n: 14.4291
+Swaps/n: 8.10757
+-----
+N: 47000 mode: paramselect low, p: 20
+Avg Time: 0.00807707 sec.
+Comparisons: 678815
+Swaps: 380979
+Comparisons/n: 14.4429
+Swaps/n: 8.10594
+-----
+N: 48000 mode: paramselect low, p: 20
+Avg Time: 0.00840076 sec.
+Comparisons: 693782
+Swaps: 389677
+Comparisons/n: 14.4538
+Swaps/n: 8.11827
+-----
+N: 49000 mode: paramselect low, p: 20
+Avg Time: 0.00864079 sec.
+Comparisons: 706989
+Swaps: 397363
+Comparisons/n: 14.4283
+Swaps/n: 8.10945
+-----
+N: 50000 mode: paramselect low, p: 20
+Avg Time: 0.00868276 sec.
+Comparisons: 720837
+Swaps: 404955
+Comparisons/n: 14.4167
+Swaps/n: 8.0991
+-----

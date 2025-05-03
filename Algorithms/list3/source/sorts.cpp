@@ -17,8 +17,14 @@ void better_quick_sort(std::vector<int>& arr, Stats& stats)
             return;
         }
 
+        if(right >= arr.size() || left < 0)
+        {
+            std::cout << "Invalid range: left = " << left << ", right = " << right << ", arr.size() = " << arr.size() << std::endl;
+            return;
+        }
+
         std::vector<int> subarr(arr.begin() + left, arr.begin() + right + 1);
-        int pivot = RandomSelect(subarr, (subarr.size() - 1) / 2, stats);
+        int pivot = Select(subarr, (subarr.size() - 1) / 2, stats);
         stats.selects++;
         int i = left;
         int j = right;
@@ -66,8 +72,14 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
         
         std::vector<int> subarr(arr.begin() + left, arr.begin() + right + 1);
 
-        int pivot1 = RandomSelect(subarr, (subarr.size() - 1) / 3, stats);
-        int pivot2 = RandomSelect(subarr, ((subarr.size() - 1) * 2) / 3, stats);
+        if(right >= arr.size() || left < 0)
+        {
+            std::cout << "Invalid range: left = " << left << ", right = " << right << ", arr.size() = " << arr.size() << std::endl;
+            return;
+        }
+
+        int pivot1 = Select(subarr, (subarr.size() - 1) / 3, stats);
+        int pivot2 = Select(subarr, ((subarr.size() - 1) * 2) / 3, stats);
         stats.selects += 2;
         int i = left + 1, lt = left + 1, gt = right - 1;
         
@@ -124,50 +136,39 @@ void better_dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats)
 }
 
 
-void quick_sort(std::vector<int>& arr, Stats& stats)
+void quick_sort(std::vector<int>& arr, Stats& stats) 
 {
-    std::function<void(int, int)> quick_rec = [&](int left, int right)
+    std::function<void(int, int)> quick_rec = [&](int left, int right) 
     {
-        if (left >= right) 
+        if (left < right) 
         {
-            return;
-        }
-        
-        int pivot = arr[left];
-        int i = left;
-        int j = right;
-        
-        while (i <= j)
-        {
-            ++stats.comparisons;
-            while (arr[i] < pivot)
+            int pivot = arr[right];
+            int i = left - 1;
+
+            for (int j = left; j < right; j++) 
             {
-                ++i;
-                ++stats.comparisons;
+                stats.comparisons++;
+                if (arr[j] <= pivot) 
+                {
+                    i++;
+                    std::swap(arr[i], arr[j]);
+                    stats.swaps++;
+                }
             }
 
-            ++stats.comparisons;
-            while (arr[j] > pivot)
-            {
-                --j;
-                ++stats.comparisons;
-            }
-            
-            if (i <= j)
-            {
-                std::swap(arr[i], arr[j]);
-                ++stats.swaps;
-                ++i;
-                --j;
-            }
+            std::swap(arr[i + 1], arr[right]);
+            stats.swaps++;
+
+            int p = i + 1;
+
+            quick_rec(left, p - 1);
+            quick_rec(p + 1, right);
         }
-        
-        quick_rec(left, j);
-        quick_rec(i, right);
     };
-    
+
     quick_rec(0, arr.size() - 1);
 }
+
 
 void dual_pivot_quick_sort(std::vector<int>& arr, Stats& stats) 
 {

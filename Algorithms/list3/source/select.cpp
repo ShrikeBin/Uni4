@@ -76,7 +76,7 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
     };
     int result = randomSelectImpl(0, working_arr.size(), place);
 
-    /*{
+    {
         std::vector<int> sorted_arr = arr;
         hybrid_sort(sorted_arr, stats);
 
@@ -90,7 +90,7 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
 
         std::cout << "In sorted order: ";
         for(auto num : sorted_arr) std::cout << num << " ";
-    }*/
+    }
 
     return result;
 }
@@ -166,12 +166,12 @@ int ParametrizedSelect(std::vector<int>& SelectArr, int place, int parameter, St
 
     int result = select(SelectArr, place);
 
-    /*{
-        std::vector<int> sorted_arr = arr;
+    {
+        std::vector<int> sorted_arr = SelectArr;
         hybrid_sort(sorted_arr, stats);
 
         std::cout << "Array before selection: ";
-        for(auto num : arr) std::cout << num << " ";
+        for(auto num : SelectArr) std::cout << num << " ";
         std::cout << "\n";
         std::cout << place << "th order statistic is: " << result << "\n";
 
@@ -181,7 +181,7 @@ int ParametrizedSelect(std::vector<int>& SelectArr, int place, int parameter, St
 
         std::cout << "In sorted order: ";
         for(auto num : sorted_arr) std::cout << num << " ";
-    }*/
+    }
 
     return result;
 }

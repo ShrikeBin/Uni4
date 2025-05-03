@@ -1,0 +1,350 @@
+N: 1000 mode: normal dpquicksort worst case
+Avg Time: 0.000842497 sec.
+Comparisons: 499000
+Swaps: 1500
+Comparisons/n: 499
+Swaps/n: 1.5
+-----
+N: 2000 mode: normal dpquicksort worst case
+Avg Time: 0.00332063 sec.
+Comparisons: 1998000
+Swaps: 3000
+Comparisons/n: 999
+Swaps/n: 1.5
+-----
+N: 3000 mode: normal dpquicksort worst case
+Avg Time: 0.0072715 sec.
+Comparisons: 4497000
+Swaps: 4500
+Comparisons/n: 1499
+Swaps/n: 1.5
+-----
+N: 4000 mode: normal dpquicksort worst case
+Avg Time: 0.0128105 sec.
+Comparisons: 7996000
+Swaps: 6000
+Comparisons/n: 1999
+Swaps/n: 1.5
+-----
+N: 5000 mode: normal dpquicksort worst case
+Avg Time: 0.0200001 sec.
+Comparisons: 12495000
+Swaps: 7500
+Comparisons/n: 2499
+Swaps/n: 1.5
+-----
+N: 6000 mode: normal dpquicksort worst case
+Avg Time: 0.028666 sec.
+Comparisons: 17994000
+Swaps: 9000
+Comparisons/n: 2999
+Swaps/n: 1.5
+-----
+N: 7000 mode: normal dpquicksort worst case
+Avg Time: 0.0392364 sec.
+Comparisons: 24493000
+Swaps: 10500
+Comparisons/n: 3499
+Swaps/n: 1.5
+-----
+N: 8000 mode: normal dpquicksort worst case
+Avg Time: 0.0509887 sec.
+Comparisons: 31992000
+Swaps: 12000
+Comparisons/n: 3999
+Swaps/n: 1.5
+-----
+N: 9000 mode: normal dpquicksort worst case
+Avg Time: 0.0646905 sec.
+Comparisons: 40491000
+Swaps: 13500
+Comparisons/n: 4499
+Swaps/n: 1.5
+-----
+N: 10000 mode: normal dpquicksort worst case
+Avg Time: 0.0796037 sec.
+Comparisons: 49990000
+Swaps: 15000
+Comparisons/n: 4999
+Swaps/n: 1.5
+-----
+N: 11000 mode: normal dpquicksort worst case
+Avg Time: 0.0960959 sec.
+Comparisons: 60489000
+Swaps: 16500
+Comparisons/n: 5499
+Swaps/n: 1.5
+-----
+N: 12000 mode: normal dpquicksort worst case
+Avg Time: 0.114645 sec.
+Comparisons: 71988000
+Swaps: 18000
+Comparisons/n: 5999
+Swaps/n: 1.5
+-----
+N: 13000 mode: normal dpquicksort worst case
+Avg Time: 0.134024 sec.
+Comparisons: 84487000
+Swaps: 19500
+Comparisons/n: 6499
+Swaps/n: 1.5
+-----
+N: 14000 mode: normal dpquicksort worst case
+Avg Time: 0.155691 sec.
+Comparisons: 97986000
+Swaps: 21000
+Comparisons/n: 6999
+Swaps/n: 1.5
+-----
+N: 15000 mode: normal dpquicksort worst case
+Avg Time: 0.178719 sec.
+Comparisons: 112485000
+Swaps: 22500
+Comparisons/n: 7499
+Swaps/n: 1.5
+-----
+N: 16000 mode: normal dpquicksort worst case
+Avg Time: 0.203402 sec.
+Comparisons: 127984000
+Swaps: 24000
+Comparisons/n: 7999
+Swaps/n: 1.5
+-----
+N: 17000 mode: normal dpquicksort worst case
+Avg Time: 0.228836 sec.
+Comparisons: 144483000
+Swaps: 25500
+Comparisons/n: 8499
+Swaps/n: 1.5
+-----
+N: 18000 mode: normal dpquicksort worst case
+Avg Time: 0.256667 sec.
+Comparisons: 161982000
+Swaps: 27000
+Comparisons/n: 8999
+Swaps/n: 1.5
+-----
+N: 19000 mode: normal dpquicksort worst case
+Avg Time: 0.286276 sec.
+Comparisons: 180481000
+Swaps: 28500
+Comparisons/n: 9499
+Swaps/n: 1.5
+-----
+N: 20000 mode: normal dpquicksort worst case
+Avg Time: 0.316881 sec.
+Comparisons: 199980000
+Swaps: 30000
+Comparisons/n: 9999
+Swaps/n: 1.5
+-----
+N: 21000 mode: normal dpquicksort worst case
+Avg Time: 0.348609 sec.
+Comparisons: 220479000
+Swaps: 31500
+Comparisons/n: 10499
+Swaps/n: 1.5
+-----
+N: 22000 mode: normal dpquicksort worst case
+Avg Time: 0.382366 sec.
+Comparisons: 241978000
+Swaps: 33000
+Comparisons/n: 10999
+Swaps/n: 1.5
+-----
+N: 23000 mode: normal dpquicksort worst case
+Avg Time: 0.417785 sec.
+Comparisons: 264477000
+Swaps: 34500
+Comparisons/n: 11499
+Swaps/n: 1.5
+-----
+N: 24000 mode: normal dpquicksort worst case
+Avg Time: 0.455426 sec.
+Comparisons: 287976000
+Swaps: 36000
+Comparisons/n: 11999
+Swaps/n: 1.5
+-----
+N: 25000 mode: normal dpquicksort worst case
+Avg Time: 0.495031 sec.
+Comparisons: 312475000
+Swaps: 37500
+Comparisons/n: 12499
+Swaps/n: 1.5
+-----
+N: 26000 mode: normal dpquicksort worst case
+Avg Time: 0.535603 sec.
+Comparisons: 337974000
+Swaps: 39000
+Comparisons/n: 12999
+Swaps/n: 1.5
+-----
+N: 27000 mode: normal dpquicksort worst case
+Avg Time: 0.579155 sec.
+Comparisons: 364473000
+Swaps: 40500
+Comparisons/n: 13499
+Swaps/n: 1.5
+-----
+N: 28000 mode: normal dpquicksort worst case
+Avg Time: 0.619648 sec.
+Comparisons: 391972000
+Swaps: 42000
+Comparisons/n: 13999
+Swaps/n: 1.5
+-----
+N: 29000 mode: normal dpquicksort worst case
+Avg Time: 0.665321 sec.
+Comparisons: 420471000
+Swaps: 43500
+Comparisons/n: 14499
+Swaps/n: 1.5
+-----
+N: 30000 mode: normal dpquicksort worst case
+Avg Time: 0.710019 sec.
+Comparisons: 449970000
+Swaps: 45000
+Comparisons/n: 14999
+Swaps/n: 1.5
+-----
+N: 31000 mode: normal dpquicksort worst case
+Avg Time: 0.760469 sec.
+Comparisons: 480469000
+Swaps: 46500
+Comparisons/n: 15499
+Swaps/n: 1.5
+-----
+N: 32000 mode: normal dpquicksort worst case
+Avg Time: 0.810456 sec.
+Comparisons: 511968000
+Swaps: 48000
+Comparisons/n: 15999
+Swaps/n: 1.5
+-----
+N: 33000 mode: normal dpquicksort worst case
+Avg Time: 0.860256 sec.
+Comparisons: 544467000
+Swaps: 49500
+Comparisons/n: 16499
+Swaps/n: 1.5
+-----
+N: 34000 mode: normal dpquicksort worst case
+Avg Time: 0.913452 sec.
+Comparisons: 577966000
+Swaps: 51000
+Comparisons/n: 16999
+Swaps/n: 1.5
+-----
+N: 35000 mode: normal dpquicksort worst case
+Avg Time: 0.9664 sec.
+Comparisons: 612465000
+Swaps: 52500
+Comparisons/n: 17499
+Swaps/n: 1.5
+-----
+N: 36000 mode: normal dpquicksort worst case
+Avg Time: 1.02341 sec.
+Comparisons: 647964000
+Swaps: 54000
+Comparisons/n: 17999
+Swaps/n: 1.5
+-----
+N: 37000 mode: normal dpquicksort worst case
+Avg Time: 1.08221 sec.
+Comparisons: 684463000
+Swaps: 55500
+Comparisons/n: 18499
+Swaps/n: 1.5
+-----
+N: 38000 mode: normal dpquicksort worst case
+Avg Time: 1.13957 sec.
+Comparisons: 721962000
+Swaps: 57000
+Comparisons/n: 18999
+Swaps/n: 1.5
+-----
+N: 39000 mode: normal dpquicksort worst case
+Avg Time: 1.19691 sec.
+Comparisons: 760461000
+Swaps: 58500
+Comparisons/n: 19499
+Swaps/n: 1.5
+-----
+N: 40000 mode: normal dpquicksort worst case
+Avg Time: 1.26517 sec.
+Comparisons: 799960000
+Swaps: 60000
+Comparisons/n: 19999
+Swaps/n: 1.5
+-----
+N: 41000 mode: normal dpquicksort worst case
+Avg Time: 1.32824 sec.
+Comparisons: 840459000
+Swaps: 61500
+Comparisons/n: 20499
+Swaps/n: 1.5
+-----
+N: 42000 mode: normal dpquicksort worst case
+Avg Time: 1.391 sec.
+Comparisons: 881958000
+Swaps: 63000
+Comparisons/n: 20999
+Swaps/n: 1.5
+-----
+N: 43000 mode: normal dpquicksort worst case
+Avg Time: 1.45775 sec.
+Comparisons: 924457000
+Swaps: 64500
+Comparisons/n: 21499
+Swaps/n: 1.5
+-----
+N: 44000 mode: normal dpquicksort worst case
+Avg Time: 1.52476 sec.
+Comparisons: 967956000
+Swaps: 66000
+Comparisons/n: 21999
+Swaps/n: 1.5
+-----
+N: 45000 mode: normal dpquicksort worst case
+Avg Time: 1.59534 sec.
+Comparisons: 1012455000
+Swaps: 67500
+Comparisons/n: 22499
+Swaps/n: 1.5
+-----
+N: 46000 mode: normal dpquicksort worst case
+Avg Time: 1.66498 sec.
+Comparisons: 1057954000
+Swaps: 69000
+Comparisons/n: 22999
+Swaps/n: 1.5
+-----
+N: 47000 mode: normal dpquicksort worst case
+Avg Time: 1.73838 sec.
+Comparisons: 1104453000
+Swaps: 70500
+Comparisons/n: 23499
+Swaps/n: 1.5
+-----
+N: 48000 mode: normal dpquicksort worst case
+Avg Time: 1.81305 sec.
+Comparisons: 1151952000
+Swaps: 72000
+Comparisons/n: 23999
+Swaps/n: 1.5
+-----
+N: 49000 mode: normal dpquicksort worst case
+Avg Time: 1.88727 sec.
+Comparisons: 1200451000
+Swaps: 73500
+Comparisons/n: 24499
+Swaps/n: 1.5
+-----
+N: 50000 mode: normal dpquicksort worst case
+Avg Time: 1.96893 sec.
+Comparisons: 1249950000
+Swaps: 75000
+Comparisons/n: 24999
+Swaps/n: 1.5
+-----

@@ -13,6 +13,7 @@ int binsearch(std::vector<int>& arr, int target, Stats& stats) {
         stats.comparisons++;
         if (arr[mid] == target) 
         {
+            std::cout << "Found " << target << " at index " << mid << std::endl;
             return mid; // Target found
         } 
         else if (arr[mid] < target) 

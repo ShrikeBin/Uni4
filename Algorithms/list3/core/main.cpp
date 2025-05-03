@@ -13,6 +13,7 @@
 std::unordered_map<std::string, std::function<void(std::vector<int>&, Stats&, int, int)>> op_map = {
     {"hybrid", [](std::vector<int>& arr, Stats& stats, int, int) { hybrid_sort(arr, stats); }},
     {"quick", [](std::vector<int>& arr, Stats& stats, int, int) { better_quick_sort(arr, stats); }},
+    {"test", [](std::vector<int>& arr, Stats& stats, int, int) { quick_sort(arr, stats); }},
     {"dpquick", [](std::vector<int>& arr, Stats& stats, int, int) { better_dual_pivot_quick_sort(arr, stats); }},
     {"select", [](std::vector<int>& arr, Stats& stats, int k, int) { Select(arr, k, stats); }},
     {"rselect", [](std::vector<int>& arr, Stats& stats, int k, int) { RandomSelect(arr, k, stats); }},

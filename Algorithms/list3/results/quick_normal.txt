@@ -1,0 +1,350 @@
+N: 1000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.00188745 sec.
+Comparisons: 499500
+Swaps: 250499
+Comparisons/n: 499.5
+Swaps/n: 250.499
+-----
+N: 2000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.00746366 sec.
+Comparisons: 1999000
+Swaps: 1000999
+Comparisons/n: 999.5
+Swaps/n: 500.5
+-----
+N: 3000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.0167075 sec.
+Comparisons: 4498500
+Swaps: 2251499
+Comparisons/n: 1499.5
+Swaps/n: 750.5
+-----
+N: 4000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.0298556 sec.
+Comparisons: 7998000
+Swaps: 4001999
+Comparisons/n: 1999.5
+Swaps/n: 1000.5
+-----
+N: 5000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.0465759 sec.
+Comparisons: 12497500
+Swaps: 6252499
+Comparisons/n: 2499.5
+Swaps/n: 1250.5
+-----
+N: 6000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.0669283 sec.
+Comparisons: 17997000
+Swaps: 9002999
+Comparisons/n: 2999.5
+Swaps/n: 1500.5
+-----
+N: 7000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.090862 sec.
+Comparisons: 24496500
+Swaps: 12253499
+Comparisons/n: 3499.5
+Swaps/n: 1750.5
+-----
+N: 8000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.118927 sec.
+Comparisons: 31996000
+Swaps: 16003999
+Comparisons/n: 3999.5
+Swaps/n: 2000.5
+-----
+N: 9000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.151933 sec.
+Comparisons: 40495500
+Swaps: 20254499
+Comparisons/n: 4499.5
+Swaps/n: 2250.5
+-----
+N: 10000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.185005 sec.
+Comparisons: 49995000
+Swaps: 25004999
+Comparisons/n: 4999.5
+Swaps/n: 2500.5
+-----
+N: 11000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.225066 sec.
+Comparisons: 60494500
+Swaps: 30255499
+Comparisons/n: 5499.5
+Swaps/n: 2750.5
+-----
+N: 12000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.268302 sec.
+Comparisons: 71994000
+Swaps: 36005999
+Comparisons/n: 5999.5
+Swaps/n: 3000.5
+-----
+N: 13000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.314873 sec.
+Comparisons: 84493500
+Swaps: 42256499
+Comparisons/n: 6499.5
+Swaps/n: 3250.5
+-----
+N: 14000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.364834 sec.
+Comparisons: 97993000
+Swaps: 49006999
+Comparisons/n: 6999.5
+Swaps/n: 3500.5
+-----
+N: 15000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.417501 sec.
+Comparisons: 112492500
+Swaps: 56257499
+Comparisons/n: 7499.5
+Swaps/n: 3750.5
+-----
+N: 16000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.477721 sec.
+Comparisons: 127992000
+Swaps: 64007999
+Comparisons/n: 7999.5
+Swaps/n: 4000.5
+-----
+N: 17000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.539741 sec.
+Comparisons: 144491500
+Swaps: 72258499
+Comparisons/n: 8499.5
+Swaps/n: 4250.5
+-----
+N: 18000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.604797 sec.
+Comparisons: 161991000
+Swaps: 81008999
+Comparisons/n: 8999.5
+Swaps/n: 4500.5
+-----
+N: 19000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.673823 sec.
+Comparisons: 180490500
+Swaps: 90259499
+Comparisons/n: 9499.5
+Swaps/n: 4750.5
+-----
+N: 20000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.745825 sec.
+Comparisons: 199990000
+Swaps: 100009999
+Comparisons/n: 9999.5
+Swaps/n: 5000.5
+-----
+N: 21000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.822794 sec.
+Comparisons: 220489500
+Swaps: 110260499
+Comparisons/n: 10499.5
+Swaps/n: 5250.5
+-----
+N: 22000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.90314 sec.
+Comparisons: 241989000
+Swaps: 121010999
+Comparisons/n: 10999.5
+Swaps/n: 5500.5
+-----
+N: 23000 mode: normal (lomuto) quicksort worst case
+Avg Time: 0.988676 sec.
+Comparisons: 264488500
+Swaps: 132261499
+Comparisons/n: 11499.5
+Swaps/n: 5750.5
+-----
+N: 24000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.07415 sec.
+Comparisons: 287988000
+Swaps: 144011999
+Comparisons/n: 11999.5
+Swaps/n: 6000.5
+-----
+N: 25000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.16207 sec.
+Comparisons: 312487500
+Swaps: 156262499
+Comparisons/n: 12499.5
+Swaps/n: 6250.5
+-----
+N: 26000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.25533 sec.
+Comparisons: 337987000
+Swaps: 169012999
+Comparisons/n: 12999.5
+Swaps/n: 6500.5
+-----
+N: 27000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.3513 sec.
+Comparisons: 364486500
+Swaps: 182263499
+Comparisons/n: 13499.5
+Swaps/n: 6750.5
+-----
+N: 28000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.45951 sec.
+Comparisons: 391986000
+Swaps: 196013999
+Comparisons/n: 13999.5
+Swaps/n: 7000.5
+-----
+N: 29000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.57088 sec.
+Comparisons: 420485500
+Swaps: 210264499
+Comparisons/n: 14499.5
+Swaps/n: 7250.5
+-----
+N: 30000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.6796 sec.
+Comparisons: 449985000
+Swaps: 225014999
+Comparisons/n: 14999.5
+Swaps/n: 7500.5
+-----
+N: 31000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.79366 sec.
+Comparisons: 480484500
+Swaps: 240265499
+Comparisons/n: 15499.5
+Swaps/n: 7750.5
+-----
+N: 32000 mode: normal (lomuto) quicksort worst case
+Avg Time: 1.90852 sec.
+Comparisons: 511984000
+Swaps: 256015999
+Comparisons/n: 15999.5
+Swaps/n: 8000.5
+-----
+N: 33000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.02961 sec.
+Comparisons: 544483500
+Swaps: 272266499
+Comparisons/n: 16499.5
+Swaps/n: 8250.5
+-----
+N: 34000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.15959 sec.
+Comparisons: 577983000
+Swaps: 289016999
+Comparisons/n: 16999.5
+Swaps/n: 8500.5
+-----
+N: 35000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.28697 sec.
+Comparisons: 612482500
+Swaps: 306267499
+Comparisons/n: 17499.5
+Swaps/n: 8750.5
+-----
+N: 36000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.41533 sec.
+Comparisons: 647982000
+Swaps: 324017999
+Comparisons/n: 17999.5
+Swaps/n: 9000.5
+-----
+N: 37000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.55873 sec.
+Comparisons: 684481500
+Swaps: 342268499
+Comparisons/n: 18499.5
+Swaps/n: 9250.5
+-----
+N: 38000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.69732 sec.
+Comparisons: 721981000
+Swaps: 361018999
+Comparisons/n: 18999.5
+Swaps/n: 9500.5
+-----
+N: 39000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.84072 sec.
+Comparisons: 760480500
+Swaps: 380269499
+Comparisons/n: 19499.5
+Swaps/n: 9750.5
+-----
+N: 40000 mode: normal (lomuto) quicksort worst case
+Avg Time: 2.988 sec.
+Comparisons: 799980000
+Swaps: 400019999
+Comparisons/n: 19999.5
+Swaps/n: 10000.5
+-----
+N: 41000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.13572 sec.
+Comparisons: 840479500
+Swaps: 420270499
+Comparisons/n: 20499.5
+Swaps/n: 10250.5
+-----
+N: 42000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.29207 sec.
+Comparisons: 881979000
+Swaps: 441020999
+Comparisons/n: 20999.5
+Swaps/n: 10500.5
+-----
+N: 43000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.43756 sec.
+Comparisons: 924478500
+Swaps: 462271499
+Comparisons/n: 21499.5
+Swaps/n: 10750.5
+-----
+N: 44000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.6175 sec.
+Comparisons: 967978000
+Swaps: 484021999
+Comparisons/n: 21999.5
+Swaps/n: 11000.5
+-----
+N: 45000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.78881 sec.
+Comparisons: 1012477500
+Swaps: 506272499
+Comparisons/n: 22499.5
+Swaps/n: 11250.5
+-----
+N: 46000 mode: normal (lomuto) quicksort worst case
+Avg Time: 3.95578 sec.
+Comparisons: 1057977000
+Swaps: 529022999
+Comparisons/n: 22999.5
+Swaps/n: 11500.5
+-----
+N: 47000 mode: normal (lomuto) quicksort worst case
+Avg Time: 4.12189 sec.
+Comparisons: 1104476500
+Swaps: 552273499
+Comparisons/n: 23499.5
+Swaps/n: 11750.5
+-----
+N: 48000 mode: normal (lomuto) quicksort worst case
+Avg Time: 4.28893 sec.
+Comparisons: 1151976000
+Swaps: 576023999
+Comparisons/n: 23999.5
+Swaps/n: 12000.5
+-----
+N: 49000 mode: normal (lomuto) quicksort worst case
+Avg Time: 4.48786 sec.
+Comparisons: 1200475500
+Swaps: 600274499
+Comparisons/n: 24499.5
+Swaps/n: 12250.5
+-----
+N: 50000 mode: normal (lomuto) quicksort worst case
+Avg Time: 4.66712 sec.
+Comparisons: 1249975000
+Swaps: 625024999
+Comparisons/n: 24999.5
+Swaps/n: 12500.5
+-----

@@ -342,7 +342,7 @@ void run_quick(int n, int repeats)
     double time_normal = std::chrono::duration<double>(end_normal- start_normal).count() / repeats;
     double time_better = std::chrono::duration<double>(end_better - start_better).count() / repeats;
 
-    write_stats_to_file("quick_normal.txt", total_stats_normal, n, "normal quicksort worst case", time_normal);
+    write_stats_to_file("quick_normal.txt", total_stats_normal, n, "normal (lomuto) quicksort worst case", time_normal);
     write_stats_to_file("quick_better.txt", total_stats_better, n, "better quicksort worst case", time_better);
 }
 
@@ -387,7 +387,7 @@ void run_dpquick(int n, int repeats)
 
 void run_full(int repeats) 
 {
-    for (int i = 1000; i <= 100000; i += 1000) 
+    for (int i = 1000; i <= 50000; i += 1000) 
     {
         std::cout << "Running for n = " << i << std::endl;
         run_select(i, repeats);

@@ -1,0 +1,350 @@
+N: 1000 mode: better quicksort worst case
+Avg Time: 0.00230817 sec.
+Comparisons: 57648
+Swaps: 27340
+Comparisons/n: 57.648
+Swaps/n: 27.34
+-----
+N: 2000 mode: better quicksort worst case
+Avg Time: 0.00512388 sec.
+Comparisons: 133061
+Swaps: 61359
+Comparisons/n: 66.5305
+Swaps/n: 30.6795
+-----
+N: 3000 mode: better quicksort worst case
+Avg Time: 0.00841693 sec.
+Comparisons: 216889
+Swaps: 99864
+Comparisons/n: 72.2963
+Swaps/n: 33.288
+-----
+N: 4000 mode: better quicksort worst case
+Avg Time: 0.0112169 sec.
+Comparisons: 301908
+Swaps: 136066
+Comparisons/n: 75.477
+Swaps/n: 34.0165
+-----
+N: 5000 mode: better quicksort worst case
+Avg Time: 0.0147916 sec.
+Comparisons: 391872
+Swaps: 178106
+Comparisons/n: 78.3744
+Swaps/n: 35.6212
+-----
+N: 6000 mode: better quicksort worst case
+Avg Time: 0.0184168 sec.
+Comparisons: 488850
+Swaps: 220168
+Comparisons/n: 81.475
+Swaps/n: 36.6947
+-----
+N: 7000 mode: better quicksort worst case
+Avg Time: 0.0208412 sec.
+Comparisons: 566822
+Swaps: 251782
+Comparisons/n: 80.9746
+Swaps/n: 35.9689
+-----
+N: 8000 mode: better quicksort worst case
+Avg Time: 0.024094 sec.
+Comparisons: 675422
+Swaps: 298486
+Comparisons/n: 84.4278
+Swaps/n: 37.3107
+-----
+N: 9000 mode: better quicksort worst case
+Avg Time: 0.0273087 sec.
+Comparisons: 763845
+Swaps: 338650
+Comparisons/n: 84.8717
+Swaps/n: 37.6278
+-----
+N: 10000 mode: better quicksort worst case
+Avg Time: 0.031889 sec.
+Comparisons: 876280
+Swaps: 390470
+Comparisons/n: 87.628
+Swaps/n: 39.047
+-----
+N: 11000 mode: better quicksort worst case
+Avg Time: 0.0330657 sec.
+Comparisons: 939525
+Swaps: 416122
+Comparisons/n: 85.4114
+Swaps/n: 37.8293
+-----
+N: 12000 mode: better quicksort worst case
+Avg Time: 0.0393236 sec.
+Comparisons: 1086437
+Swaps: 480123
+Comparisons/n: 90.5364
+Swaps/n: 40.0102
+-----
+N: 13000 mode: better quicksort worst case
+Avg Time: 0.0402178 sec.
+Comparisons: 1133132
+Swaps: 496471
+Comparisons/n: 87.164
+Swaps/n: 38.1901
+-----
+N: 14000 mode: better quicksort worst case
+Avg Time: 0.045 sec.
+Comparisons: 1266244
+Swaps: 552930
+Comparisons/n: 90.446
+Swaps/n: 39.495
+-----
+N: 15000 mode: better quicksort worst case
+Avg Time: 0.0484763 sec.
+Comparisons: 1362087
+Swaps: 593798
+Comparisons/n: 90.8058
+Swaps/n: 39.5865
+-----
+N: 16000 mode: better quicksort worst case
+Avg Time: 0.0518666 sec.
+Comparisons: 1494061
+Swaps: 648973
+Comparisons/n: 93.3788
+Swaps/n: 40.5608
+-----
+N: 17000 mode: better quicksort worst case
+Avg Time: 0.0519053 sec.
+Comparisons: 1511524
+Swaps: 655898
+Comparisons/n: 88.9132
+Swaps/n: 38.5822
+-----
+N: 18000 mode: better quicksort worst case
+Avg Time: 0.0589723 sec.
+Comparisons: 1697828
+Swaps: 740212
+Comparisons/n: 94.3238
+Swaps/n: 41.1229
+-----
+N: 19000 mode: better quicksort worst case
+Avg Time: 0.0646474 sec.
+Comparisons: 1823656
+Swaps: 797460
+Comparisons/n: 95.9819
+Swaps/n: 41.9716
+-----
+N: 20000 mode: better quicksort worst case
+Avg Time: 0.0685721 sec.
+Comparisons: 1936399
+Swaps: 848357
+Comparisons/n: 96.82
+Swaps/n: 42.4179
+-----
+N: 21000 mode: better quicksort worst case
+Avg Time: 0.0706054 sec.
+Comparisons: 1991133
+Swaps: 871940
+Comparisons/n: 94.8159
+Swaps/n: 41.521
+-----
+N: 22000 mode: better quicksort worst case
+Avg Time: 0.0718929 sec.
+Comparisons: 2086145
+Swaps: 908380
+Comparisons/n: 94.8248
+Swaps/n: 41.29
+-----
+N: 23000 mode: better quicksort worst case
+Avg Time: 0.078533 sec.
+Comparisons: 2236182
+Swaps: 974260
+Comparisons/n: 97.2253
+Swaps/n: 42.3591
+-----
+N: 24000 mode: better quicksort worst case
+Avg Time: 0.0842722 sec.
+Comparisons: 2392842
+Swaps: 1040860
+Comparisons/n: 99.7018
+Swaps/n: 43.3692
+-----
+N: 25000 mode: better quicksort worst case
+Avg Time: 0.0869061 sec.
+Comparisons: 2449030
+Swaps: 1059817
+Comparisons/n: 97.9612
+Swaps/n: 42.3927
+-----
+N: 26000 mode: better quicksort worst case
+Avg Time: 0.0869507 sec.
+Comparisons: 2507856
+Swaps: 1081260
+Comparisons/n: 96.456
+Swaps/n: 41.5869
+-----
+N: 27000 mode: better quicksort worst case
+Avg Time: 0.0880697 sec.
+Comparisons: 2576769
+Swaps: 1104612
+Comparisons/n: 95.4359
+Swaps/n: 40.9116
+-----
+N: 28000 mode: better quicksort worst case
+Avg Time: 0.0964898 sec.
+Comparisons: 2791720
+Swaps: 1200667
+Comparisons/n: 99.7043
+Swaps/n: 42.881
+-----
+N: 29000 mode: better quicksort worst case
+Avg Time: 0.0944434 sec.
+Comparisons: 2764961
+Swaps: 1189102
+Comparisons/n: 95.3435
+Swaps/n: 41.0035
+-----
+N: 30000 mode: better quicksort worst case
+Avg Time: 0.103184 sec.
+Comparisons: 3009860
+Swaps: 1292855
+Comparisons/n: 100.329
+Swaps/n: 43.0952
+-----
+N: 31000 mode: better quicksort worst case
+Avg Time: 0.104606 sec.
+Comparisons: 3078448
+Swaps: 1318830
+Comparisons/n: 99.3048
+Swaps/n: 42.5429
+-----
+N: 32000 mode: better quicksort worst case
+Avg Time: 0.112607 sec.
+Comparisons: 3276323
+Swaps: 1402115
+Comparisons/n: 102.385
+Swaps/n: 43.8161
+-----
+N: 33000 mode: better quicksort worst case
+Avg Time: 0.110625 sec.
+Comparisons: 3254896
+Swaps: 1391959
+Comparisons/n: 98.6332
+Swaps/n: 42.1806
+-----
+N: 34000 mode: better quicksort worst case
+Avg Time: 0.112175 sec.
+Comparisons: 3348819
+Swaps: 1432377
+Comparisons/n: 98.4947
+Swaps/n: 42.1287
+-----
+N: 35000 mode: better quicksort worst case
+Avg Time: 0.120569 sec.
+Comparisons: 3537739
+Swaps: 1517461
+Comparisons/n: 101.078
+Swaps/n: 43.356
+-----
+N: 36000 mode: better quicksort worst case
+Avg Time: 0.126133 sec.
+Comparisons: 3727674
+Swaps: 1601024
+Comparisons/n: 103.546
+Swaps/n: 44.4729
+-----
+N: 37000 mode: better quicksort worst case
+Avg Time: 0.1234 sec.
+Comparisons: 3675685
+Swaps: 1575531
+Comparisons/n: 99.3428
+Swaps/n: 42.5819
+-----
+N: 38000 mode: better quicksort worst case
+Avg Time: 0.138359 sec.
+Comparisons: 4008411
+Swaps: 1727746
+Comparisons/n: 105.484
+Swaps/n: 45.467
+-----
+N: 39000 mode: better quicksort worst case
+Avg Time: 0.136851 sec.
+Comparisons: 4005480
+Swaps: 1722746
+Comparisons/n: 102.705
+Swaps/n: 44.173
+-----
+N: 40000 mode: better quicksort worst case
+Avg Time: 0.146784 sec.
+Comparisons: 4239491
+Swaps: 1830122
+Comparisons/n: 105.987
+Swaps/n: 45.7531
+-----
+N: 41000 mode: better quicksort worst case
+Avg Time: 0.149671 sec.
+Comparisons: 4333091
+Swaps: 1869896
+Comparisons/n: 105.685
+Swaps/n: 45.6072
+-----
+N: 42000 mode: better quicksort worst case
+Avg Time: 0.150127 sec.
+Comparisons: 4375038
+Swaps: 1887465
+Comparisons/n: 104.168
+Swaps/n: 44.9396
+-----
+N: 43000 mode: better quicksort worst case
+Avg Time: 0.148289 sec.
+Comparisons: 4377891
+Swaps: 1883056
+Comparisons/n: 101.811
+Swaps/n: 43.792
+-----
+N: 44000 mode: better quicksort worst case
+Avg Time: 0.153218 sec.
+Comparisons: 4584357
+Swaps: 1968081
+Comparisons/n: 104.19
+Swaps/n: 44.7291
+-----
+N: 45000 mode: better quicksort worst case
+Avg Time: 0.154354 sec.
+Comparisons: 4562545
+Swaps: 1961176
+Comparisons/n: 101.39
+Swaps/n: 43.5817
+-----
+N: 46000 mode: better quicksort worst case
+Avg Time: 0.167902 sec.
+Comparisons: 4907661
+Swaps: 2107509
+Comparisons/n: 106.688
+Swaps/n: 45.8154
+-----
+N: 47000 mode: better quicksort worst case
+Avg Time: 0.16307 sec.
+Comparisons: 4850588
+Swaps: 2073569
+Comparisons/n: 103.204
+Swaps/n: 44.1185
+-----
+N: 48000 mode: better quicksort worst case
+Avg Time: 0.180086 sec.
+Comparisons: 5224651
+Swaps: 2241009
+Comparisons/n: 108.847
+Swaps/n: 46.6877
+-----
+N: 49000 mode: better quicksort worst case
+Avg Time: 0.172334 sec.
+Comparisons: 5052713
+Swaps: 2159133
+Comparisons/n: 103.117
+Swaps/n: 44.0639
+-----
+N: 50000 mode: better quicksort worst case
+Avg Time: 0.184501 sec.
+Comparisons: 5376719
+Swaps: 2295747
+Comparisons/n: 107.534
+Swaps/n: 45.9149
+-----

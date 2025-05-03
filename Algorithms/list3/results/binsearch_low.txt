@@ -1,0 +1,350 @@
+N: 1000 mode: binsearch low
+Avg Time: 1.9137e-06 sec.
+Comparisons: 15
+Swaps: 0
+Comparisons/n: 0.015
+Swaps/n: 0
+-----
+N: 2000 mode: binsearch low
+Avg Time: 3.688e-06 sec.
+Comparisons: 17
+Swaps: 0
+Comparisons/n: 0.0085
+Swaps/n: 0
+-----
+N: 3000 mode: binsearch low
+Avg Time: 5.4693e-06 sec.
+Comparisons: 15
+Swaps: 0
+Comparisons/n: 0.005
+Swaps/n: 0
+-----
+N: 4000 mode: binsearch low
+Avg Time: 7.2517e-06 sec.
+Comparisons: 19
+Swaps: 0
+Comparisons/n: 0.00475
+Swaps/n: 0
+-----
+N: 5000 mode: binsearch low
+Avg Time: 9.0271e-06 sec.
+Comparisons: 21
+Swaps: 0
+Comparisons/n: 0.0042
+Swaps/n: 0
+-----
+N: 6000 mode: binsearch low
+Avg Time: 1.08334e-05 sec.
+Comparisons: 17
+Swaps: 0
+Comparisons/n: 0.00283333
+Swaps/n: 0
+-----
+N: 7000 mode: binsearch low
+Avg Time: 1.29465e-05 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.00328571
+Swaps/n: 0
+-----
+N: 8000 mode: binsearch low
+Avg Time: 1.44252e-05 sec.
+Comparisons: 21
+Swaps: 0
+Comparisons/n: 0.002625
+Swaps/n: 0
+-----
+N: 9000 mode: binsearch low
+Avg Time: 1.62457e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00277778
+Swaps/n: 0
+-----
+N: 10000 mode: binsearch low
+Avg Time: 1.80161e-05 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.0023
+Swaps/n: 0
+-----
+N: 11000 mode: binsearch low
+Avg Time: 1.98024e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00227273
+Swaps/n: 0
+-----
+N: 12000 mode: binsearch low
+Avg Time: 2.19215e-05 sec.
+Comparisons: 19
+Swaps: 0
+Comparisons/n: 0.00158333
+Swaps/n: 0
+-----
+N: 13000 mode: binsearch low
+Avg Time: 2.33913e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.00207692
+Swaps/n: 0
+-----
+N: 14000 mode: binsearch low
+Avg Time: 2.51666e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00178571
+Swaps/n: 0
+-----
+N: 15000 mode: binsearch low
+Avg Time: 2.6966e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.0018
+Swaps/n: 0
+-----
+N: 16000 mode: binsearch low
+Avg Time: 2.87623e-05 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.0014375
+Swaps/n: 0
+-----
+N: 17000 mode: binsearch low
+Avg Time: 3.05368e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.00158824
+Swaps/n: 0
+-----
+N: 18000 mode: binsearch low
+Avg Time: 4.63626e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.0015
+Swaps/n: 0
+-----
+N: 19000 mode: binsearch low
+Avg Time: 4.74186e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00131579
+Swaps/n: 0
+-----
+N: 20000 mode: binsearch low
+Avg Time: 5.09693e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00125
+Swaps/n: 0
+-----
+N: 21000 mode: binsearch low
+Avg Time: 5.22518e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.00128571
+Swaps/n: 0
+-----
+N: 22000 mode: binsearch low
+Avg Time: 5.54698e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.00122727
+Swaps/n: 0
+-----
+N: 23000 mode: binsearch low
+Avg Time: 5.69866e-05 sec.
+Comparisons: 21
+Swaps: 0
+Comparisons/n: 0.000913043
+Swaps/n: 0
+-----
+N: 24000 mode: binsearch low
+Avg Time: 5.84394e-05 sec.
+Comparisons: 21
+Swaps: 0
+Comparisons/n: 0.000875
+Swaps/n: 0
+-----
+N: 25000 mode: binsearch low
+Avg Time: 6.11826e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.00116
+Swaps/n: 0
+-----
+N: 26000 mode: binsearch low
+Avg Time: 6.33417e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.00111538
+Swaps/n: 0
+-----
+N: 27000 mode: binsearch low
+Avg Time: 6.5647e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.001
+Swaps/n: 0
+-----
+N: 28000 mode: binsearch low
+Avg Time: 6.11296e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.000964286
+Swaps/n: 0
+-----
+N: 29000 mode: binsearch low
+Avg Time: 6.88291e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.001
+Swaps/n: 0
+-----
+N: 30000 mode: binsearch low
+Avg Time: 7.20992e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000966667
+Swaps/n: 0
+-----
+N: 31000 mode: binsearch low
+Avg Time: 7.47973e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.000806452
+Swaps/n: 0
+-----
+N: 32000 mode: binsearch low
+Avg Time: 7.7265e-05 sec.
+Comparisons: 25
+Swaps: 0
+Comparisons/n: 0.00078125
+Swaps/n: 0
+-----
+N: 33000 mode: binsearch low
+Avg Time: 7.70326e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000878788
+Swaps/n: 0
+-----
+N: 34000 mode: binsearch low
+Avg Time: 8.07276e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000852941
+Swaps/n: 0
+-----
+N: 35000 mode: binsearch low
+Avg Time: 8.1506e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000828571
+Swaps/n: 0
+-----
+N: 36000 mode: binsearch low
+Avg Time: 8.307e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000805556
+Swaps/n: 0
+-----
+N: 37000 mode: binsearch low
+Avg Time: 8.9419e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.00072973
+Swaps/n: 0
+-----
+N: 38000 mode: binsearch low
+Avg Time: 9.66708e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.000710526
+Swaps/n: 0
+-----
+N: 39000 mode: binsearch low
+Avg Time: 9.05581e-05 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.000692308
+Swaps/n: 0
+-----
+N: 40000 mode: binsearch low
+Avg Time: 0.000100518 sec.
+Comparisons: 27
+Swaps: 0
+Comparisons/n: 0.000675
+Swaps/n: 0
+-----
+N: 41000 mode: binsearch low
+Avg Time: 9.59915e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000707317
+Swaps/n: 0
+-----
+N: 42000 mode: binsearch low
+Avg Time: 9.80874e-05 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000690476
+Swaps/n: 0
+-----
+N: 43000 mode: binsearch low
+Avg Time: 0.00010153 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000674419
+Swaps/n: 0
+-----
+N: 44000 mode: binsearch low
+Avg Time: 0.000100797 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000659091
+Swaps/n: 0
+-----
+N: 45000 mode: binsearch low
+Avg Time: 0.000104472 sec.
+Comparisons: 29
+Swaps: 0
+Comparisons/n: 0.000644444
+Swaps/n: 0
+-----
+N: 46000 mode: binsearch low
+Avg Time: 0.000114052 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.0005
+Swaps/n: 0
+-----
+N: 47000 mode: binsearch low
+Avg Time: 0.000108514 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.000489362
+Swaps/n: 0
+-----
+N: 48000 mode: binsearch low
+Avg Time: 0.000114546 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.000479167
+Swaps/n: 0
+-----
+N: 49000 mode: binsearch low
+Avg Time: 0.000112257 sec.
+Comparisons: 23
+Swaps: 0
+Comparisons/n: 0.000469388
+Swaps/n: 0
+-----
+N: 50000 mode: binsearch low
+Avg Time: 0.000119789 sec.
+Comparisons: 31
+Swaps: 0
+Comparisons/n: 0.00062
+Swaps/n: 0
+-----
