@@ -740,25 +740,33 @@ uint32_t DisjointPatternDB::extract_position7(const std::array<uint8_t, 16>& sta
     uint32_t pattern_bits = 0;
     for(uint8_t i = 0; i < 16; ++i) 
     {
-        if(state[i] == 1)
+        if(state[i] == 9)
+        {
+            pattern_bits |= ((i << 4) << 24);
+        }
+        else if(state[i] == 10)
+        {
+            pattern_bits |= (i << 24);
+        }
+        else if(state[i] == 11)
+        {
+            pattern_bits |= (i << 20);
+        }
+        else if(state[i] == 12)
         {
             pattern_bits |= (i << 16);
         }
-        else if(state[i] == 2)
+        else if(state[i] == 13)
         {
             pattern_bits |= (i << 12);
         }
-        else if(state[i] == 3)
+        else if(state[i] == 14)
         {
             pattern_bits |= (i << 8);
         }
-        else if(state[i] == 4)
+        else if(state[i] == 15)
         {
             pattern_bits |= (i << 4);
-        }
-        else if(state[i] == 5)
-        {
-            pattern_bits |= i;
         }
     }
     return pattern_bits;
@@ -779,21 +787,33 @@ uint32_t DisjointPatternDB::extract_position8(const std::array<uint8_t, 16>& sta
     {
         if(state[i] == 1)
         {
-            pattern_bits |= (i << 16);
+            pattern_bits |= ((i << 4) << 24);
         }
         else if(state[i] == 2)
         {
-            pattern_bits |= (i << 12);
+            pattern_bits |= (i << 24);
         }
         else if(state[i] == 3)
         {
-            pattern_bits |= (i << 8);
+            pattern_bits |= (i << 20);
         }
         else if(state[i] == 4)
         {
-            pattern_bits |= (i << 4);
+            pattern_bits |= (i << 16);
         }
         else if(state[i] == 5)
+        {
+            pattern_bits |= (i << 12);
+        }
+        else if(state[i] == 6)
+        {
+            pattern_bits |= (i << 8);
+        }
+        else if(state[i] == 7)
+        {
+            pattern_bits |= (i << 4);
+        }
+        else if(state[i] == 8)
         {
             pattern_bits |= i;
         }
