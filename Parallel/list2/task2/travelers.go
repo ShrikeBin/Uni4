@@ -14,8 +14,8 @@ const (
 	MaxSteps          = 100
 	MinDelay          = 10 * time.Millisecond
 	MaxDelay          = 50 * time.Millisecond
-	BoardWidth        = 15
-	BoardHeight       = 15
+	BoardWidth        = 20
+	BoardHeight       = 20
 )
 
 var (
@@ -128,6 +128,7 @@ type RelocateRequest struct {
 	Position Position
 	Status   Response
 }
+
 type Wild struct {
 	Traveler
 	RelocateChannel chan RelocateRequest
@@ -190,7 +191,6 @@ func (n *Node) Start() {
 								break
 							}
 						}
-
 						if nodeResponse != Fail {
 							wild.RelocateChannel <- RelocateRequest{newPosition, Success}
 							n.traveler = Request.Traveler
@@ -327,7 +327,7 @@ func (t *Wild) Start() {
 		t.Store_Trace()
 
 		// main loop
-		t.RelocateChannel = make(chan RelocateRequest) // clear out init tries
+		t.RelocateChannel = make(chan RelocateRequest)
 		for true {
 			if time.Since(StartTime) > t.timeDisappear {
 				break
