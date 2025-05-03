@@ -185,53 +185,53 @@ func (n *Node) Start() {
 		for true {
 			// handle requests like a true server
 			select {
-			case Request := <-n.EnterChannel:
-				// enter
-				if n.traveler == nil {
-					// if empty - assign traveler
-					n.traveler = Request.Traveler
-					Request.ResponseChannel <- Success
-				} else if _, ok := n.traveler.(*Legal); ok {
-					// if legal - noone can enter
-					Request.ResponseChannel <- Fail
-				} else if wild, ok := n.traveler.(*Wild); ok {
-					// if wild - try to move him
-					if _, ok := Request.Traveler.(*Legal); ok {
-						var newPosition Position
-						var nodeResponse Response
-						directions := []int{0, 1, 2, 3}
-						for _, dir := range directions {
-							newPosition := n.position
-							Move_Direction(&newPosition, dir)
+				case Request := <-n.EnterChannel:
+					// enter
+					if n.traveler == nil {
+						// if empty - assign traveler
+						n.traveler = Request.Traveler
+						Request.ResponseChannel <- Success
+					} else if _, ok := n.traveler.(*Legal); ok {
+						// if legal - noone can enter
+						Request.ResponseChannel <- Fail
+					} else if wild, ok := n.traveler.(*Wild); ok {
+						// if wild - try to move him
+						if _, ok := Request.Traveler.(*Legal); ok {
+							var newPosition Position
+							var nodeResponse Response
+							directions := []int{0, 1, 2, 3}
+							for _, dir := range directions {
+								newPosition = n.position
+								Move_Direction(&newPosition, dir)
 
-							request := EnterRequest{n.traveler, make(chan Response)}
-							Board[newPosition.X][newPosition.Y].EnterChannel <- request
-							nodeResponse = <-request.ResponseChannel
+								request := EnterRequest{n.traveler, make(chan Response)}
+								Board[newPosition.X][newPosition.Y].EnterChannel <- request
+								nodeResponse = <-request.ResponseChannel
+								if nodeResponse != Fail {
+									break
+								}
+							}
+
 							if nodeResponse != Fail {
-								break
+								if nodeResponse != Trapped {
+									wild.RelocateChannel <- RelocateRequest{newPosition, Success}
+								}
+								n.traveler = Request.Traveler
+								Request.ResponseChannel <- Success
+							} else {
+								Request.ResponseChannel <- Fail
 							}
-						}
-
-						if nodeResponse != Fail {
-							if nodeResponse != Trapped {
-								wild.RelocateChannel <- RelocateRequest{newPosition, Success}
-							}
-							n.traveler = Request.Traveler
-							Request.ResponseChannel <- Success
-						} else {
+						} else { // if wild's trying to get in - refuse
 							Request.ResponseChannel <- Fail
 						}
-					} else { // if not legal trying to get in - refuse
+					} else if trap, ok := n.traveler.(*Trap); ok {
+						// if trap pass the baton to the trap
+						trap.TrapChannel <- TrapRequest{Request.Traveler, Request.ResponseChannel}
+					} else {
 						Request.ResponseChannel <- Fail
 					}
-				} else if trap, ok := n.traveler.(*Trap); ok {
-					// if trap move logic into the trap
-					trap.TrapChannel <- TrapRequest{Request.Traveler, Request.ResponseChannel}
-				} else {
-					Request.ResponseChannel <- Fail
-				}
-			case <-n.LeaveChannel:
-				n.traveler = nil
+				case <-n.LeaveChannel:
+					n.traveler = nil
 			}
 		}
 	}()
@@ -295,37 +295,40 @@ func (t *Legal) Start() {
 					request := EnterRequest{t, make(chan Response, 1)}
 					Board[newPosition.X][newPosition.Y].EnterChannel <- request
 					select {
-					case t.response = <-request.ResponseChannel:
-						if t.response != Fail {
-							successChannel <- true
-						} else {
-							time.Sleep(time.Millisecond)
-						}
-					case <-deadlockChannel:
-						t.response = Deadlock
+						case t.response = <-request.ResponseChannel:
+							if t.response != Fail {
+								successChannel <- true
+							} else {
+								time.Sleep(time.Millisecond)
+							}
+
+						case <-deadlockChannel:
+							t.response = Deadlock
 					}
 				}
 			}()
 
 			select {
-			case <-successChannel:
-			case <-time.After(6 * MaxDelay):
-				deadlockChannel <- true
+				case <-successChannel:
+				case <-time.After(6 * MaxDelay):
+					deadlockChannel <- true
 			}
 
 			// handle response
 			switch t.response {
-			case Success:
-				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
-				t.Position = newPosition
-			case Trapped:
-				Board[t.Position.X][t.Position.Y].LeaveChannel <- true
-				t.Position = Position{
-					X: BoardWidth,
-					Y: BoardHeight,
-				}
-			case Deadlock:
-				t.Symbol = unicode.ToLower(t.Symbol)
+				case Success:
+					Board[t.Position.X][t.Position.Y].LeaveChannel <- true
+					t.Position = newPosition
+
+				case Trapped:
+					Board[t.Position.X][t.Position.Y].LeaveChannel <- true
+					t.Position = Position{
+						X: BoardWidth,
+						Y: BoardHeight,
+					}
+
+				case Deadlock:
+					t.Symbol = unicode.ToLower(t.Symbol)
 			}
 
 			// store trace
@@ -366,19 +369,20 @@ func (t *Wild) Start() {
 		t.Store_Trace()
 
 		// main loop
-		t.RelocateChannel = make(chan RelocateRequest) // clear out init tries
+		t.RelocateChannel = make(chan RelocateRequest)
 		for true {
 			if t.response == Trapped || time.Since(StartTime) > t.timeDisappear {
 				break
 			}
 
 			select {
-			case Request := <-t.RelocateChannel:
-				t.response = Request.Status
-				t.Position = Request.Position
-				t.timeStamp = time.Since(StartTime)
-				t.Store_Trace()
-			case <-time.After(t.timeDisappear - time.Since(StartTime)):
+				case Request := <-t.RelocateChannel:
+					t.response = Request.Status
+					t.Position = Request.Position
+					t.timeStamp = time.Since(StartTime)
+					t.Store_Trace()
+
+				case <-time.After(t.timeDisappear - time.Since(StartTime)):
 			}
 		}
 
@@ -432,38 +436,39 @@ func (t *Trap) Start() {
 			}
 
 			select {
-			case Request := <-t.TrapChannel:
-				switch v := Request.Traveler.(type) {
-				case *Legal:
-					t.response = Trapped
-					t.Symbol = unicode.ToLower(v.Symbol)
-				case *Wild:
-					select {
-					case v.RelocateChannel <- RelocateRequest{Position{BoardWidth, BoardHeight}, Trapped}:
-						t.response = Trapped
-						t.Symbol = '*'
-					case <-time.After(100 * time.Millisecond):
-						t.response = Fail
+				case Request := <-t.TrapChannel:
+					switch v := Request.Traveler.(type) {
+						case *Legal:
+							t.response = Trapped
+							t.Symbol = unicode.ToLower(v.Symbol)
+						case *Wild:
+							select {
+								case v.RelocateChannel <- RelocateRequest{Position{BoardWidth, BoardHeight}, Trapped}:
+									t.response = Trapped
+									t.Symbol = '*'
+									
+								case <-time.After(100 * time.Millisecond):
+									t.response = Fail
+							}
+						default:
+							t.response = Fail
+						}
+
+					Request.ResponseChannel <- t.response
+
+					// if traveller caught
+					if t.response == Trapped {
+						t.timeStamp = time.Since(StartTime)
+						t.Store_Trace()
+
+						time.Sleep(2 * MaxDelay)
+
+						t.Symbol = '#'
+						t.timeStamp = time.Since(StartTime)
+						t.Store_Trace()
 					}
-				default:
-					t.response = Fail
-				}
-
-				Request.ResponseChannel <- t.response
-
-				// if traveller caught
-				if t.response == Trapped {
-					t.timeStamp = time.Since(StartTime)
-					t.Store_Trace()
-
-					time.Sleep(2 * MaxDelay)
-
-					t.Symbol = '#'
-					t.timeStamp = time.Since(StartTime)
-					t.Store_Trace()
-				}
-			case <-t.Done:
-				t.response = Deadlock // to exit loop
+				case <-t.Done:
+					t.response = Deadlock // to exit loop
 			}
 		}
 
