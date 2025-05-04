@@ -20,23 +20,11 @@ struct Node
     {
         return f > other.f;
     }
+    
     bool operator < (const Node& other) const 
     {
-        return f > other.f;
+        return f < other.f;
     }
-};
-
-class BucketQueue 
-{
-    private:
-        std::array<std::vector<Node>, 81> buckets;
-        int current = 0;
-    
-    public:
-        size_t size = 0;
-        void push(const Node& node); 
-        bool empty(); 
-        Node pop();
 };
 
 // each position valid moves representation

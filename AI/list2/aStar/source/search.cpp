@@ -5,29 +5,6 @@
 #include <iostream>
 #include <bitset>
 
-void BucketQueue::push(const Node& node) 
-{
-    buckets[node.f].push_back(node);
-    if (node.f < current) current = node.f;
-    ++size;
-}
-
-bool BucketQueue::empty()
-{
-    return size == 0;
-}
-
-Node BucketQueue::pop()
-{
-    while (buckets[current].empty()) ++current;
-
-    Node node = std::move(buckets[current].back());
-    buckets[current].pop_back();
-    --size;
-
-    return node;
-}
-
 NeighborList getNeighbors(State state, uint8_t g)
 {
     uint8_t zero_pos = 15;

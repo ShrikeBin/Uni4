@@ -45,22 +45,40 @@ int main()
     printState(shuffled);
     std::cout << "Beginning search...\n";
 
-    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> open;
-    std::unordered_set<State> visited;
+    struct NodeCompare 
+    {
+        bool operator()(const Node& a, const Node& b) const 
+        {
+            if (a.f == b.f)
+            {
+                return a.g > b.g; // tie-break: prefer node closer to start (lower g)
+            }
+            else
+            { 
+                return a.f > b.f; // primary: prefer lower f
+            }
+        }
+    };
+    std::priority_queue<Node, std::vector<Node>, NodeCompare> open;
     std::unordered_map<State, State> came_from;
+    std::unordered_map<State, uint8_t> g_score;
+    g_score[start] = 0;
 
     open.push(Node{start, 0, heuristics(start)});
-    visited.insert(start);
 
     auto start_time = Clock::now();
 
     bool found = false;
     Node goal_node = Node{0, 0, 0};
 
-    while (!found || !open.empty()) 
+    std::ofstream debug("Debug_nodes.txt");
+
+    while (!open.empty()) 
     {
         Node current = open.top();
         open.pop();
+        debug << "Current node: 0x" << std::hex << current.state << std::dec << "\n";
+        debug << "g: " << (int) current.g << ", h: " << (int) current.h << ", f: " << (int) current.f << "\n";
 
         if (current.state == GOAL) 
         {
@@ -72,10 +90,16 @@ int main()
         NeighborList neighbors = getNeighbors(current.state, current.g);
         for (const Node& neighbor : neighbors) 
         {
-            if (neighbor.state != 0 && visited.find(neighbor.state) == visited.end()) 
+            if (neighbor.state == 0) continue;
+
+            uint8_t unsure_g = current.g + 1;
+
+            auto it = g_score.find(neighbor.state);
+            // Check if the neighbor has been visited but cheaper
+            if (it == g_score.end() || unsure_g < (it->second)) 
             {
-                open.push(neighbor);
-                visited.insert(neighbor.state);
+                g_score[neighbor.state] = unsure_g;
+                open.push(Node{neighbor.state, unsure_g, heuristics(neighbor.state)});
                 came_from[neighbor.state] = current.state;
             }
         }
@@ -103,7 +127,7 @@ int main()
         outfile << "Steps: " << (path.size() - 1) << "\n";
         outfile << "Time taken: " << duration << " ms\n";
         outfile << "Initial state heuristic: " << (int) heuristics(start) << "\n";
-        outfile << "Nodes visited: " << visited.size() << "\n";
+        outfile << "Nodes visited: " << g_score.size() << "\n";
         outfile << "Path:\n";
         outfile << "--------------------\n";
         // Optionally print states
