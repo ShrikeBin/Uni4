@@ -81,15 +81,21 @@ int RandomSelect(std::vector<int>& arr, int place, Stats& stats)
         hybrid_sort(sorted_arr, stats);
 
         std::cout << "Array before selection: ";
-        for(auto num : arr) std::cout << num << " ";
+        if(arr.size() < 100)
+            for(auto num : arr) std::cout << num << " ";
+        else
+            std::cout << "too long to display\n";
         std::cout << "\n";
+        std::cout << "---------------------------\n";
         std::cout << place << "th order statistic is: " << result << "\n";
-
         if(sorted_arr[place] == result) std::cout << " - correct\n";
         else std::cout << " - incorrect\n";
-
+        std::cout << "---------------------------\n";
         std::cout << "In sorted order: ";
-        for(auto num : sorted_arr) std::cout << num << " ";
+        if(sorted_arr.size() < 100)
+            for(auto num : sorted_arr) std::cout << num << " ";
+        else
+            std::cout << "too long to display\n";
     }
 
     return result;
@@ -171,16 +177,22 @@ int ParametrizedSelect(std::vector<int>& SelectArr, int place, int parameter, St
         hybrid_sort(sorted_arr, stats);
 
         std::cout << "Array before selection: ";
-        for(auto num : SelectArr) std::cout << num << " ";
+        if(SelectArr.size() < 100)
+            for(auto num : SelectArr) std::cout << num << " ";
+        else
+            std::cout << "too long to display\n";
         std::cout << "\n";
+        std::cout << "---------------------------\n";
         std::cout << place << "th order statistic is: " << result << "\n";
-
         if(sorted_arr[place] == result) std::cout << " - correct\n";
         else std::cout << " - incorrect\n";
         std::cout << "parameter was: " << parameter << "\n";
-
+        std::cout << "---------------------------\n";
         std::cout << "In sorted order: ";
-        for(auto num : sorted_arr) std::cout << num << " ";
+        if(sorted_arr.size() < 100)
+            for(auto num : sorted_arr) std::cout << num << " ";
+        else
+            std::cout << "too long to display\n";
     }
 
     return result;
