@@ -51,7 +51,7 @@ int main()
         {
             if (a.f == b.f)
             {
-                return a.g > b.g; // tie-break: prefer node closer to start (lower g)
+                return a.h > b.h; // tie-break: prefer node closer to start (lower g)
             }
             else
             { 
@@ -71,14 +71,15 @@ int main()
     bool found = false;
     Node goal_node = Node{0, 0, 0};
 
-    std::ofstream debug("Debug_nodes.txt");
-
     while (!open.empty()) 
     {
         Node current = open.top();
         open.pop();
-        debug << "Current node: 0x" << std::hex << current.state << std::dec << "\n";
-        debug << "g: " << (int) current.g << ", h: " << (int) current.h << ", f: " << (int) current.f << "\n";
+        
+        if (g_score.size() % 100'000 == 0) 
+        {
+            std::cout << "Nodes in g_score: " << g_score.size() << "\n";
+        }
 
         if (current.state == GOAL) 
         {

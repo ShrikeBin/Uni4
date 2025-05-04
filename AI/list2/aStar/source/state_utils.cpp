@@ -52,7 +52,6 @@ bool isSolvable(State state)
 {   
     int inversions = 0;
     int blankRow = 0;
-    int blankCol = 0;
     std::array<uint8_t, 16> flatState = convertState(state);
 
     for (int i = 0; i < 15; ++i) 
@@ -66,14 +65,20 @@ bool isSolvable(State state)
             else if (flatState[i] == 0) 
             {
                 blankRow = i / 4;
-                blankCol = i % 4;
             }
         }
     }
 
-    int taxicab = (3 - blankRow) + (3 - blankCol);
-
-    int result = inversions + taxicab;
-
-    return (result % 2) == 0;
+    if(blankRow == 3 || blankRow == 1) 
+    {
+        return (inversions % 2) == 0;
+    }
+    else if(blankRow == 2 || blankRow == 0) 
+    {
+        return (inversions % 2) == 1;
+    }
+    else
+    {
+        return false; // Invalid blankRow
+    }
 }
