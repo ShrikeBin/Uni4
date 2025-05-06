@@ -1,0 +1,22 @@
+## May 6th 2025
+- Jak zrobić to zadanie z modelem sieci -> tłumaczenie co to jest router (ZNOWU....)
+- jakaś mała dygresja o wadach jakiegoś systemu (DNS chyba?)
+- dalej pokazuje GUI tego programu
+- niby ciężko znaleźć "Obrazy Routerów Cisco" whatever it is (dalej dygresja)
+- "nie wiem jaki to kolor jestem daltonistą"
+- "jak se zrobie takie coś to się pojawia takie menu..."
+- "ja znam taką sieć - a pan zna taką - pan Rafał tak?"
+- Modelowanie sieci na przykładzie studentów - "pan Bartosz zna pana Matuesza przez pana Marka"
+    - ogólnie jak działają protokoły routingu (baardzo ogólnie) (na tyle ogólnie że nic więcej nie powiedział chyba)
+- do konfiguracji w tym zadaniu zrobić sobie jak chcemy to ma być zabawa - dowolne pomoce, ma zadziałać
+- "Co ja tutaj jeszcze miałem powiedzieć.. eee...."
+- ZNOWU KURDE JAK WYGLĄDA PAKIET IP PO RAZ 30 NO JANIE MOGE XDD
+- I SWEAR TO FUCKING GOD JAK USŁYSZĘ "ramka" JESZCZE RAZ>>>
+    - rysuje tą ramke znowuu
+- Dla państwa zadanie domowe: znaleźć sobie takie coś (pokazuje na ramkę) przeczytać jakie są pola i co one oznaczają
+    - ZADACIE PYTANIE MODELOWI JĘZYKOWEMU I maCIe pRZed oCZaMi pRogRam łAjER sZArk
+- (czyta podręcznik co to jest DATAGRAM)
+- (gada coś o pustych miejscach do przyszłemgo zastosowania w ramkach)
+- (nie wiem co już powiedział a czego nie to jest chyba 5 wyklad o tych ramkach)
+- UWAGA WEŻMY SOBIE DATAGRAM I GO POFRAGMENTUJMY (wcale nie robilismy tego 3 tyg temu)
+### wystarczyyy
