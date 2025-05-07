@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include <array>
+#include <fstream>
+#include <sstream>
 
 // state looks like this:
 // 0000 0000 0000 0000
@@ -32,5 +34,7 @@ void printState(const std::array<uint8_t, 16>& state);
 
 bool isSolved(State state);
 bool isSolvable(State state);
+
+std::array<uint8_t, 16> readBoardCSV(const std::string& filename);
 
 #endif // STATE_UTILS_HPP

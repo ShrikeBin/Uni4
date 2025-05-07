@@ -82,3 +82,37 @@ bool isSolvable(State state)
         return false; // Invalid blankRow
     }
 }
+
+std::array<uint8_t, 16> readBoardCSV(const std::string& filename) 
+{
+    std::ifstream file(filename);
+    if (!file.is_open()) 
+    {
+        throw std::runtime_error("Could not open file: " + filename);
+    }
+
+    std::array<uint8_t, 16> board{};
+    std::string line;
+    int idx = 0;
+
+    while (std::getline(file, line) && idx < 16) 
+    {
+        std::stringstream ss(line);
+        std::string value;
+
+        while (std::getline(ss, value, ';') && idx < 16) 
+        {
+            if (!value.empty())
+            {
+                board[idx++] = static_cast<uint8_t>(std::stoi(value));
+            }
+        }
+    }
+
+    if (idx != 16) 
+    {
+        throw std::runtime_error("Invalid input: expected 16 numbers.");
+    }
+    
+    return board;
+}

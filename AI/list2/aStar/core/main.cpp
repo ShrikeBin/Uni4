@@ -13,36 +13,76 @@
 /*
 ps aux | grep <program_name> | grep -v grep | awk '{printf "%s %.2f GB\n", $11, $6/1024/1024}'
 */
-int main() 
+int main(int argc, char* argv[]) 
 {
+    if (!(argc == 2 || argc == 1)) 
+    {
+        std::cerr << "Usage: " << argv[0] << " <board.csv> <- read from file\n";
+        std::cerr << "Usage: " << argv[0] << "  <- random board\n";
+        return 1;
+    }
+
     using Clock = std::chrono::high_resolution_clock;
     DisjointPatternDB::load1("../precompute/disjoint_pattern_1.bin");
     DisjointPatternDB::load2("../precompute/disjoint_pattern_2.bin");
     DisjointPatternDB::load3("../precompute/disjoint_pattern_3.bin");
 
-    std::array<uint8_t, 16> shuffled = {
-        1, 2, 3, 4,
-        5, 6, 7, 8,
-        9, 10, 11, 12,
-        13, 14, 15, 0
-    };
-    std::random_device rd;
-    std::mt19937 g(rd());
+    std::array<uint8_t, 16> board{};
 
-    while(true) 
+    if(argc == 2) 
     {
-        std::shuffle(shuffled.begin(), shuffled.end(), g);
-        if(isSolvable(convertToState(shuffled)))
+        try 
         {
-            break;
+            board = readBoardCSV(argv[1]);
+            std::cout << "Custom Board loaded\n";
+            if(!isSolvable(convertToState(board))) 
+            {
+                std::cerr << "Board is not solvable.\n";
+                return 1;
+            }
+            auto test = board;
+            std::sort(test.begin(), test.end());
+            for(uint8_t i = 0; i < 16; ++i) 
+            {
+                if(test[i] != i) 
+                {
+                    std::cerr << "Board is not valid.\n";
+                    return 1;
+                }
+            }
+        } 
+        catch (const std::exception& e) 
+        {
+            std::cerr << "Error: " << e.what() << '\n';
+            return 1;
+        }
+    }
+    else
+    {
+        std::array<uint8_t, 16> board = {
+            1, 2, 3, 4,
+            5, 6, 7, 8,
+            9, 10, 11, 12,
+            13, 14, 15, 0
+        };
+        std::random_device rd;
+        std::mt19937 g(rd());
+
+        while(true) 
+        {
+            std::shuffle(board.begin(), board.end(), g);
+            if(isSolvable(convertToState(board)))
+            {
+                break;
+            }
         }
     }
     
-    State start = convertToState(shuffled);
+    State start = convertToState(board);
     std::cout << "Initial state is solvable.\n";
     std::cout << "Initial state heuristic: " << (int) heuristics(start) << "\n";
     printStateHex(start);
-    printState(shuffled);
+    printState(board);
     std::cout << "Beginning search...\n";
 
     struct NodeCompare 
@@ -60,8 +100,8 @@ int main()
         }
     };
     std::priority_queue<Node, std::vector<Node>, NodeCompare> open;
-    std::unordered_map<State, State> came_from;
-    std::unordered_map<State, uint8_t> g_score;
+    std::unordered_map<State, State> came_from; // to reconstruct the path, i dont have a better idea
+    std::unordered_map<State, uint8_t> g_score; // map to hold different nodes and their distances to reduce unnecessary exploring
     g_score[start] = 0;
 
     open.push(Node{start, 0, heuristics(start)});
@@ -78,7 +118,7 @@ int main()
         
         if (g_score.size() % 100'000 == 0) 
         {
-            std::cout << "Nodes in g_score: " << g_score.size() << "\n";
+            std::cout << "Differend nodes explored: " << g_score.size() << "\n";
         }
 
         if (current.state == GOAL) 

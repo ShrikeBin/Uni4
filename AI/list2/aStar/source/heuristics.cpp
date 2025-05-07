@@ -1,14 +1,16 @@
 #include "heuristics.hpp"
 
-
+// HERE YOU CAN CHANGE THE HEURISTIC FUNCTION
+// YES ITS HARD CODED
+// BUT THIS WAY ITS FASTER
 uint8_t heuristics(State state) 
 {
-    uint8_t mdid = MDID(state);
+    //uint8_t mdid = MDID(state);
     uint8_t disjoint = DisjointPatternDB::get_heuristic(state);
 
-    return mdid > disjoint ? mdid : disjoint;
+    //return mdid > disjoint ? mdid : disjoint;
     //return mdid;
-    //return disjoint;
+    return disjoint;
 }
 
 std::array<uint8_t, 1 << 20> DisjointPatternDB::pattern_db_1{};

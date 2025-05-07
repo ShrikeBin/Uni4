@@ -5,6 +5,9 @@ all:
 run:
 	./app/main
 	
+runload:
+	./app/main board.csv
+	
 clean:
 	rm -rf ./app
 
