@@ -59,7 +59,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        std::array<uint8_t, 16> board = {
+        std::cout << "Generating random board...\n";
+        board = {
             1, 2, 3, 4,
             5, 6, 7, 8,
             9, 10, 11, 12,
@@ -118,7 +119,7 @@ int main(int argc, char* argv[])
         
         if (g_score.size() % 100'000 == 0) 
         {
-            std::cout << "Differend nodes explored: " << g_score.size() << "\n";
+            std::cout << "Different nodes explored ~ " << g_score.size() << "\n";
         }
 
         if (current.state == GOAL) 
@@ -152,6 +153,7 @@ int main(int argc, char* argv[])
     if (found) 
     {
         std::cout << "Goal found!\n";
+
         std::ofstream outfile("solution.txt");
         std::vector<State> path;
         State current = goal_node.state;
@@ -164,8 +166,14 @@ int main(int argc, char* argv[])
 
         std::reverse(path.begin(), path.end());
 
+        std::cout << "Stats:\n";
+        std::cout << "Optimal steps: " << (path.size() - 1) << "\n";
+        std::cout << "Time taken: " << duration << " ms\n";
+        std::cout << "Initial state heuristic: " << (int) heuristics(start) << "\n";
+        std::cout << "Nodes visited: " << g_score.size() << "\n";
+
         outfile << "Goal found!\n";
-        outfile << "Steps: " << (path.size() - 1) << "\n";
+        outfile << "Optimal steps: " << (path.size() - 1) << "\n";
         outfile << "Time taken: " << duration << " ms\n";
         outfile << "Initial state heuristic: " << (int) heuristics(start) << "\n";
         outfile << "Nodes visited: " << g_score.size() << "\n";
