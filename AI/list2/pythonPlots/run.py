@@ -3,8 +3,8 @@ import time
 import matplotlib.pyplot as plt
 import re
 
-runs = 1000
-timeout_sec = 40
+runs = 100
+timeout_sec = 30
 
 times = []
 steps = []
