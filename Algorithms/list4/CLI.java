@@ -1,15 +1,28 @@
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class CLI<T extends Comparable<T>> 
+public class CLI
 {
-    private Parser<T> parser;
-    private BinaryTree<T> tree;
+    private BinaryTree tree;
 
-    public CLI(Parser<T> parser)
+    public CLI(String type)
     {
-        this.parser = parser;
-        tree = new BinaryTree<T>(null);
+        if(type.equals("binary"))
+        {
+            tree = new BinaryTree(null);
+        }
+        else if(type.equals("splay"))
+        {
+            //tree = new SplayTree(null);
+        }
+        else if(type.equals("redblack"))
+        {
+            //tree = new RBT(null);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid tree type");
+        }
     }
 
     public void run()
@@ -23,14 +36,14 @@ public class CLI<T extends Comparable<T>>
                 try
                 {
                     System.out.print("> ");
-                    String input = scanner.nextLine().trim(); // trim any spaces
+                    String input = scanner.nextLine().trim();
 
                     if (input.isEmpty()) 
                     {
-                        continue; // Skip empty lines
+                        continue;
                     }
 
-                    String[] parts = input.split("\\s+", 2); // Split into command and argument(s)
+                    String[] parts = input.split("\\s+", 2);
 
                     String command = parts[0];
                     String argument;
@@ -48,13 +61,14 @@ public class CLI<T extends Comparable<T>>
                         case "add":
                         case "a":
                         case "insert":
-                            tree.addNode(parser.parse(argument));
+                        case "i":
+                            tree.addNode(Integer.parseInt(argument));
                             break;
 
                         case "delete":
                         case "remove":
                         case "rm":
-                            tree.deleteNode(parser.parse(argument));
+                            tree.deleteNode(Integer.parseInt(argument));
                             break;
 
                         case "print":
@@ -62,26 +76,16 @@ public class CLI<T extends Comparable<T>>
                             {
                                 tree.printTreeOrder();
                             } 
-                            else if (argument.toLowerCase().equals("level")) 
-                            {
-                                tree.printTreeLevel();
-                            } 
                             else if(argument.toLowerCase().equals("full"))
                             {
                                 System.out.println("[BEGIN]");
-                                for(String line : tree.getPrint())
-                                {
-                                    System.out.println(line);
-                                }
+                                tree.printTreeFull();
+                                System.out.println("[END]");
                             }
                             else 
                             {
                                 System.out.println("Unknown command: " + input);
                             }
-                            break;
-
-                        case "search":
-                            System.out.println("Result: " + tree.search(parser.parse(argument)));
                             break;
 
                         case "exit":
