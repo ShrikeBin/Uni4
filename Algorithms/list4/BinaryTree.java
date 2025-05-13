@@ -117,7 +117,7 @@ public class BinaryTree implements TREE
     {
         if (node == null) return;
 
-        lines.add(prefix + (isTail ? "└── " : "├── ") + node.value);
+        lines.add(prefix + (isTail ? "\u001B[33m" + "└── "+ "\u001B[0m" + node.value : "\u001B[36m" + "├── " + "\u001B[0m" + node.value));
 
         List<Node> children = new ArrayList<>();
         if (node.left != null) 

@@ -4,12 +4,12 @@ public class RBTNode
     public RBTNode left;
     public RBTNode right;
     public RBTNode parent; 
-    public boolean color; // true for red, false for black
+    public boolean isRed; // true for red, false for black
 
     public RBTNode(Integer input)
     {
         value = input;
         left = right = null;
-        color = true; // new node is red
+        isRed = true; // new node is red
     }   
 }

@@ -13,6 +13,7 @@ public class RBT implements TREE
     public void addNode(int data) 
     {
         root = insertRecursive(root, data);
+        root.isRed = false;
     }
 
     private RBTNode insertRecursive(RBTNode current, int data) 
@@ -118,7 +119,7 @@ public class RBT implements TREE
     {
         if (node == null) return;
 
-        lines.add(prefix + (isTail ? "└── " : "├── ") + node.value);
+        lines.add(prefix + (isTail ? "└── → " : "├── ← ") + (node.isRed ? "\u001B[31m" + node.value + "\u001B[0m" : "\u001B[30m" + node.value + "\u001B[0m"));
 
         List<RBTNode> children = new ArrayList<>();
         if (node.left != null) 
