@@ -103,41 +103,43 @@ public class RBT implements TREE
         System.out.print(node.value + " ");
         inOrderTraversal(node.right);
     }
-
+        
     @Override
     public void printTreeFull() 
     {
         List<String> lines = new ArrayList<>();
-        printRec(root, "", true, lines);
+        printRec(root, "", true, true, lines); // root assumed to be a left node
         for (String line : lines) 
         {
             System.out.println(line);
         }
     }
 
-    private void printRec(RBTNode node, String prefix, boolean isTail, List<String> lines) 
+    private void printRec(RBTNode node, String prefix, boolean isTail, boolean isLeft, List<String> lines) 
     {
         if (node == null) return;
 
-        lines.add(prefix + (isTail ? "└── → " : "├── ← ") + (node.isRed ? "\u001B[31m" + node.value + "\u001B[0m" : "\u001B[30m" + node.value + "\u001B[0m"));
-
+        String branchColor = isLeft ? "\u001B[96m" : "\u001B[95m";
+        lines.add(prefix + branchColor + (isTail ? "└── " : "├── ") + "\u001B[0m" + (node.isRed ? "\u001B[31m" + node.value + "\u001B[0m" : "\u001B[30m" + node.value + "\u001B[0m"));
         List<RBTNode> children = new ArrayList<>();
+        List<Boolean> isLeftList = new ArrayList<>();
+
         if (node.left != null) 
         {
             children.add(node.left);
+            isLeftList.add(true);
         }
         if (node.right != null) 
         {
             children.add(node.right);
+            isLeftList.add(false);
         }
 
-        for (int i = 0; i < children.size() - 1; i++) 
+        for (int i = 0; i < children.size(); i++) 
         {
-            printRec(children.get(i), prefix + (isTail ? "    " : "│   "), false, lines);
-        }
-        if (!children.isEmpty()) 
-        {
-            printRec(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, lines);
+            boolean childIsTail = (i == children.size() - 1);
+            String newPrefix = prefix + (isTail ? "    " : "\u001B[90m" + "│   " + "\u001B[0m");
+            printRec(children.get(i), newPrefix, childIsTail, isLeftList.get(i), lines);
         }
     }
 }
