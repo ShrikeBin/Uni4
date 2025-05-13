@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
         {
             if (a.f == b.f)
             {
-                return a.h > b.h; // tie-break: prefer node closer to start (lower g)
+                return a.g > b.g; // tie-break: prefer node closer to start (lower g)
             }
             else
             { 
