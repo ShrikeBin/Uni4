@@ -90,7 +90,13 @@ public class CLI
                                 System.out.println("Unknown command: " + input);
                             }
                             break;
-
+                        case "height":
+                        case "h":
+                        case "getheight":
+                        case "geth":
+                            System.out.println("Tree Height: " + tree.getHeight());
+                            break; 
+                            
                         case "exit":
                             throw new NoSuchElementException("exiting");
 
