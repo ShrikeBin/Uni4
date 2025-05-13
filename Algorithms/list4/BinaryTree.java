@@ -1,182 +1,111 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinaryTree implements TREE
-{
+public class BinaryTree implements TREE {
+
     private Node root;
 
-    public BinaryTree(Node root) 
-    {
-        this.root = root;
+    @Override
+    public void addNode(Integer data) {
+        root = insertRecursive(root, data);
+    }
+
+    private Node insertRecursive(Node current, Integer data) {
+        if (current == null) {
+            return new Node(data);
+        }
+
+        if (data < current.stem) {
+            current.left = insertRecursive(current.left, data);
+        } else if (data > current.stem) {
+            current.right = insertRecursive(current.right, data);
+        }
+
+        return current;
     }
 
     @Override
-    public void addNode(Integer parentData) 
-    {
-        Node input = new Node(parentData);
+    public void deleteNode(Integer data) {
+        root = deleteRecursive(root, data);
+    }
 
-        if (root == null) 
-        {
-            this.root = input;
-        } 
-        else 
-        {
-            Node prev = null;
-            Node temp = root;
+    private Node deleteRecursive(Node current, Integer data) {
+        if (current == null) return null;
 
-            while (temp != null) 
-            {
-                prev = temp;
-                if (temp.getStem() > parentData) 
-                {
-                    temp = temp.getLeft();
-                } 
-                else if (temp.getStem() < parentData) 
-                {
-                    temp = temp.getRight();
-                } 
-                else 
-                {
-                    return; // duplicate
-                }
-            }
+        if (data < current.stem) {
+            current.left = deleteRecursive(current.left, data);
+        } else if (data > current.stem) {
+            current.right = deleteRecursive(current.right, data);
+        } else {
+            // Node found
+            if (current.left == null) return current.right;
+            if (current.right == null) return current.left;
 
-            if (prev.getStem() > parentData) 
-            {
-                prev.setLeft(input);
-            } 
-            else 
-            {
-                prev.setRight(input);
-            }
+            Integer minValue = findMin(current.right);
+            current.stem = minValue;
+            current.right = deleteRecursive(current.right, minValue);
         }
+
+        return current;
+    }
+
+    private Integer findMin(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.stem;
     }
 
     @Override
-    public void deleteNode(Integer keyData) 
-    {
-        this.root = deleteAsBaseOn(this.root, keyData);
+    public int getHeight() {
+        return heightRecursive(root);
     }
 
-    private Node deleteAsBaseOn(Node root, Integer keyData) 
-    {
-        if (root == null) 
-        {
-            return root;
-        }
-
-        if (keyData < root.getStem()) 
-        {
-            root.setLeft(deleteAsBaseOn(root.getLeft(), keyData));
-        } 
-        else if (keyData > root.getStem()) 
-        {
-            root.setRight(deleteAsBaseOn(root.getRight(), keyData));
-        } 
-        else 
-        {
-            // Node with only one child or no child
-            if (root.getLeft() == null) 
-            {
-                return root.getRight();
-            } 
-            else if (root.getRight() == null) 
-            {
-                return root.getLeft();
-            }
-
-            // Node with two children
-            root.setStem(smallestLeftTree(root.getRight()));
-            root.setRight(deleteAsBaseOn(root.getRight(), root.getStem()));
-        }
-
-        return root;
+    private int heightRecursive(Node node) {
+        if (node == null) return 0;
+        return 1 + Math.max(heightRecursive(node.left), heightRecursive(node.right));
     }
 
     @Override
-    public int getHeight() 
-    {
-        return heightHelper(root);
+    public void printTreeOrder() {
+        System.out.print("In-order traversal: ");
+        inOrderTraversal(root);
+        System.out.println();
     }
 
-    private int heightHelper(Node node) 
-    {
-        if (node == null) 
-        {
-            return -1;
-        }
-
-        int leftHeight = heightHelper(node.getLeft());
-        int rightHeight = heightHelper(node.getRight());
-
-        return Math.max(leftHeight, rightHeight) + 1;
-    }
-
-    private Integer smallestLeftTree(Node root) 
-    {
-        Integer min = root.getStem();
-        while (root.getLeft() != null) 
-        {
-            min = root.getLeft().getStem();
-            root = root.getLeft();
-        }
-        return min;
-    }
-    
-    @Override
-    public void printTreeOrder() 
-    {
-        preorderTraversal(root);
-        System.out.print("[END] \n");
-    }
-
-    private void preorderTraversal(Node core) 
-    {
-        if (core == null) 
-        {
-            return;
-        }
-        System.out.print(core.getStem() + " - ");
-        preorderTraversal(core.getLeft());
-        preorderTraversal(core.getRight());
+    private void inOrderTraversal(Node node) {
+        if (node == null) return;
+        inOrderTraversal(node.left);
+        System.out.print(node.stem + " ");
+        inOrderTraversal(node.right);
     }
 
     @Override
-    public void printTreeFull() 
-    {
+    public void printTreeFull() {
         List<String> lines = new ArrayList<>();
         printRec(root, "", true, lines);
-        for(String line : lines)
-        {
+        for (String line : lines) {
             System.out.println(line);
         }
     }
 
-    private void printRec(Node node, String prefix, boolean isTail, List<String> lines) 
-    {
-        if (node == null) 
-        {
-            return;
-        }
+    private void printRec(Node node, String prefix, boolean isTail, List<String> lines) {
+        if (node == null) return;
 
-        lines.add(prefix + (isTail ? "└── " : "├── ") + node.getStem());
+        lines.add(prefix + (isTail ? "└── " : "├── ") + node.stem);
 
         List<Node> children = new ArrayList<>();
-        if (node.getLeft() != null) 
-        {
-            children.add(node.getLeft());
+        if (node.left != null) {
+            children.add(node.left);
         }
-        if (node.getRight() != null) 
-        {
-            children.add(node.getRight());
+        if (node.right != null) {
+            children.add(node.right);
         }
 
-        for (int i = 0; i < children.size() - 1; i++) 
-        {
+        for (int i = 0; i < children.size() - 1; i++) {
             printRec(children.get(i), prefix + (isTail ? "    " : "│   "), false, lines);
         }
-        if (!children.isEmpty()) 
-        {
+        if (!children.isEmpty()) {
             printRec(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, lines);
         }
     }
