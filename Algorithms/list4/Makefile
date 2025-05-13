@@ -1,7 +1,7 @@
 all: build run
 
 build:
-	javac Main.java
+	javac *.java
 
 run:
 	java Main

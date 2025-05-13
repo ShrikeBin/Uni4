@@ -1,4 +1,4 @@
-public class SplayTree implements TREE
+public class SplayTree
 {
-    private Node root;
+    //private SplayNode root;
 }

@@ -11,6 +11,7 @@ public class Main
         switch (typeInput.toLowerCase())
         {
             case "binary":
+            case "bin":
                 CLI binaryCLI = new CLI("binary");
                 binaryCLI.run();
                 break;
@@ -19,8 +20,9 @@ public class Main
                 // splayCLI.run();
                 break;
             case "redblack":
-                // CLI redBlackCLI = new CLI("redblack");
-                // redBlackCLI.run();
+            case "rbt":
+                CLI redBlackCLI = new CLI("redblack");
+                redBlackCLI.run();
                 break;
             default:
                 System.out.println("Unknown Type, closing....");

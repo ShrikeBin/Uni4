@@ -3,21 +3,21 @@ import java.util.Scanner;
 
 public class CLI
 {
-    private BinaryTree tree;
+    private TREE tree;
 
     public CLI(String type)
     {
         if(type.equals("binary"))
         {
-            tree = new BinaryTree(null);
+            tree = new BinaryTree();
         }
         else if(type.equals("splay"))
         {
-            //tree = new SplayTree(null);
+            //tree = new SplayTree();
         }
         else if(type.equals("redblack"))
         {
-            //tree = new RBT(null);
+            tree = new RBT();
         }
         else
         {
@@ -68,10 +68,13 @@ public class CLI
                         case "delete":
                         case "remove":
                         case "rm":
+                        case "d":
                             tree.deleteNode(Integer.parseInt(argument));
                             break;
 
                         case "print":
+                        case "display":
+                        case "p":
                             if (argument.toLowerCase().equals("order")) 
                             {
                                 tree.printTreeOrder();

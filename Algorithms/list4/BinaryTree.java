@@ -1,23 +1,32 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinaryTree implements TREE {
+public class BinaryTree implements TREE 
+{
+    private Node root = null;
 
-    private Node root;
+    BinaryTree(int data){addNode(data);}
+    BinaryTree(){root = null;}
 
     @Override
-    public void addNode(Integer data) {
+    public void addNode(int data) 
+    {
         root = insertRecursive(root, data);
     }
 
-    private Node insertRecursive(Node current, Integer data) {
-        if (current == null) {
+    private Node insertRecursive(Node current, int data) 
+    {
+        if (current == null) 
+        {
             return new Node(data);
         }
 
-        if (data < current.stem) {
+        if (data < current.value) 
+        {
             current.left = insertRecursive(current.left, data);
-        } else if (data > current.stem) {
+        } 
+        else if (data > current.value) 
+        {
             current.right = insertRecursive(current.right, data);
         }
 
@@ -25,87 +34,107 @@ public class BinaryTree implements TREE {
     }
 
     @Override
-    public void deleteNode(Integer data) {
+    public void deleteNode(int data)
+    {
         root = deleteRecursive(root, data);
     }
 
-    private Node deleteRecursive(Node current, Integer data) {
+    private Node deleteRecursive(Node current, int data) 
+    {
         if (current == null) return null;
 
-        if (data < current.stem) {
+        if (data < current.value)
+        {
             current.left = deleteRecursive(current.left, data);
-        } else if (data > current.stem) {
+        } 
+        else if (data > current.value) 
+        {
             current.right = deleteRecursive(current.right, data);
-        } else {
+        } 
+        else 
+        {
             // Node found
             if (current.left == null) return current.right;
             if (current.right == null) return current.left;
 
-            Integer minValue = findMin(current.right);
-            current.stem = minValue;
+            int minValue = findMin(current.right); // Find Successor's Value
+            current.value = minValue;
             current.right = deleteRecursive(current.right, minValue);
         }
 
         return current;
     }
 
-    private Integer findMin(Node node) {
-        while (node.left != null) {
+    private int findMin(Node node) 
+    {
+        while (node.left != null) 
+        {
             node = node.left;
         }
-        return node.stem;
+        return node.value;
     }
 
     @Override
-    public int getHeight() {
+    public int getHeight() 
+    {
         return heightRecursive(root);
     }
 
-    private int heightRecursive(Node node) {
+    private int heightRecursive(Node node) 
+    {
         if (node == null) return 0;
         return 1 + Math.max(heightRecursive(node.left), heightRecursive(node.right));
     }
 
     @Override
-    public void printTreeOrder() {
-        System.out.print("In-order traversal: ");
+    public void printTreeOrder() 
+    {
+        System.out.print("[START]: ");
         inOrderTraversal(root);
-        System.out.println();
+        System.out.println(" [END]");
     }
 
-    private void inOrderTraversal(Node node) {
+    private void inOrderTraversal(Node node) 
+    {
         if (node == null) return;
         inOrderTraversal(node.left);
-        System.out.print(node.stem + " ");
+        System.out.print(node.value + " ");
         inOrderTraversal(node.right);
     }
 
     @Override
-    public void printTreeFull() {
+    public void printTreeFull() 
+    {
         List<String> lines = new ArrayList<>();
         printRec(root, "", true, lines);
-        for (String line : lines) {
+        for (String line : lines) 
+        {
             System.out.println(line);
         }
     }
 
-    private void printRec(Node node, String prefix, boolean isTail, List<String> lines) {
+    private void printRec(Node node, String prefix, boolean isTail, List<String> lines) 
+    {
         if (node == null) return;
 
-        lines.add(prefix + (isTail ? "└── " : "├── ") + node.stem);
+        lines.add(prefix + (isTail ? "└── " : "├── ") + node.value);
 
         List<Node> children = new ArrayList<>();
-        if (node.left != null) {
+        if (node.left != null) 
+        {
             children.add(node.left);
         }
-        if (node.right != null) {
+        if (node.right != null) 
+        {
             children.add(node.right);
         }
 
-        for (int i = 0; i < children.size() - 1; i++) {
+        for (int i = 0; i < children.size() - 1; i++) 
+        {
             printRec(children.get(i), prefix + (isTail ? "    " : "│   "), false, lines);
         }
-        if (!children.isEmpty()) {
+        if (!children.isEmpty()) 
+        {
             printRec(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, lines);
         }
     }
