@@ -106,20 +106,27 @@ public class BinaryTree implements TREE
     public void printTreeFull() 
     {
         List<String> lines = new ArrayList<>();
-        printRec(root, "", true, true, lines); // root assumed to be a left node
+        printRec(root, "", true, true, true, lines); // root assumed to be a left node
         for (String line : lines) 
         {
             System.out.println(line);
         }
     }
 
-    private void printRec(Node node, String prefix, boolean isTail, boolean isLeft, List<String> lines) 
+    private void printRec(Node node, String prefix, boolean isTail, boolean isLeft, boolean isFirst, List<String> lines) 
     {
         if (node == null) return;
 
-        String branchColor = isLeft ? "\u001B[92m" : "\u001B[91m";
-        lines.add(prefix + branchColor + (isTail ? "└── " : "├── ") + "\u001B[0m" + node.value);
-
+        if(!isFirst)
+        {
+            String branchColor = isLeft ? "\u001B[92m" : "\u001B[91m";
+            lines.add(prefix + branchColor + (isTail ? "└── " : "├── ") + "\u001B[0m" + node.value);
+        }
+        else
+        {
+            String branchColor = isLeft ? "\u001B[92m" : "\u001B[91m";
+            lines.add(prefix + branchColor + (isTail ? "   " : "   ") + "\u001B[0m" + node.value);
+        }
         List<Node> children = new ArrayList<>();
         List<Boolean> isLeftList = new ArrayList<>();
 
@@ -138,7 +145,7 @@ public class BinaryTree implements TREE
         {
             boolean childIsTail = (i == children.size() - 1);
             String newPrefix = prefix + (isTail ? "    " : "\u001B[90m" + "│   " + "\u001B[0m");
-            printRec(children.get(i), newPrefix, childIsTail, isLeftList.get(i), lines);
+            printRec(children.get(i), newPrefix, childIsTail, isLeftList.get(i), false, lines);
         }
     }
 }

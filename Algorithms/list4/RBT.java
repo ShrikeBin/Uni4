@@ -4,76 +4,239 @@ import java.util.List;
 public class RBT implements TREE
 {
     private RBTNode root = null;
-    private RBTNode TNULL;
+    private static RBTNode TNULL = new RBTNode(Integer.MIN_VALUE);
 
-    RBT(int data){addNode(data);}
-    RBT(){root = null;}
+
+    RBT(int data){TNULL.isRed = false; addNode(data);}
+    RBT(){TNULL.isRed = false; root = null;}
 
     @Override
     public void addNode(int data) 
     {
-        root = insertRecursive(root, data);
-        root.isRed = false;
+        RBTNode z = new RBTNode(data);
+
+        RBTNode y = TNULL;
+        RBTNode x;
+        if(root == null)
+        {
+            x = TNULL;
+        }
+        else
+        {
+            x = root;
+        }
+
+        while (x != TNULL) 
+        {
+            y = x;
+            if(z.value < x.value)
+            {
+                x = x.left;
+            }
+            else if (z.value > x.value)
+            {
+                x = x.right;
+            }
+            else 
+            {
+                return;
+            }    
+        }
+
+        z.parent = y;
+        if(y == TNULL)
+        {
+            root = z;
+        }
+        else if(z.value < y.value)
+        {
+            y.left = z;
+        }
+        else if (z.value > y.value)
+        {   
+            y.right = z;
+        }
+        else
+        {
+            return;
+        }
+
+        z.left = TNULL;
+        z.right = TNULL;
+        z.isRed = true;
+        fixInsert(z);
     }
 
-    private RBTNode insertRecursive(RBTNode current, int data) 
+    private void fixInsert(RBTNode node) 
     {
-        if (current == null) 
+        // case 0
+        if(node == root)
         {
-            return new RBTNode(data);
+            node.isRed = false;
         }
+        
+        while(node.parent != null && node.parent.isRed)
+        {
+            if (node.parent == node.parent.parent.left) 
+            {
+                RBTNode y = node.parent.parent.right; // uncle
+                if (y != null && y.isRed) 
+                {
+                    // Case 1
+                    node.parent.isRed = false;
+                    y.isRed = false;
+                    node.parent.parent.isRed = true;
+                    node = node.parent.parent;
+                } 
+                else
+                {
+                    if (node == node.parent.right) 
+                    {
+                        // Case 2
+                        node = node.parent;
+                        leftRotate(node);
+                    }
 
-        if (data < current.value) 
-        {
-            current.left = insertRecursive(current.left, data);
-        } 
-        else if (data > current.value) 
-        {
-            current.right = insertRecursive(current.right, data);
+                    // Case 3
+                    node.parent.isRed = false;
+                    node.parent.parent.isRed = true;
+                    rightRotate(node.parent.parent);
+                }
+            } 
+            else 
+            {
+                RBTNode y = node.parent.parent.left; // uncle
+                if (y != null && y.isRed) 
+                {
+                    // Case 1
+                    node.parent.isRed = false;
+                    y.isRed = false;
+                    node.parent.parent.isRed = true;
+                    node = node.parent.parent;
+                } 
+                else
+                {
+                    if (node == node.parent.left) 
+                    {
+                        // Case 2
+                        node = node.parent;
+                        rightRotate(node);
+                    }
+                    
+                    // Case 3
+                    node.parent.isRed = false;
+                    node.parent.parent.isRed = true;
+                    leftRotate(node.parent.parent);
+                }
+            }
         }
-
-        return current;
     }
 
     @Override
-    public void deleteNode(int data)
+    public void deleteNode(int data) 
     {
-        root = deleteRecursive(root, data);
+
     }
 
-    private RBTNode deleteRecursive(RBTNode current, int data) 
+    private void fixDelete(RBTNode x)
     {
-        if (current == null) return null;
-
-        if (data < current.value)
-        {
-            current.left = deleteRecursive(current.left, data);
-        } 
-        else if (data > current.value) 
-        {
-            current.right = deleteRecursive(current.right, data);
-        } 
-        else 
-        {
-            // Node found
-            if (current.left == null) return current.right;
-            if (current.right == null) return current.left;
-
-            int minValue = findMin(current.right); // Find Successor's Value
-            current.value = minValue;
-            current.right = deleteRecursive(current.right, minValue);
-        }
-
-        return current;
     }
 
-    private int findMin(RBTNode node) 
+    private RBTNode minimum(RBTNode node) 
     {
-        while (node.left != null) 
+        while (node.left != TNULL) 
         {
             node = node.left;
         }
-        return node.value;
+        return node;
+    }
+
+    private RBTNode search(int data) 
+    {
+        RBTNode current = root;
+    
+        while (current != TNULL && current.value != data) 
+        {
+            if (data < current.value)
+            {
+                current = current.left;
+            } 
+            else 
+            {
+                current = current.right;
+            }
+        }
+    
+        return current;
+    }
+    
+
+    private void leftRotate(RBTNode x)
+    {
+        RBTNode y = x.right;
+        if (y == TNULL)
+        {
+            return;
+        }
+
+        x.right = y.left;
+
+        if(y.left != TNULL)
+        {
+            y.left.parent = x;
+        }
+
+        y.parent = x.parent;
+
+        if(x.parent == null)    // x was a root
+        {
+            root = y;
+        }
+        else if (x == x.parent.left)
+        {
+            x.parent.left = y;
+        }
+        else
+        {
+            x.parent.right = y;
+        }
+
+        y.left = x;
+        x.parent = y;
+    }
+
+    private void rightRotate(RBTNode x)
+    {
+        RBTNode y = x.left;
+        if (y == TNULL)
+        {
+            return;
+        }
+
+        x.left = y.right;
+
+        if(y.right != TNULL)
+        {
+            y.right.parent = x;
+        }
+
+        y.parent = x.parent;
+
+        if(x.parent == null)     // x was a root
+        {
+            root = y;
+        }
+        else if (x == x.parent.left)
+        {
+            x.parent.left = y;
+        }
+        else
+        {
+            x.parent.right = y;
+        }
+
+        y.right = x;
+        x.parent = y;
     }
 
     @Override
@@ -108,28 +271,37 @@ public class RBT implements TREE
     public void printTreeFull() 
     {
         List<String> lines = new ArrayList<>();
-        printRec(root, "", true, true, lines); // root assumed to be a left node
+        printRec(root, "", true, true, true, lines); // root assumed to be a left node
         for (String line : lines) 
         {
             System.out.println(line);
         }
     }
 
-    private void printRec(RBTNode node, String prefix, boolean isTail, boolean isLeft, List<String> lines) 
+    private void printRec(RBTNode node, String prefix, boolean isTail, boolean isLeft, boolean isFirst, List<String> lines) 
     {
         if (node == null) return;
 
-        String branchColor = isLeft ? "\u001B[96m" : "\u001B[95m";
-        lines.add(prefix + branchColor + (isTail ? "└── " : "├── ") + "\u001B[0m" + (node.isRed ? "\u001B[31m" + node.value + "\u001B[0m" : "\u001B[30m" + node.value + "\u001B[0m"));
+        if(!isFirst)
+        {
+            String branchColor = isLeft ? "\u001B[32m" : "\u001B[31m";
+            lines.add(prefix + branchColor + (isTail ? "└── " : "├── ") + "\u001B[0m" + (node.isRed ? "\u001B[91m" + node.value + "\u001B[0m" : "\u001B[90m" + node.value + "\u001B[0m"));
+        }
+        else
+        {
+            String branchColor = isLeft ? "\u001B[32m" : "\u001B[31m";
+            lines.add(prefix + branchColor + (isTail ? "   " : "   ") + "\u001B[0m" + (node.isRed ? "\u001B[91m" + node.value + "\u001B[0m" : "\u001B[90m" + node.value + "\u001B[0m"));
+        }
+
         List<RBTNode> children = new ArrayList<>();
         List<Boolean> isLeftList = new ArrayList<>();
 
-        if (node.left != null) 
+        if (node.left != TNULL) 
         {
             children.add(node.left);
             isLeftList.add(true);
         }
-        if (node.right != null) 
+        if (node.right != TNULL) 
         {
             children.add(node.right);
             isLeftList.add(false);
@@ -139,7 +311,7 @@ public class RBT implements TREE
         {
             boolean childIsTail = (i == children.size() - 1);
             String newPrefix = prefix + (isTail ? "    " : "\u001B[90m" + "│   " + "\u001B[0m");
-            printRec(children.get(i), newPrefix, childIsTail, isLeftList.get(i), lines);
+            printRec(children.get(i), newPrefix, childIsTail, isLeftList.get(i), false, lines);
         }
     }
 }
