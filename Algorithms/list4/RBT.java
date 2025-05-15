@@ -238,11 +238,14 @@ public class RBT implements TREE
                         w = x.parent.right;
                     }
                     // case 4
-                    w.isRed = x.parent.isRed;
-                    x.parent.isRed = false;
-                    w.right.isRed = false;
-                    leftRotate(x.parent);
-                    x = root;
+                    else
+                    {
+                        w.isRed = x.parent.isRed;
+                        x.parent.isRed = false;
+                        w.right.isRed = false;
+                        leftRotate(x.parent);
+                        x = root;
+                    }
                 }
             }
             // same but swapped for right child x
@@ -274,11 +277,14 @@ public class RBT implements TREE
                         w = x.parent.left;
                     }
                     // case 4
-                    w.isRed = x.parent.isRed;
-                    x.parent.isRed = false;
-                    w.left.isRed = false;
-                    rightRotate(x.parent);
-                    x = root;
+                    else
+                    {
+                        w.isRed = x.parent.isRed;
+                        x.parent.isRed = false;
+                        w.left.isRed = false;
+                        rightRotate(x.parent);
+                        x = root;
+                    }
                 }
             }
         }

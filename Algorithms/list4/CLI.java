@@ -100,7 +100,18 @@ public class CLI
                         case "debug":
                             tree.debug();
                             break;
-                            
+
+                        case "ex":
+                            for(int i = 0; i < 50; i++)
+                            {
+                                tree.addNode(i);
+                            }
+                            for(int i = 0; i > -50; i--)
+                            {
+                                tree.addNode(i);
+                            }
+                            break;
+
                         case "exit":
                             throw new NoSuchElementException("exiting");
 
