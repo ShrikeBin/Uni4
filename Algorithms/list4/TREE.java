@@ -5,4 +5,6 @@ public interface TREE
     public int getHeight();
     public void printTreeOrder();
     public void printTreeFull();
+
+    public void debug();
 }

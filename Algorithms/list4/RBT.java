@@ -5,15 +5,31 @@ public class RBT implements TREE
 {
     private RBTNode root = null;
     private static RBTNode TNULL = new RBTNode(Integer.MIN_VALUE);
+    private ArrayList<RBTNode> debug = new ArrayList<>();
 
 
     RBT(int data){TNULL.isRed = false; addNode(data);}
     RBT(){TNULL.isRed = false; root = null;}
 
     @Override
+    public void debug() 
+    {
+        for (RBTNode n : debug) 
+        {
+            System.out.println("Node: " + n.value);
+            System.out.println("  Color : " + (n.isRed ? "Red" : "Black"));
+            System.out.println("  Parent: " + (n.parent != null ? n.parent.value : "null"));
+            System.out.println("  Left  : " + (n.left != null && n.left != TNULL ? n.left.value : "TNULL"));
+            System.out.println("  Right : " + (n.right != null && n.right != TNULL ? n.right.value : "TNULL"));
+            System.out.println();
+        }
+    }
+
+    @Override
     public void addNode(int data) 
     {
         RBTNode z = new RBTNode(data);
+        debug.add(z);
 
         RBTNode y = TNULL;
         RBTNode x;
@@ -43,7 +59,6 @@ public class RBT implements TREE
             }    
         }
 
-        z.parent = y;
         if(y == TNULL)
         {
             root = z;
@@ -51,10 +66,12 @@ public class RBT implements TREE
         else if(z.value < y.value)
         {
             y.left = z;
+            z.parent = y;
         }
         else if (z.value > y.value)
         {   
             y.right = z;
+            z.parent = y;
         }
         else
         {
@@ -68,13 +85,7 @@ public class RBT implements TREE
     }
 
     private void fixInsert(RBTNode node) 
-    {
-        // case 0
-        if(node == root)
-        {
-            node.isRed = false;
-        }
-        
+    {   
         while(node.parent != null && node.parent.isRed)
         {
             if (node.parent == node.parent.parent.left) 
@@ -130,16 +141,148 @@ public class RBT implements TREE
                 }
             }
         }
+        root.isRed = false;
     }
 
     @Override
     public void deleteNode(int data) 
     {
+        RBTNode z = search(data);
+        if(z == TNULL)
+        {
+            return;
+        }
+        RBTNode y = z;
+        Boolean y_orig_isRed = y.isRed;
+        RBTNode x;
 
+        // case 1
+        if (z.left == TNULL)
+        {
+            x = z.right;
+            transplant(z, z.right);
+        }
+        // case 2
+        else if(z.right == TNULL)
+        {
+            x = z.left;
+            transplant(z, z.left);
+        }
+        // case 3
+        else
+        {
+            y = minimum(z.right);
+            y_orig_isRed = y.isRed;
+            x = y.right;
+
+            if(y.parent == z)
+            {
+                x.parent = y;
+            }
+            else
+            {
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.parent = y;
+            }
+
+            transplant(z, y);
+            y.left = z.left; 
+            y.left.parent = y; 
+            y.isRed = z.isRed;
+        }
+
+        if (!y_orig_isRed)
+        {
+            delete_fixup(x);
+        }
     }
 
-    private void fixDelete(RBTNode x)
+    private void delete_fixup(RBTNode x)
     {
+        // w = x.sibling
+
+        // 1 w is red
+        // 2 w is black w.left & w.right are black
+        // 3 w is black w.left is red w.right is black
+        // 4 w is black w.right is red
+
+        while(x != root && !x.isRed)
+        {
+            // x is left child
+            if(x == x.parent.left)
+            {
+                RBTNode w = x.parent.right;
+                // case 1
+                if(w.isRed)
+                {
+                    w.isRed = false;
+                    x.parent.isRed = true;
+                    leftRotate(x.parent);
+                    w = x.parent.right;
+                }
+                // case 2
+                if(!w.left.isRed && !w.right.isRed)
+                {
+                    w.isRed = true;
+                    x = x.parent;
+                }
+                else
+                {
+                    // case 3
+                    if (!w.right.isRed)
+                    {
+                        w.left.isRed = false;
+                        w.isRed = true;
+                        rightRotate(w);
+                        w = x.parent.right;
+                    }
+                    // case 4
+                    w.isRed = x.parent.isRed;
+                    x.parent.isRed = false;
+                    w.right.isRed = false;
+                    leftRotate(x.parent);
+                    x = root;
+                }
+            }
+            // same but swapped for right child x
+            else
+            {
+                RBTNode w = x.parent.left;
+                // case 1
+                if(w.isRed)
+                {
+                    w.isRed = false;
+                    x.parent.isRed = true;
+                    rightRotate(x.parent);
+                    w = x.parent.left;
+                }
+                // case 2
+                if(!w.right.isRed && !w.left.isRed)
+                {
+                    w.isRed = true;
+                    x = x.parent;
+                }
+                else
+                {
+                    // case 3
+                    if(!w.left.isRed)
+                    {
+                        w.right.isRed = false;
+                        w.isRed = true;
+                        leftRotate(w);
+                        w = x.parent.left;
+                    }
+                    // case 4
+                    w.isRed = x.parent.isRed;
+                    x.parent.isRed = false;
+                    w.left.isRed = false;
+                    rightRotate(x.parent);
+                    x = root;
+                }
+            }
+        }
+        x.isRed = false;
     }
 
     private RBTNode minimum(RBTNode node) 
@@ -170,6 +313,23 @@ public class RBT implements TREE
         return current;
     }
     
+    private void transplant(RBTNode x, RBTNode y)
+    {
+        if(x.parent == null)
+        {
+            root = y;
+        }
+        else if(x == x.parent.left)
+        {
+            x.parent.left = y;
+        }
+        else
+        {
+            x.parent.right = y;
+        }
+
+        x.parent = y.parent;
+    }
 
     private void leftRotate(RBTNode x)
     {

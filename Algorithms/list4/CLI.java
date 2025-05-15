@@ -96,6 +96,10 @@ public class CLI
                         case "geth":
                             System.out.println("Tree Height: " + tree.getHeight());
                             break; 
+
+                        case "debug":
+                            tree.debug();
+                            break;
                             
                         case "exit":
                             throw new NoSuchElementException("exiting");
