@@ -17,7 +17,7 @@ public class CLI
         }
         else if(type.equals("redblack"))
         {
-            tree = new RBTree();
+            tree = new RBT();
         }
         else
         {
