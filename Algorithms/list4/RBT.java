@@ -61,36 +61,6 @@ class RBT implements TREE
         }
     }
     
-    private void leftRotate(Node x) {
-        Node nParent = x.right;
-        
-        if (x == root)
-            root = nParent;
-            
-        x.moveDown(nParent);
-        x.right = nParent.left;
-    
-        if (nParent.left != null)
-            nParent.left.parent = x;
-        
-        nParent.left = x;
-    }
-
-    private void rightRotate(Node x) {
-        Node nParent = x.left;
-        
-        if (x == root)
-            root = nParent;
-
-        x.moveDown(nParent);
-        x.left = nParent.right;
-
-        if (nParent.right != null)
-            nParent.right.parent = x;
-
-        nParent.right = x;
-    }
-
     private void swapColors(Node x1, Node x2) {
         COLOR temp = x1.color;
         x1.color = x2.color;
@@ -103,77 +73,6 @@ class RBT implements TREE
         v.val = temp;
     }
     
-    // fix red red at given node
-    private void fixRedRed(Node x) {
-        
-         // if x is root color it black and return
-        if (x == root) {
-            x.color = COLOR.BLACK;
-            return;
-        }
-        
-        // initialize parent, grandparent, uncle
-        Node parent = x.parent, grandparent = parent.parent, uncle = x.uncle();
-
-        if (parent.color != COLOR.BLACK) {
-            if (uncle != null && uncle.color == COLOR.RED) {
-                
-                // uncle red, perform recoloring and recurse
-                parent.color = COLOR.BLACK;
-                uncle.color = COLOR.BLACK;
-                grandparent.color = COLOR.RED;
-                fixRedRed(grandparent);
-            } else {
-                // Else perform LR, LL, RL, RR
-                if (parent.isOnLeft()) {
-                    if (x.isOnLeft())
-                        // for left right
-                        swapColors(parent, grandparent);
-                    else {
-                        leftRotate(parent);
-                        swapColors(x, grandparent);
-                    }
-                    // for left left and left right
-                    rightRotate(grandparent);
-                } else {
-                    if (x.isOnLeft()) {
-                        // for right left
-                        rightRotate(parent);
-                        swapColors(x, grandparent);
-                    } else
-                        swapColors(parent, grandparent);
-                        
-                    // for right right and right left
-                    leftRotate(grandparent);
-                }
-            }
-        }
-    }
-
-    private Node successor(Node x) {
-        Node temp = x;
-        while (temp.left != null)
-            temp = temp.left;
-        return temp;
-    }
-    
-    // find node that replaces a deleted node in BST
-    private Node BSTreplace(Node x) {
-        // when node have 2 children
-        if (x.left != null && x.right != null)
-            return successor(x.right);
-            
-        // when leaf
-        if (x.left == null && x.right == null)
-            return null;
-            
-        // when single child
-        if (x.left != null)
-            return x.left;
-        else
-            return x.right;
-    }
-
     @Override
     public void deleteNode(int x)
     {
@@ -309,6 +208,59 @@ class RBT implements TREE
             }
         }
     }
+    
+    private void fixRedRed(Node x) {
+        
+        // if x is root color it black and return
+       if (x == root) {
+           x.color = COLOR.BLACK;
+           return;
+       }
+       
+       // initialize parent, grandparent, uncle
+       Node parent = x.parent, grandparent = parent.parent, uncle = x.uncle();
+
+       if (parent.color != COLOR.BLACK) {
+           if (uncle != null && uncle.color == COLOR.RED) {
+               
+               // uncle red, perform recoloring and recurse
+               parent.color = COLOR.BLACK;
+               uncle.color = COLOR.BLACK;
+               grandparent.color = COLOR.RED;
+               fixRedRed(grandparent);
+           } else {
+               // Else perform LR, LL, RL, RR
+               if (parent.isOnLeft()) {
+                   if (x.isOnLeft())
+                       // for left right
+                       swapColors(parent, grandparent);
+                   else {
+                       leftRotate(parent);
+                       swapColors(x, grandparent);
+                   }
+                   // for left left and left right
+                   rightRotate(grandparent);
+               } else {
+                   if (x.isOnLeft()) {
+                       // for right left
+                       rightRotate(parent);
+                       swapColors(x, grandparent);
+                   } else
+                       swapColors(parent, grandparent);
+                       
+                   // for right right and right left
+                   leftRotate(grandparent);
+               }
+           }
+       }
+   }
+    
+    private Node successor(Node x) {
+        Node temp = x;
+        while (temp.left != null)
+            temp = temp.left;
+        return temp;
+    }
 
     private Node search(int n) {
         Node temp = root;
@@ -331,6 +283,23 @@ class RBT implements TREE
         return temp;
     }
     
+    // find node that replaces a deleted node in BST
+    private Node BSTreplace(Node x) {
+        // when node have 2 children
+        if (x.left != null && x.right != null)
+            return successor(x.right);
+            
+        // when leaf
+        if (x.left == null && x.right == null)
+            return null;
+            
+        // when single child
+        if (x.left != null)
+            return x.left;
+        else
+            return x.right;
+    }
+
     // inserts the given value to tree
     @Override
     public void addNode(int n) {
@@ -361,6 +330,36 @@ class RBT implements TREE
             // fix red red violation if exists
             fixRedRed(newNode);
         }
+    }
+
+    private void leftRotate(Node x) {
+        Node nParent = x.right;
+        
+        if (x == root)
+            root = nParent;
+            
+        x.moveDown(nParent);
+        x.right = nParent.left;
+    
+        if (nParent.left != null)
+            nParent.left.parent = x;
+        
+        nParent.left = x;
+    }
+
+    private void rightRotate(Node x) {
+        Node nParent = x.left;
+        
+        if (x == root)
+            root = nParent;
+
+        x.moveDown(nParent);
+        x.left = nParent.right;
+
+        if (nParent.right != null)
+            nParent.right.parent = x;
+
+        nParent.right = x;
     }
 
     @Override
