@@ -1,55 +1,115 @@
-# task2.py
-
+# CSMA/CD Simulator - Prosty model w Pythonie
 import random
-import time
 
-class EthernetMedium:
-    def __init__(self, size):
-        self.size = size
-        self.medium = [None] * size
-        self.collision = False
-        self.jamming = False
+class Station:
+    def __init__(self, position, p_send):
+        self.position = position    # indeks na medium
+        self.p_send = p_send        # prawdopodobieństwo wysyłki
+        self.transmitting = False   # czy aktualnie nadaje
+        self.backoff = 0            # sloty do odczekania przy kolizji
+        self.frame_time = 0         # pozostałe sloty ramki
+        self.success = 0            # licznik udanych transmisji
+        self.collisions = 0         # licznik kolizji
 
-    def transmit(self, sender_id, start_position, data_id):
-        """Symuluje transmisję danych przez węzeł."""
-        if self.jamming:
-            print(f"Węzeł {sender_id}: Medium zajęte (sygnał zagłuszający). Próba później.")
-            return False
+    def start_transmission(self):
+        self.transmitting = True
+        self.frame_time = 3  # ramka trwa 3 sloty
 
-        # Sprawdzenie, czy medium jest wolne w momencie rozpoczęcia transmisji
-        for i in range(start_position, min(start_position + 5, self.size)): # Zakładamy, że transmisja trwa 5 jednostek czasu
-            if self.medium[i] is not None:
-                print(f"Węzeł {sender_id}: Wykryto zajęte medium przed transmisją.")
-                return False
+    def handle_collision(self):
+        self.transmitting = False
+        self.collisions += 1
+        self.backoff = random.randint(1, 4)
 
-        print(f"Węzeł {sender_id}: Rozpoczyna transmisję danych {data_id} od pozycji {start_position}.")
-        collision_occurred = False
-        for i in range(start_position, min(start_position + 5, self.size)):
-            if self.medium[i] is None:
-                self.medium[i] = (sender_id, data_id)
-            elif self.medium[i][0] != sender_id:
-                print(f"Węzeł {sender_id}: Wykryto kolizję na pozycji {i} (z węzłem {self.medium[i][0]}).")
-                self.collision = True
-                collision_occurred = True
-                break
-        return not collision_occurred
+    def tick(self, medium):
+        # odczekanie backoffu
+        if self.backoff > 0:
+            self.backoff -= 1
+            return
 
-    def sense(self, position):
-        """Sprawdza stan medium w danej pozycji."""
-        return self.medium[position] is None
+        # rozpoczęcie nowej ramki
+        if not self.transmitting and random.random() < self.p_send:
+            # stacja sprawdza, czy na jej pozycji nie ma sygnału
+            if medium[self.position] == 0:
+                self.start_transmission()
+                medium[self.position] += 1
+                return
 
-    def jam(self):
-        """Symuluje wysłanie sygnału zagłuszającego."""
-        print("Medium: Wykryto kolizję. Wysyłanie sygnału zagłuszającego.")
-        self.jamming = True
-        self.medium = ['JAM'] * self.size # Oznaczamy całe medium jako zajęte zagłuszaniem
+        # kontynuacja transmisji (jeśli już rozpoczęta)
+        if self.transmitting:
+            medium[self.position] += 1
 
-    def clear(self):
-        """Czyści medium po transmisji lub zagłuszaniu."""
-        self.medium = [None] * self.size
-        self.collision = False
-        self.jamming = False
+    def finish(self, medium):
+        if self.transmitting:
+            # sprawdzamy kolizję na pozycji stacji
+            if medium[self.position] > 1:
+                self.handle_collision()
+            else:
+                # zmniejszamy czas ramki
+                self.frame_time -= 1
+                if self.frame_time == 0:
+                    self.transmitting = False
+                    self.success += 1
 
-    def get_state(self):
-        """Zwraca aktualny stan medium."""
-        return list(map
+class Medium:
+    def __init__(self, length):
+        self.length = length
+        self.cells = [0] * length
+
+    def reset(self):
+        self.cells = [0] * self.length
+
+    def propagate(self):
+        # sygnał rozchodzi się do sąsiadów
+        new = [0] * self.length
+        for i, val in enumerate(self.cells):
+            if val > 0:
+                # sygnał w bieżącej komórce
+                new[i] += val
+                # do sąsiadów
+                if i > 0:
+                    new[i-1] += val
+                if i < self.length - 1:
+                    new[i+1] += val
+        self.cells = new
+
+class Simulator:
+    def __init__(self, num_stations=10, length=50, p_send=0.1, slots=1000):
+        # rozmieszczamy stacje równomiernie
+        step = max(1, length // num_stations)
+        positions = [i * step for i in range(num_stations)]
+        self.stations = [Station(pos, p_send) for pos in positions]
+        self.medium = Medium(length)
+        self.slots = slots
+
+    def run(self):
+        for _ in range(self.slots):
+            # reset medium na początek slotu
+            self.medium.reset()
+
+            # każda stacja wrzuca sygnał (start/continuation)
+            for st in self.stations:
+                st.tick(self.medium.cells)
+
+            # propagacja sygnału w medium
+            self.medium.propagate()
+
+            # zakończenie slotu: obsługa sukcesu/kolizji
+            for st in self.stations:
+                st.finish(self.medium.cells)
+
+        total_success = sum(s.success for s in self.stations)
+        total_coll = sum(s.collisions for s in self.stations)
+        throughput = total_success / self.slots
+        return {
+            'total_success': total_success,
+            'total_collisions': total_coll,
+            'throughput': throughput
+        }
+
+if __name__ == '__main__':
+    sim = Simulator(num_stations=2, length=4, p_send=0.9, slots=100)
+    results = sim.run()
+    print("Wyniki symulacji CSMA/CD:")
+    print(f"  Udane transmisje: {results['total_success']}")
+    print(f"  Kolizje: {results['total_collisions']}")
+    print(f"  Przepustowość (ramki/slot): {results['throughput']:.5f}")

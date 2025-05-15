@@ -1,7 +1,7 @@
 FLAG_SEQUENCE = "01111110"
 BIT_STUFFING_THRESHOLD = 5
 CRC_POLYNOMIAL = "10001000000100001"  # CRC-16 polynomial (17 bits)
-FRAME_SIZE = 64  # WITH NO DATA FRAME TAKES 32 BITS
+FRAME_SIZE = 128  # WITH NO DATA FRAME TAKES 32 BITS
 
 def calculate_crc(data, polynomial):
     poly_len = len(polynomial)
@@ -51,24 +51,36 @@ def bit_unstuffing(data):
 def frame_data(data):
     frames = []
     crc_len = len(CRC_POLYNOMIAL) - 1
-    chunk_size = FRAME_SIZE - 2 * len(FLAG_SEQUENCE) - crc_len  # all lengths in bits
+    max_payload = FRAME_SIZE - 2 * len(FLAG_SEQUENCE) - crc_len
+
+    # Conservative estimate: leave some margin for stuffing overhead (if happens all of the chunk is 1s)
+    estimated_growth_factor = 1.2
+    safe_chunk_size = max_payload + crc_len
 
     while data:
-        chunk = data[:chunk_size]
-        data = data[chunk_size:]
+        chunk = data[:safe_chunk_size]
+        data = data[safe_chunk_size:]
 
-        crc = calculate_crc(chunk, CRC_POLYNOMIAL)  # CRC on raw chunk
+        crc = calculate_crc(chunk, CRC_POLYNOMIAL)
         chunk_with_crc = chunk + crc
         stuffed_data = bit_stuffing(chunk_with_crc)
+
+        # 
+        if len(stuffed_data) > max_payload:
+            # back off and retry with smaller chunk
+            safe_chunk_size = int(safe_chunk_size/estimated_growth_factor)
+            data = chunk + data  # put data back
+            continue
 
         frame = FLAG_SEQUENCE + stuffed_data + FLAG_SEQUENCE
         frames.append(frame)
 
     return frames
 
-def deframe_data(frame):
+
+def deframe_data(frame, frame_id):
     if not frame.startswith(FLAG_SEQUENCE) or not frame.endswith(FLAG_SEQUENCE):
-        print("Błąd: Nieprawidłowa ramka (brak flagi).")
+        print(f"Błąd: Nieprawidłowa ramka {frame_id} (brak flagi).")
         return None
 
     stuffed_data = frame[len(FLAG_SEQUENCE):-len(FLAG_SEQUENCE)]
@@ -82,7 +94,7 @@ def deframe_data(frame):
     if calculated_crc == received_crc:
         return received_data
     else:
-        print(f"Błąd CRC: Otrzymano {received_crc}, obliczono {calculated_crc}")
+        print(f"Błąd CRC dla ramki {frame_id}: Otrzymano {received_crc}, obliczono {calculated_crc}")
         return None
 
 if __name__ == "__main__":
@@ -101,13 +113,17 @@ if __name__ == "__main__":
                 f_out.write(framed_result + "\n")
                 print(f"Ramka {i + 1}: |{framed_result}| (długość: {len(framed_result)} bitów) zapisana do {framed_file}")
 
+        if input(f"Wczytać ramki z {framed_file}? (y/n): ").lower() not in ('y', 'yes'): exit()
+
         with open(framed_file, 'r') as f_in:
             received_frames = f_in.readlines()
 
         unframed_data = ""
+        i = 0
         for received_frame in received_frames:
+            i+=1
             received_frame = received_frame.strip()
-            unframed_result_part = deframe_data(received_frame)
+            unframed_result_part = deframe_data(received_frame,i)
             if unframed_result_part is None:
                 unframed_data = None
                 break
