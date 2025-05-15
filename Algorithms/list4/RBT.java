@@ -7,28 +7,62 @@ public class RBT implements TREE
     private static RBTNode TNULL = new RBTNode(Integer.MIN_VALUE);
     private ArrayList<RBTNode> debug = new ArrayList<>();
 
+    RBT(int data)
+    {
+        TNULL.isRed = false; 
+        TNULL.parent = null; 
+        TNULL.left = TNULL.right = null;
+        addNode(data);
+    }
 
-    RBT(int data){TNULL.isRed = false; addNode(data);}
-    RBT(){TNULL.isRed = false; root = null;}
+    RBT()
+    {
+        TNULL.isRed = false; 
+        TNULL.parent = null; 
+        TNULL.left = TNULL.right = null;
+    }
 
     @Override
     public void debug() 
     {
         for (RBTNode n : debug) 
         {
-            System.out.println("Node: " + n.value);
+            System.out.println("Node: " + formatNode(n));
             System.out.println("  Color : " + (n.isRed ? "Red" : "Black"));
-            System.out.println("  Parent: " + (n.parent != null ? n.parent.value : "null"));
-            System.out.println("  Left  : " + (n.left != null && n.left != TNULL ? n.left.value : "TNULL"));
-            System.out.println("  Right : " + (n.right != null && n.right != TNULL ? n.right.value : "TNULL"));
+            System.out.println("  Parent: " + formatNode(n.parent));
+            System.out.println("  Left  : " + formatNode(n.left));
+            System.out.println("  Right : " + formatNode(n.right));
             System.out.println();
         }
+    
+        System.out.println("ROOT: " + formatNode(root));
+        System.out.println("  Color : " + (root.isRed ? "Red" : "Black"));
+        System.out.println("  Parent: " + formatNode(root.parent));
+        System.out.println("  Left  : " + formatNode(root.left));
+        System.out.println("  Right : " + formatNode(root.right));
+        System.out.println();
+    
+        System.out.println("TNULL: " + formatNode(TNULL));
+        System.out.println("  Color : " + (TNULL.isRed ? "Red" : "Black"));
+        System.out.println("  Parent: " + formatNode(TNULL.parent));
+        System.out.println("  Left  : " + formatNode(TNULL.left));
+        System.out.println("  Right : " + formatNode(TNULL.right));
+        System.out.println();
+    }
+    
+    private String formatNode(RBTNode node) 
+    {
+        if (node == null) return "null";
+        if (node == TNULL) return "TNULL";
+        if (node.value == Integer.MIN_VALUE) return "TNULL";
+        return String.valueOf(node.value);
     }
 
     @Override
     public void addNode(int data) 
     {
         RBTNode z = new RBTNode(data);
+        // TODO Remove Debug
         debug.add(z);
 
         RBTNode y = TNULL;
@@ -152,6 +186,10 @@ public class RBT implements TREE
         {
             return;
         }
+
+        // TODO Remove Debug
+        debug.remove(z);
+
         RBTNode y = z;
         Boolean y_orig_isRed = y.isRed;
         RBTNode x;
@@ -194,8 +232,11 @@ public class RBT implements TREE
 
         if (!y_orig_isRed)
         {
+            System.out.print("Fixup called on node: " + x.value + "\n");
             delete_fixup(x);
         }
+        root.parent = null;
+        root.isRed = false;
     }
 
     private void delete_fixup(RBTNode x)
@@ -207,11 +248,19 @@ public class RBT implements TREE
         // 3 w is black w.left is red w.right is black
         // 4 w is black w.right is red
 
+        System.out.println("Fixup call: " + formatNode(x));
+        System.out.println("  Color : " + (x.isRed ? "Red" : "Black"));
+        System.out.println("  Parent: " + formatNode(x.parent));
+        System.out.println("  Left  : " + formatNode(x.left));
+        System.out.println("  Right : " + formatNode(x.right));
+        System.out.println();
+
         while(x != root && !x.isRed)
         {
             // x is left child
-            if(x == x.parent.left)
+            if(x.parent != null && x == x.parent.left)
             {
+                System.out.println(2);
                 RBTNode w = x.parent.right;
                 // case 1
                 if(w.isRed)
@@ -446,7 +495,7 @@ public class RBT implements TREE
 
     private void printRec(RBTNode node, String prefix, boolean isTail, boolean isLeft, boolean isFirst, List<String> lines) 
     {
-        if (node == null) return;
+        if (node == null || node == TNULL) return;
 
         if(!isFirst)
         {
