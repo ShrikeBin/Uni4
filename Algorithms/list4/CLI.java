@@ -1,4 +1,5 @@
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class CLI
@@ -90,6 +91,12 @@ public class CLI
                                 System.out.println("Unknown command: " + input);
                             }
                             break;
+                        case "ls":
+                            System.out.println("[BEGIN]");
+                            tree.printTreeFull();
+                            System.out.println("[END]");
+                            break;
+
                         case "height":
                         case "h":
                         case "getheight":
@@ -111,9 +118,15 @@ public class CLI
                             {
                                 tree.addNode(i);
                             }
-
                             break;
-
+                        
+                        case "random":
+                            int n = Integer.parseInt(argument);
+                            Random rand = new Random();
+                            for (int i = 0; i < n; i++) {
+                                tree.addNode(rand.nextInt(2 * n));
+                            }
+                            break;
                         case "exit":
                             throw new NoSuchElementException("exiting");
 
