@@ -4,22 +4,12 @@ import java.util.List;
 public class BinaryTree implements TREE 
 {
     private Node root = null;
-    private ArrayList<Node> debug = new ArrayList<>();
 
     BinaryTree(int data){addNode(data);}
     BinaryTree(){root = null;}
 
     @Override
-    public void debug()
-    {
-        for (Node n : debug) 
-        {
-            System.out.println("Node: " + n.value);
-            System.out.println("  Left  : " + (n.left != null ? n.left.value : "null"));
-            System.out.println("  Right : " + (n.right != null  ? n.right.value : "null"));
-            System.out.println();
-        }
-    }
+    public void debug(){}
 
     @Override
     public void addNode(int data) 
@@ -32,7 +22,6 @@ public class BinaryTree implements TREE
         if (current == null) 
         {   
             Node node = new Node(data);
-            debug.add(node);
             return node;
         }
 

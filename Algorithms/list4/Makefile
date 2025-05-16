@@ -4,7 +4,7 @@ build:
 	javac *.java
 
 run:
-	java Main
+	java -Xss512m Main
 
 clean:
 	rm -rf *.class
