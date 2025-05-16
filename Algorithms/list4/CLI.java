@@ -13,7 +13,7 @@ public class CLI
         }
         else if(type.equals("splay"))
         {
-            //tree = new SplayTree();
+            tree = new SplayTree();
         }
         else if(type.equals("redblack"))
         {
@@ -102,18 +102,16 @@ public class CLI
                             break;
 
                         case "ex":
-                            // for(int i = 25; i < 51; i++)
-                            // {
-                            //     tree.addNode(i);
-                            // }
-                            // for(int i = 25; i >= 0; i--)
-                            // {
-                            //     tree.addNode(i);
-                            // }
-                            for(int i = 0; i < Integer.parseInt(argument); i++)
+                            int limit = Integer.parseInt(argument);
+                            for(int i = limit/2; i < limit; i++)
                             {
                                 tree.addNode(i);
                             }
+                            for(int i = limit/2; i >= 0; i--)
+                            {
+                                tree.addNode(i);
+                            }
+
                             break;
 
                         case "exit":

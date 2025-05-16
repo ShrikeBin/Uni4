@@ -23,7 +23,7 @@ class RBT implements TREE
             color = COLOR.RED;
         }
         
-        Node uncle() {
+        public Node uncle() {
             if (parent == null || parent.parent == null)
                 return null;
             if (parent.isOnLeft())
@@ -32,11 +32,11 @@ class RBT implements TREE
                 return parent.parent.left;
         }
         
-        boolean isOnLeft() {
+        public boolean isOnLeft() {
             return this == parent.left;
         }
         
-        Node sibling() {
+        public Node sibling() {
             if (parent == null)
                 return null;
             if (isOnLeft())

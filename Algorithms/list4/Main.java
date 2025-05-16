@@ -5,7 +5,7 @@ public class Main
     public static void main(String[] args) 
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Tree type (e.g. Binary, RBT, ...): ");
+        System.out.print("Enter Tree type (e.g. Binary, RBT, Splay, ...): ");
         String typeInput = scanner.nextLine().trim();
 
         switch (typeInput.toLowerCase())
@@ -16,8 +16,8 @@ public class Main
                 binaryCLI.run();
                 break;
             case "splay":
-                // CLI splayCLI = new CLI("splay");
-                // splayCLI.run();
+                CLI splayCLI = new CLI("splay");
+                splayCLI.run();
                 break;
             case "redblack":
             case "rbt":
