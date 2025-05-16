@@ -6,6 +6,11 @@ class RBT implements TREE
     Node root;
     private Metrics metrics;
 
+    // TODO ADD COUNTING THIS STUFF
+// if (metrics != null) metrics.pointerWrites++;
+// if (metrics != null) metrics.pointerReads++;
+// if (metrics != null) metrics.comparisons++;
+
     RBT() {root = null;}
     Node getRoot() {return root;}
 

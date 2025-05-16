@@ -17,7 +17,12 @@ public class SplayTree implements TREE
             return true;
         }
     }
-     
+
+    // TODO ADD COUNTING THIS STUFF
+// if (metrics != null) metrics.pointerWrites++;
+// if (metrics != null) metrics.pointerReads++;
+// if (metrics != null) metrics.comparisons++;
+
     private SplayNode root = null;
     private Metrics metrics;
 

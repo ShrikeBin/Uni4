@@ -14,4 +14,9 @@ public class Metrics {
         maxHeight = 0;
         heights.clear();
     }
+
+    public void addHeight(int h)
+    {
+        if(h > maxHeight) maxHeight = h;
+    }
 }
