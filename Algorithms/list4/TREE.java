@@ -6,5 +6,6 @@ public interface TREE
     public void printTreeOrder();
     public void printTreeFull();
 
-    public void debug();
+    public void setMetrics(Metrics m);
+    public Metrics getMetrics();
 }

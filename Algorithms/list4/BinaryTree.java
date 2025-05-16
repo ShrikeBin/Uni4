@@ -4,12 +4,14 @@ import java.util.List;
 public class BinaryTree implements TREE 
 {
     private Node root = null;
-
+    private Metrics metrics;
     BinaryTree(int data){addNode(data);}
     BinaryTree(){root = null;}
 
     @Override
-    public void debug(){}
+    public void setMetrics(Metrics m) {this.metrics = m;}
+    @Override
+    public Metrics getMetrics() {return this.metrics;}
 
     @Override
     public void addNode(int data) 

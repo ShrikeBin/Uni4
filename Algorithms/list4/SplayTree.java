@@ -19,12 +19,15 @@ public class SplayTree implements TREE
     }
      
     private SplayNode root = null;
+    private Metrics metrics;
 
     SplayTree(int data){addNode(data);}
     SplayTree(){};
 
     @Override
-    public void debug(){}
+    public void setMetrics(Metrics m) {this.metrics = m;}
+    @Override
+    public Metrics getMetrics() {return this.metrics;}
 
     @Override
     public void addNode(int data)

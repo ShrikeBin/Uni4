@@ -4,9 +4,9 @@ import java.util.List;
 class RBT implements TREE 
 {
     Node root;
+    private Metrics metrics;
 
     RBT() {root = null;}
-
     Node getRoot() {return root;}
 
     private enum COLOR { RED, BLACK }
@@ -60,28 +60,78 @@ class RBT implements TREE
                     (right != null && right.color == COLOR.RED);
         }
     }
+
+    @Override
+    public void setMetrics(Metrics m) {this.metrics = m;}
+    @Override
+    public Metrics getMetrics() {return this.metrics;}
     
-    private void swapColors(Node x1, Node x2) {
-        COLOR temp = x1.color;
-        x1.color = x2.color;
-        x2.color = temp;
+    @Override
+    public int getHeight() 
+    {
+        return heightRecursive(root);
     }
 
-    private void swapValues(Node u, Node v) {
-        int temp = u.val;
-        u.val = v.val;
-        v.val = temp;
+    @Override
+    public void printTreeOrder() 
+    {
+        System.out.print("[START]: ");
+        inOrderTraversal(root);
+        System.out.println(" [END]");
     }
-    
+
+    @Override
+    public void printTreeFull() 
+    {
+        List<String> lines = new ArrayList<>();
+        printRec(root, "", true, true, true, lines); // root assumed to be a left node
+        for (String line : lines) 
+        {
+            System.out.println(line);
+        }
+    }
+
+    // inserts the given value to tree
+    @Override
+    public void addNode(int n) {
+        Node newNode = new Node(n);
+        if (root == null) {
+            // when root is null
+            // simply insert value at root
+            newNode.color = COLOR.BLACK;
+            root = newNode;
+        } else {
+            Node temp = search(n);
+            
+            // return if value already exists
+            if (temp.val == n)
+                return;
+                
+            // if value is not found, search returns the node
+            // where the value is to be inserted
+ 
+            // connect new node to correct node
+            newNode.parent = temp;
+
+            if (n < temp.val)
+                temp.left = newNode;
+            else
+                temp.right = newNode;
+            
+            // fix red red violation if exists
+            fixRedRed(newNode);
+        }
+    }
+
     @Override
     public void deleteNode(int x)
     {
         Node a = search(x);
-        deleteNode(a);
+        removeNode(a);
     }
-    
+
     // deletes the given node
-    private void deleteNode(Node v) {
+    private void removeNode(Node v) {
         Node u = BSTreplace(v);
         // True when u and v are both black
         boolean uvBlack = ((u == null || u.color == COLOR.BLACK) && (v.color == COLOR.BLACK));
@@ -140,7 +190,7 @@ class RBT implements TREE
         
         // v has 2 children, swap values with successor and recurse
         swapValues(u, v);
-        deleteNode(u);
+        removeNode(u);
     }
 
     private void fixDoubleBlack(Node x) {
@@ -261,6 +311,18 @@ class RBT implements TREE
             temp = temp.left;
         return temp;
     }
+        
+    private void swapColors(Node x1, Node x2) {
+        COLOR temp = x1.color;
+        x1.color = x2.color;
+        x2.color = temp;
+    }
+
+    private void swapValues(Node u, Node v) {
+        int temp = u.val;
+        u.val = v.val;
+        v.val = temp;
+    }
 
     private Node search(int n) {
         Node temp = root;
@@ -300,38 +362,6 @@ class RBT implements TREE
             return x.right;
     }
 
-    // inserts the given value to tree
-    @Override
-    public void addNode(int n) {
-        Node newNode = new Node(n);
-        if (root == null) {
-            // when root is null
-            // simply insert value at root
-            newNode.color = COLOR.BLACK;
-            root = newNode;
-        } else {
-            Node temp = search(n);
-            
-            // return if value already exists
-            if (temp.val == n)
-                return;
-                
-            // if value is not found, search returns the node
-            // where the value is to be inserted
- 
-            // connect new node to correct node
-            newNode.parent = temp;
-
-            if (n < temp.val)
-                temp.left = newNode;
-            else
-                temp.right = newNode;
-            
-            // fix red red violation if exists
-            fixRedRed(newNode);
-        }
-    }
-
     private void leftRotate(Node x) {
         Node nParent = x.right;
         
@@ -362,27 +392,10 @@ class RBT implements TREE
         nParent.right = x;
     }
 
-    @Override
-    public void debug(){}
-
-    @Override
-    public int getHeight() 
-    {
-        return heightRecursive(root);
-    }
-
     private int heightRecursive(Node node) 
     {
         if (node == null) return 0;
         return 1 + Math.max(heightRecursive(node.left), heightRecursive(node.right));
-    }
-
-    @Override
-    public void printTreeOrder() 
-    {
-        System.out.print("[START]: ");
-        inOrderTraversal(root);
-        System.out.println(" [END]");
     }
 
     private void inOrderTraversal(Node node) 
@@ -391,17 +404,6 @@ class RBT implements TREE
         inOrderTraversal(node.left);
         System.out.print(node.val + " ");
         inOrderTraversal(node.right);
-    }
-        
-    @Override
-    public void printTreeFull() 
-    {
-        List<String> lines = new ArrayList<>();
-        printRec(root, "", true, true, true, lines); // root assumed to be a left node
-        for (String line : lines) 
-        {
-            System.out.println(line);
-        }
     }
 
     private void printRec(Node node, String prefix, boolean isTail, boolean isLeft, boolean isFirst, List<String> lines) 

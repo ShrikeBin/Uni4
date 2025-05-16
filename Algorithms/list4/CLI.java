@@ -104,10 +104,6 @@ public class CLI
                             System.out.println("Tree Height: " + tree.getHeight());
                             break; 
 
-                        case "debug":
-                            tree.debug();
-                            break;
-
                         case "ex":
                             int limit = Integer.parseInt(argument);
                             for(int i = limit/2; i < limit; i++)
