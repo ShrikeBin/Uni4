@@ -12,16 +12,13 @@ public class SplayTree implements TREE
 
         SplayNode(int data) { val = data; left = right = p = null;}
 
-        public boolean isOnLeft() {
+        public boolean isOnLeft() 
+        {
+            if (metrics != null) metrics.pointerReads++;
             if(p != null) return this == p.left;
             return true;
         }
     }
-
-    // TODO ADD COUNTING THIS STUFF
-// if (metrics != null) metrics.pointerWrites++;
-// if (metrics != null) metrics.pointerReads++;
-// if (metrics != null) metrics.comparisons++;
 
     private SplayNode root = null;
     private Metrics metrics;
@@ -71,29 +68,62 @@ public class SplayTree implements TREE
         }
     }
 
-    private void insert(int key) {
+    private void insert(int key) 
+    {
         SplayNode z = root;
         SplayNode p = null;
     
-        while (z != null) {
+        while (z != null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             p = z;
-            if (key < z.val) {
+            if (metrics != null) metrics.comparisons++;
+            if (key < z.val) 
+            {
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerWrites++;
                 z = z.left;
-            } else if (key > z.val) {
+            } 
+            else if (key > z.val) 
+            {
+                if (metrics != null) metrics.comparisons++;
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerWrites++;
                 z = z.right;
-            } else {
+            } 
+            else 
+            {
+                if (metrics != null) metrics.comparisons++;
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerReads++;
                 return;
             }
         }
     
         z = new SplayNode(key);
+        if (metrics != null) metrics.pointerWrites++;
         z.p = p;
     
-        if (p == null) {
+        if (p == null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             root = z;
-        } else if (key < p.val) {
+        } 
+        else if (key < p.val) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             p.left = z;
-        } else {
+        } 
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             p.right = z;
         }
     
@@ -101,38 +131,76 @@ public class SplayTree implements TREE
     }
     
 
-    private void delete(int key) {
+    private void delete(int key) 
+    {
         SplayNode z = find(key);
         if (z == null) return;
     
         splay(z);
     
-        if (z.left == null) {
+        if (z.left == null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
             replace(z, z.right);
-        } else if (z.right == null) {
+        } 
+        else if (z.right == null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
             replace(z, z.left);
-        } else {
+        } 
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
             SplayNode y = subtreeMinimum(z.right);
-            if (y.p != z) {
+            if (metrics != null) metrics.pointerReads++;
+            if (y.p != z) 
+            {
                 replace(y, y.right);
+                if (metrics != null) metrics.pointerWrites++;
                 y.right = z.right;
-                if (y.right != null) y.right.p = y;
+                if (metrics != null) metrics.pointerReads++;
+                if (y.right != null)
+                {
+                    if (metrics != null) metrics.pointerWrites++;
+                   y.right.p = y;
+                }
             }
             replace(z, y);
+            if (metrics != null) metrics.pointerWrites++;
             y.left = z.left;
-            if (y.left != null) y.left.p = y;
+            if (metrics != null) metrics.pointerReads++;
+            if (y.left != null) 
+            {
+                y.left.p = y;
+            }
         }
+        if (metrics != null) metrics.pointerWrites++;
         root.p = null;
     }   
 
-    private SplayNode find(int key) {
+    private SplayNode find(int key) 
+    {
         SplayNode z = root;
-        while (z != null) {
-            if (key < z.val) {
+        while (z != null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (key < z.val) 
+            {
+                if (metrics != null) metrics.pointerWrites++;
                 z = z.left;
-            } else if (key > z.val) {
+            } 
+            else if (key > z.val) 
+            {
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerWrites++;
                 z = z.right;
-            } else {
+            } 
+            else 
+            {
+                if (metrics != null) metrics.pointerReads++;
                 return z;
             }
         }
@@ -143,30 +211,50 @@ public class SplayTree implements TREE
     {
         while (x.p != null) 
         {
-            if (x.p.p == null) {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (x.p.p == null) 
+            {
                 // Zig case
-                if (x.isOnLeft()) {
+                if (x.isOnLeft()) 
+                {
                     rightRotate(x.p);
-                } else {
+                } else 
+                {
                     leftRotate(x.p);
                 }
             } 
-            else if (x.isOnLeft() && x.p.p.left == x.p) {
+            else if (x.isOnLeft() && x.p.p.left == x.p) 
+            {
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads++;
                 // Zig-Zig (left-left)
                 rightRotate(x.p.p);
                 rightRotate(x.p);
             } 
-            else if (!x.isOnLeft() && x.p.p.right == x.p) {
+            else if (!x.isOnLeft() && x.p.p.right == x.p) 
+            {
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads+=3;
                 // Zig-Zig (right-right)
                 leftRotate(x.p.p);
                 leftRotate(x.p);
             } 
-            else if (x.isOnLeft() && x.p.p.right == x.p) {
+            else if (x.isOnLeft() && x.p.p.right == x.p) 
+            {
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads++;
                 // Zig-Zag (left-right)
                 rightRotate(x.p);
                 leftRotate(x.p);
             } 
-            else {
+            else 
+            {
+                
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads+=3;
+                if (metrics != null) metrics.pointerReads++;
                 // Zig-Zag (right-left)
                 leftRotate(x.p);
                 rightRotate(x.p);
@@ -174,71 +262,137 @@ public class SplayTree implements TREE
         }
     }
     
-    private void replace(SplayNode u, SplayNode v) {
-        if (u.p == null) {
+    private void replace(SplayNode u, SplayNode v) 
+    {
+        if (u.p == null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             root = v;
-        } else if (u == u.p.left) {
+        } 
+        else if (u == u.p.left) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             u.p.left = v;
-        } else {
+        } 
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             u.p.right = v;
         }
-        if (v != null) {
+        if (metrics != null) metrics.pointerReads++;
+        if (v != null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             v.p = u.p;
         }
     }
     
-    private SplayNode subtreeMinimum(SplayNode u) {
-        while (u.left != null) {
+    private SplayNode subtreeMinimum(SplayNode u) 
+    {
+        while (u.left != null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             u = u.left;
         }
         return u;
     }
     
-    private void leftRotate(SplayNode x) {
+    private void leftRotate(SplayNode x) 
+    {
         SplayNode y = x.right;
-        if (y != null) {
+        if (metrics != null) metrics.pointerReads++;
+        if (y != null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             x.right = y.left;
-            if (y.left != null) {
+            if (metrics != null) metrics.pointerReads++;
+            if (y.left != null) 
+            {
+                if (metrics != null) metrics.pointerWrites++;
                 y.left.p = x;
             }
+            if (metrics != null) metrics.pointerWrites++;
             y.p = x.p;
         }
-    
-        if (x.p == null) {
+        
+        if (metrics != null) metrics.pointerReads++;
+        if (x.p == null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             root = y;
-        } else if (x == x.p.left) {
+        } 
+        else if (x == x.p.left) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             x.p.left = y;
-        } else {
+        } 
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             x.p.right = y;
         }
-    
-        if (y != null) {
+        
+        if (metrics != null) metrics.pointerReads++;
+        if (y != null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             y.left = x;
         }
         x.p = y;
     }
     
-    private void rightRotate(SplayNode x) {
+    private void rightRotate(SplayNode x) 
+    {
         SplayNode y = x.left;
-        if (y != null) {
+        if (y != null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             x.left = y.right;
-            if (y.right != null) {
+            if (metrics != null) metrics.pointerReads++;
+            if (y.right != null) 
+            {
+                if (metrics != null) metrics.pointerWrites++;
                 y.right.p = x;
             }
+            if (metrics != null) metrics.pointerWrites++;
             y.p = x.p;
         }
-    
-        if (x.p == null) {
+        
+        if (metrics != null) metrics.pointerReads++;
+        if (x.p == null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             root = y;
-        } else if (x == x.p.left) {
+        } 
+        else if (x == x.p.left) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             x.p.left = y;
-        } else {
+        } 
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerWrites++;
             x.p.right = y;
         }
-    
-        if (y != null) {
+        
+        if (metrics != null) metrics.pointerReads++;
+        if (y != null) 
+        {
+            if (metrics != null) metrics.pointerWrites++;
             y.right = x;
         }
+        if (metrics != null) metrics.pointerWrites++;
         x.p = y;
     }
 
