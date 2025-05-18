@@ -75,7 +75,7 @@ public class ExperimentRunner
                     ? "Test 1: Insert sorted, delete random"
                     : "Test 2: Insert random, delete random";
         
-                System.out.println(testName);
+                System.out.println(testName + " ran " + tries + " times.");
                 System.out.println("Avg comparisons: " + (totalCmp / tries));
                 System.out.println("Avg pointer reads: " + (totalRead / tries));
                 System.out.println("Avg pointer writes: " + (totalWrite / tries));

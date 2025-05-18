@@ -1,0 +1,175 @@
+java -Xss512m Main exp
+running simulations...
+running binary tree: 
+running splay tree: 
+[SplayTree] n = 10000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 19998
+Avg pointer reads: 2239722
+Avg pointer writes: 1235760
+Avg max height: 0
+Avg operation cost: 174
+Max operation cost: 177388
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 243505
+Avg pointer reads: 3987292
+Avg pointer writes: 2245603
+Avg max height: 0
+Avg operation cost: 323
+Max operation cost: 914
+
+[SplayTree] n = 20000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 39998
+Avg pointer reads: 4868379
+Avg pointer writes: 2677146
+Avg max height: 0
+Avg operation cost: 189
+Max operation cost: 350820
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 530407
+Avg pointer reads: 8723642
+Avg pointer writes: 4909801
+Avg max height: 0
+Avg operation cost: 354
+Max operation cost: 947
+
+[SplayTree] n = 30000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 59998
+Avg pointer reads: 7640794
+Avg pointer writes: 4194571
+Avg max height: 0
+Avg operation cost: 198
+Max operation cost: 527344
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 833785
+Avg pointer reads: 13739036
+Avg pointer writes: 7729871
+Avg max height: 0
+Avg operation cost: 371
+Max operation cost: 951
+
+[SplayTree] n = 40000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 79998
+Avg pointer reads: 10505701
+Avg pointer writes: 5760689
+Avg max height: 0
+Avg operation cost: 204
+Max operation cost: 710764
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 1147929
+Avg pointer reads: 18938169
+Avg pointer writes: 10653290
+Avg max height: 0
+Avg operation cost: 384
+Max operation cost: 961
+
+[SplayTree] n = 50000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 99998
+Avg pointer reads: 13446139
+Avg pointer writes: 7367257
+Avg max height: 0
+Avg operation cost: 209
+Max operation cost: 810036
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 1470270
+Avg pointer reads: 24277315
+Avg pointer writes: 13654031
+Avg max height: 0
+Avg operation cost: 394
+Max operation cost: 1065
+
+[SplayTree] n = 60000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 119998
+Avg pointer reads: 16439387
+Avg pointer writes: 9001716
+Avg max height: 0
+Avg operation cost: 213
+Max operation cost: 1047024
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 1798324
+Avg pointer reads: 29724827
+Avg pointer writes: 16716140
+Avg max height: 0
+Avg operation cost: 401
+Max operation cost: 1089
+
+[SplayTree] n = 70000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 139998
+Avg pointer reads: 19473718
+Avg pointer writes: 10657002
+Avg max height: 0
+Avg operation cost: 216
+Max operation cost: 1140352
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 2132526
+Avg pointer reads: 35262656
+Avg pointer writes: 19828338
+Avg max height: 0
+Avg operation cost: 408
+Max operation cost: 1071
+
+[SplayTree] n = 80000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 159998
+Avg pointer reads: 22553631
+Avg pointer writes: 12337064
+Avg max height: 0
+Avg operation cost: 219
+Max operation cost: 1370356
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 2470114
+Avg pointer reads: 40868689
+Avg pointer writes: 22979665
+Avg max height: 0
+Avg operation cost: 414
+Max operation cost: 1061
+
+[SplayTree] n = 90000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 179998
+Avg pointer reads: 25655925
+Avg pointer writes: 14028837
+Avg max height: 0
+Avg operation cost: 221
+Max operation cost: 1366252
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 2812438
+Avg pointer reads: 46550504
+Avg pointer writes: 26170498
+Avg max height: 0
+Avg operation cost: 419
+Max operation cost: 1072
+
+[SplayTree] n = 100000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 199998
+Avg pointer reads: 28814685
+Avg pointer writes: 15751235
+Avg max height: 0
+Avg operation cost: 223
+Max operation cost: 1458144
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 3157403
+Avg pointer reads: 52283223
+Avg pointer writes: 29392466
+Avg max height: 0
+Avg operation cost: 424
+Max operation cost: 1091
+
+running RB tree: 

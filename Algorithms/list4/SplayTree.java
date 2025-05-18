@@ -177,7 +177,10 @@ public class SplayTree implements TREE
             }
         }
         if (metrics != null) metrics.pointerWrites++;
-        root.p = null;
+        if(root != null)
+        {
+            root.p = null;
+        }
     }   
 
     private SplayNode find(int key) 

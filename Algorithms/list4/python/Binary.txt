@@ -1,0 +1,169 @@
+[BinaryTree] n = 10000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 149814973
+Avg pointer reads: 149834973
+Avg pointer writes: 74907486
+Avg max height: 10000
+Avg operation cost: 18727
+Max operation cost: 49997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 463062
+Avg pointer reads: 659604
+Avg pointer writes: 307713
+Avg max height: 30
+Avg operation cost: 71
+Max operation cost: 153
+
+[BinaryTree] n = 20000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 600072149
+Avg pointer reads: 600112149
+Avg pointer writes: 300036074
+Avg max height: 20000
+Avg operation cost: 37505
+Max operation cost: 99997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 1010836
+Avg pointer reads: 1430202
+Avg pointer writes: 670874
+Avg max height: 34
+Avg operation cost: 77
+Max operation cost: 189
+
+[BinaryTree] n = 30000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 1350382699
+Avg pointer reads: 1350442699
+Avg pointer writes: 675191349
+Avg max height: 30000
+Avg operation cost: 56266
+Max operation cost: 149997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 1586291
+Avg pointer reads: 2239302
+Avg pointer writes: 1053233
+Avg max height: 35
+Avg operation cost: 81
+Max operation cost: 182
+
+[BinaryTree] n = 40000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 2400120198
+Avg pointer reads: 2400200198
+Avg pointer writes: 1200060099
+Avg max height: 40000
+Avg operation cost: 75004
+Max operation cost: 199997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 2219000
+Avg pointer reads: 3118102
+Avg pointer writes: 1470434
+Avg max height: 36
+Avg operation cost: 85
+Max operation cost: 188
+
+[BinaryTree] n = 50000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 3750590256
+Avg pointer reads: 3750690256
+Avg pointer writes: 1875295128
+Avg max height: 50000
+Avg operation cost: 93765
+Max operation cost: 249997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 2828032
+Avg pointer reads: 3972906
+Avg pointer writes: 1875824
+Avg max height: 38
+Avg operation cost: 86
+Max operation cost: 203
+
+[BinaryTree] n = 60000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 5399224644
+Avg pointer reads: 5399344644
+Avg pointer writes: 2699612322
+Avg max height: 60000
+Avg operation cost: 112484
+Max operation cost: 299997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 3484634
+Avg pointer reads: 4889195
+Avg pointer writes: 2311831
+Avg max height: 39
+Avg operation cost: 89
+Max operation cost: 201
+
+[BinaryTree] n = 70000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 7348653582
+Avg pointer reads: 7348793582
+Avg pointer writes: 3674326791
+Avg max height: 70000
+Avg operation cost: 131226
+Max operation cost: 349997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 4065944
+Avg pointer reads: 5708482
+Avg pointer writes: 2699183
+Avg max height: 39
+Avg operation cost: 89
+Max operation cost: 203
+
+[BinaryTree] n = 80000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 9601768668
+Avg pointer reads: 9601928668
+Avg pointer writes: 4800884334
+Avg max height: 80000
+Avg operation cost: 150028
+Max operation cost: 399997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 4726037
+Avg pointer reads: 6627392
+Avg pointer writes: 3136571
+Avg max height: 39
+Avg operation cost: 90
+Max operation cost: 202
+
+[BinaryTree] n = 90000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 12148658777
+Avg pointer reads: 12148838777
+Avg pointer writes: 6074329388
+Avg max height: 90000
+Avg operation cost: 168732
+Max operation cost: 449997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 5429686
+Avg pointer reads: 7632180
+Avg pointer writes: 3616591
+Avg max height: 40
+Avg operation cost: 92
+Max operation cost: 201
+
+[BinaryTree] n = 100000
+Test 1: Insert sorted, delete random ran 20 times.
+Avg comparisons: 15001003870
+Avg pointer reads: 15001203870
+Avg pointer writes: 7500501935
+Avg max height: 100000
+Avg operation cost: 187513
+Max operation cost: 499997
+
+Test 2: Insert random, delete random ran 20 times.
+Avg comparisons: 6036808
+Avg pointer reads: 8461005
+Avg pointer writes: 4008897
+Avg max height: 39
+Avg operation cost: 92
+Max operation cost: 199

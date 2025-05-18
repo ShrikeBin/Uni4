@@ -11,10 +11,10 @@ public class Main
                 System.out.println("running simulations...");
 
                 System.out.println("running binary tree: ");
-                ExperimentRunner.runFullExperiment("BinaryTree", 5);
+                //ExperimentRunner.runFullExperiment("BinaryTree", 20);
 
                 System.out.println("running splay tree: ");
-                ExperimentRunner.runFullExperiment("Splay", 20);
+                //ExperimentRunner.runFullExperiment("SplayTree", 20);
 
                 System.out.println("running RB tree: ");
                 ExperimentRunner.runFullExperiment("RBT", 20);
