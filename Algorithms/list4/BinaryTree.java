@@ -18,7 +18,6 @@ public class BinaryTree implements TREE {
         root = insertRecursive(root, data);
         if (metrics != null) {
             int h = getHeight();
-            metrics.heights.add(h);
             metrics.maxHeight = Math.max(metrics.maxHeight, h);
         }
     }
@@ -52,7 +51,6 @@ public class BinaryTree implements TREE {
         root = deleteRecursive(root, data);
         if (metrics != null) {
             int h = getHeight();
-            metrics.heights.add(h);
             metrics.maxHeight = Math.max(metrics.maxHeight, h);
         }
     }

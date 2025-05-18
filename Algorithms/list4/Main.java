@@ -14,7 +14,7 @@ public class Main
                 //ExperimentRunner.runFullExperiment("BinaryTree", 20);
 
                 System.out.println("running splay tree: ");
-                //ExperimentRunner.runFullExperiment("SplayTree", 20);
+                ExperimentRunner.runFullExperiment("SplayTree", 20);
 
                 System.out.println("running RB tree: ");
                 ExperimentRunner.runFullExperiment("RBT", 20);

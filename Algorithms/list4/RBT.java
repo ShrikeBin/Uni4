@@ -152,6 +152,11 @@ class RBT implements TREE
             // fix red red violation if exists
             fixRedRed(newNode);
         }
+
+        if (metrics != null) {
+            int h = getHeight();
+            metrics.maxHeight = Math.max(metrics.maxHeight, h);
+        }
     }
 
     @Override
@@ -159,6 +164,11 @@ class RBT implements TREE
     {
         Node a = search(x);
         removeNode(a);
+
+        if (metrics != null) {
+            int h = getHeight();
+            metrics.maxHeight = Math.max(metrics.maxHeight, h);
+        }
     }
 
     // deletes the given node

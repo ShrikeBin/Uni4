@@ -5,14 +5,12 @@ public class Metrics {
     public long pointerReads = 0;
     public long pointerWrites = 0;
     public int maxHeight = 0;
-    public ArrayList<Integer> heights = new ArrayList<>();
 
     public void reset() {
         comparisons = 0;
         pointerReads = 0;
         pointerWrites = 0;
         maxHeight = 0;
-        heights.clear();
     }
 
     public void addHeight(int h)

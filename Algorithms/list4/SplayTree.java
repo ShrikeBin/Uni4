@@ -35,12 +35,22 @@ public class SplayTree implements TREE
     public void addNode(int data)
     {
         insert(data);
+
+        if (metrics != null) {
+            int h = getHeight();
+            metrics.maxHeight = Math.max(metrics.maxHeight, h);
+        }
     }
     
     @Override
     public void deleteNode(int data)
     {
         delete(data);
+
+        if (metrics != null) {
+            int h = getHeight();
+            metrics.maxHeight = Math.max(metrics.maxHeight, h);
+        }
     }
 
     @Override
