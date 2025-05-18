@@ -7,9 +7,7 @@ class RBT implements TREE
     private Metrics metrics;
 
     // TODO ADD COUNTING THIS STUFF
-// if (metrics != null) metrics.pointerWrites++;
-// if (metrics != null) metrics.pointerReads++;
-// if (metrics != null) metrics.comparisons++;
+    // if (metrics != null) metrics.comparisons++;
 
     RBT() {root = null;}
     Node getRoot() {return root;}
@@ -29,6 +27,8 @@ class RBT implements TREE
         }
         
         public Node uncle() {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
             if (parent == null || parent.parent == null)
                 return null;
             if (parent.isOnLeft())
@@ -38,29 +38,44 @@ class RBT implements TREE
         }
         
         public boolean isOnLeft() {
+            if (metrics != null) metrics.pointerReads++;
             return this == parent.left;
         }
         
         public Node sibling() {
+            if (metrics != null) metrics.pointerReads++;
             if (parent == null)
                 return null;
             if (isOnLeft())
+            {
+                if (metrics != null) metrics.pointerReads++;
                 return parent.right;
+            }
+            if (metrics != null) metrics.pointerReads++;
             return parent.left;
         }
         
         public void moveDown(Node nParent) {
+            if (metrics != null) metrics.pointerReads++;
             if (parent != null) {
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerWrites++;
                 if (isOnLeft())
                     parent.left = nParent;
                 else
                     parent.right = nParent;
             }
+            if (metrics != null) metrics.pointerWrites++;
+            if (metrics != null) metrics.pointerWrites++;
             nParent.parent = parent;
             parent = nParent;
         }
 
         public boolean hasRedChild() {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
             return (left != null && left.color == COLOR.RED) ||
                     (right != null && right.color == COLOR.RED);
         }
@@ -104,11 +119,14 @@ class RBT implements TREE
             // when root is null
             // simply insert value at root
             newNode.color = COLOR.BLACK;
+            if (metrics != null) metrics.pointerWrites++;
             root = newNode;
         } else {
             Node temp = search(n);
             
             // return if value already exists
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.comparisons++;
             if (temp.val == n)
                 return;
                 
@@ -117,12 +135,20 @@ class RBT implements TREE
  
             // connect new node to correct node
             newNode.parent = temp;
-
+            if (metrics != null) metrics.pointerWrites++;
+            if (metrics != null) metrics.comparisons++;
             if (n < temp.val)
+            {
+                if (metrics != null) metrics.pointerReads++;
                 temp.left = newNode;
+                if (metrics != null) metrics.pointerWrites++;
+            }
             else
+            {
+                if (metrics != null) metrics.pointerReads++;
                 temp.right = newNode;
-            
+                if (metrics != null) metrics.pointerWrites++;
+            }
             // fix red red violation if exists
             fixRedRed(newNode);
         }
@@ -139,30 +165,48 @@ class RBT implements TREE
     private void removeNode(Node v) {
         Node u = BSTreplace(v);
         // True when u and v are both black
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
         boolean uvBlack = ((u == null || u.color == COLOR.BLACK) && (v.color == COLOR.BLACK));
         Node parent = v.parent;
 
         if (u == null) {
             // u is NULL therefore v is leaf
             if (v == root)
-             // v is root, making root null
+            {
+                // v is root, making root null
                 root = null;
-            else {
+                if (metrics != null) metrics.pointerWrites++;
+            }
+            else 
+            {
                 if (uvBlack)
+                {
                 // u and v both black
                 // v is leaf, fix double black at v
                     fixDoubleBlack(v);
-                    
+                }
                 // u or v is red
                 else if (v.sibling() != null)
-                // sibling is not null, make it red
+                {
+                    // sibling is not null, make it red
+                    if (metrics != null) metrics.pointerReads++;
                     v.sibling().color = COLOR.RED;
+                    if (metrics != null) metrics.pointerWrites++;
+                }
                 
                 // delete v from the tree
                 if (v.isOnLeft())
+                {
                     parent.left = null;
+                    if (metrics != null) metrics.pointerWrites++;
+                }
                 else
+                {
                     parent.right = null;
+                    if (metrics != null) metrics.pointerWrites++;
+                }
             }
             return;
         }
@@ -172,15 +216,24 @@ class RBT implements TREE
             if (v == root) {
                 // v is root, assign the value of u to v, and delete u
                 v.val = u.val;
+                if (metrics != null) metrics.pointerWrites++;
                 v.left = v.right = null;
+                if (metrics != null) metrics.pointerWrites++;
                 // delete u;
             } else {
                 // Detach v from tree and move u up
                 if (v.isOnLeft())
+                {
+                    if (metrics != null) metrics.pointerWrites++;
                     parent.left = u;
+                }
                 else
+                {
+                    if (metrics != null) metrics.pointerWrites++;
                     parent.right = u;
+                }
 
+                if (metrics != null) metrics.pointerWrites++;
                 u.parent = parent;
 
                 if (uvBlack)
@@ -208,8 +261,11 @@ class RBT implements TREE
         if (sibling == null)
         // No sibling, double black pushed up
             fixDoubleBlack(parent);
-        else {
-            if (sibling.color == COLOR.RED) {
+        else 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (sibling.color == COLOR.RED) 
+            {
                 // sibling red
                 parent.color = COLOR.RED;
                 sibling.color = COLOR.BLACK;
@@ -222,38 +278,59 @@ class RBT implements TREE
                     leftRotate(parent);
 
                 fixDoubleBlack(x);
-            } else {
+            } 
+            else 
+            {
                 // Sibling black
-                if (sibling.hasRedChild()) {
+                if (sibling.hasRedChild()) 
+                {
                     // at least 1 red children
-                    if (sibling.left != null && sibling.left.color == COLOR.RED) {
-                        if (sibling.isOnLeft()) {
+                    if (metrics != null) metrics.pointerReads++;
+                    if (metrics != null) metrics.pointerReads++;
+                    if (sibling.left != null && sibling.left.color == COLOR.RED) 
+                    {
+                        if (sibling.isOnLeft()) 
+                        {
                             // left left
+                            if (metrics != null) metrics.pointerWrites++;
+                            if (metrics != null) metrics.pointerWrites++;
                             sibling.left.color = sibling.color;
                             sibling.color = parent.color;
                             rightRotate(parent);
                         } else {
                             // right right
+                            if (metrics != null) metrics.pointerWrites++;
                             sibling.left.color = parent.color;
                             rightRotate(sibling);
                             leftRotate(parent);
                         }
-                    } else {
-                        if (sibling.isOnLeft()) {
+                    } 
+                    else 
+                    {
+                        if (sibling.isOnLeft()) 
+                        {
                             // left right
+                            if (metrics != null) metrics.pointerWrites++;
                             sibling.right.color = parent.color;
                             leftRotate(sibling);
                             rightRotate(parent);
                         } else {
                             // right right
+                            if (metrics != null) metrics.pointerWrites++;
+                            if (metrics != null) metrics.pointerWrites++;
                             sibling.right.color = sibling.color;
                             sibling.color = parent.color;
                             leftRotate(parent);
                         }
                     }
                     parent.color = COLOR.BLACK;
-                } else {
+                } 
+                else 
+                {
                     // 2 black children
+                    if (metrics != null) metrics.pointerReads++;
+                    if (metrics != null) metrics.pointerReads++;
+                    
                     sibling.color = COLOR.RED;
                     if (parent.color == COLOR.BLACK)
                         fixDoubleBlack(parent);
@@ -275,55 +352,75 @@ class RBT implements TREE
        // initialize parent, grandparent, uncle
        Node parent = x.parent, grandparent = parent.parent, uncle = x.uncle();
 
-       if (parent.color != COLOR.BLACK) {
-           if (uncle != null && uncle.color == COLOR.RED) {
-               
-               // uncle red, perform recoloring and recurse
-               parent.color = COLOR.BLACK;
-               uncle.color = COLOR.BLACK;
-               grandparent.color = COLOR.RED;
-               fixRedRed(grandparent);
-           } else {
-               // Else perform LR, LL, RL, RR
-               if (parent.isOnLeft()) {
-                   if (x.isOnLeft())
-                       // for left right
-                       swapColors(parent, grandparent);
-                   else {
-                       leftRotate(parent);
-                       swapColors(x, grandparent);
-                   }
-                   // for left left and left right
-                   rightRotate(grandparent);
-               } else {
-                   if (x.isOnLeft()) {
-                       // for right left
-                       rightRotate(parent);
-                       swapColors(x, grandparent);
-                   } else
-                       swapColors(parent, grandparent);
-                       
-                   // for right right and right left
-                   leftRotate(grandparent);
-               }
-           }
-       }
+       if (metrics != null) metrics.pointerReads++;
+
+       if (parent.color != COLOR.BLACK) 
+       {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.pointerReads++;
+
+            if (uncle != null && uncle.color == COLOR.RED) {
+                // uncle red, perform recoloring and recurse
+                if (metrics != null) metrics.pointerWrites++;
+                if (metrics != null) metrics.pointerWrites++;
+                if (metrics != null) metrics.pointerWrites++;
+                parent.color = COLOR.BLACK;
+                uncle.color = COLOR.BLACK;
+                grandparent.color = COLOR.RED;
+                fixRedRed(grandparent);
+            } else {
+                // Else perform LR, LL, RL, RR
+                if (parent.isOnLeft()) {
+                    if (x.isOnLeft())
+                        // for left right
+                        swapColors(parent, grandparent);
+                    else {
+                        leftRotate(parent);
+                        swapColors(x, grandparent);
+                    }
+                    // for left left and left right
+                    rightRotate(grandparent);
+                } else {
+                    if (x.isOnLeft()) {
+                        // for right left
+                        rightRotate(parent);
+                        swapColors(x, grandparent);
+                    } else
+                        swapColors(parent, grandparent);
+                        
+                    // for right right and right left
+                    leftRotate(grandparent);
+                }
+            }
+        }
    }
     
     private Node successor(Node x) {
         Node temp = x;
+        if (metrics != null) metrics.pointerReads++;
         while (temp.left != null)
+        {
+            if (metrics != null) metrics.pointerReads++;
             temp = temp.left;
+        }
         return temp;
     }
         
     private void swapColors(Node x1, Node x2) {
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerWrites++;
+        if (metrics != null) metrics.pointerWrites++;
         COLOR temp = x1.color;
         x1.color = x2.color;
         x2.color = temp;
     }
 
     private void swapValues(Node u, Node v) {
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerWrites++;
+        if (metrics != null) metrics.pointerWrites++;
         int temp = u.val;
         u.val = v.val;
         v.val = temp;
@@ -331,19 +428,36 @@ class RBT implements TREE
 
     private Node search(int n) {
         Node temp = root;
-        while (temp != null) {
+        while (temp != null) 
+        {
+            if (metrics != null) metrics.pointerReads++;
+            if (metrics != null) metrics.comparisons++;
             if (n < temp.val) {
                 if (temp.left == null)
+                {
                     break;
+                }
                 else
+                {
                     temp = temp.left;
-            } else if (n == temp.val) {
+                }
+            } else if (n == temp.val) 
+            {
+                if (metrics != null) metrics.pointerReads++;
                 break;
-            } else {
+            } 
+            else 
+            {
+                if (metrics != null) metrics.pointerReads++;
+                if (metrics != null) metrics.pointerReads++;
                 if (temp.right == null)
+                {
                     break;
+                }
                 else
+                {
                     temp = temp.right;
+                }
             }
         }
 
@@ -353,14 +467,19 @@ class RBT implements TREE
     // find node that replaces a deleted node in BST
     private Node BSTreplace(Node x) {
         // when node have 2 children
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
         if (x.left != null && x.right != null)
             return successor(x.right);
             
         // when leaf
+        if (metrics != null) metrics.pointerReads++;
+        if (metrics != null) metrics.pointerReads++;
         if (x.left == null && x.right == null)
             return null;
             
         // when single child
+        if (metrics != null) metrics.pointerReads++;
         if (x.left != null)
             return x.left;
         else
@@ -370,41 +489,55 @@ class RBT implements TREE
     private void leftRotate(Node x) {
         Node nParent = x.right;
         
+        if (metrics != null) metrics.pointerReads++;
         if (x == root)
             root = nParent;
             
         x.moveDown(nParent);
+
+        if (metrics != null) metrics.pointerWrites++;
         x.right = nParent.left;
-    
+        if (metrics != null) metrics.pointerReads++;
         if (nParent.left != null)
+        {
+            if (metrics != null) metrics.pointerWrites++;
             nParent.left.parent = x;
-        
+        }
+        if (metrics != null) metrics.pointerWrites++;
         nParent.left = x;
     }
 
     private void rightRotate(Node x) {
         Node nParent = x.left;
         
+        if (metrics != null) metrics.pointerReads++;
         if (x == root)
             root = nParent;
 
         x.moveDown(nParent);
+
+        if (metrics != null) metrics.pointerWrites++;
         x.left = nParent.right;
-
+        if (metrics != null) metrics.pointerReads++;
         if (nParent.right != null)
+        {
+            if (metrics != null) metrics.pointerWrites++;
             nParent.right.parent = x;
-
+        }
+        if (metrics != null) metrics.pointerWrites++;
         nParent.right = x;
     }
 
     private int heightRecursive(Node node) 
     {
+        if (metrics != null) metrics.pointerReads++;
         if (node == null) return 0;
         return 1 + Math.max(heightRecursive(node.left), heightRecursive(node.right));
     }
 
     private void inOrderTraversal(Node node) 
     {
+        if (metrics != null) metrics.pointerReads++;
         if (node == null) return;
         inOrderTraversal(node.left);
         System.out.print(node.val + " ");
