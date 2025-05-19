@@ -4,15 +4,15 @@
 ### Pliki:
 
 - Makefile
-- board.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// zasady i obsługa gry
-- game_server.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// serwer gry 
-- game_client.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// klient dla gry
-- game_random_bot.c&nbsp;// losowy bot dla gry
+- board.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*// zasady i obsługa gry*
+- game_server.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*// serwer gry* 
+- game_client.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*// klient dla gry*
+- game_random_bot.c&nbsp;&nbsp;*// losowy bot dla gry*
 
 ### Wymagania:
 
-- Kompilator: gcc version 13.3.0
-- Biblioteka: gsl 2.7 (game_random_bot - generator liczb losowych)
+- Kompilator:  - gcc version 13.3.0
+- Biblioteka:  - gsl 2.7 (game_random_bot - generator liczb losowych)
 -   ```bash
     sudo apt install gcc libgsl-dev
     ```
@@ -35,7 +35,7 @@
 ./game_random_bot <numer ip> <numer portu> <gracz> <nick>
 ```
 
-**gracz == 1 dla **X** <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 dla O.** <br>
-**nick == identyfikator (nazwa) gracza (do 9 znaków)**
+*gracz == 1 dla* **X** <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*2 dla* **O**. <br>
+*nick == identyfikator (nazwa) gracza (do 9 znaków)*
 
