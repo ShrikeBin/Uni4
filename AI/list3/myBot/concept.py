@@ -1,7 +1,7 @@
 import sys
 import random
 import math
-import socket
+import socket as pysocket
 
 # --- CONSTANTS ---
 BOARD_SIZE = 5;
@@ -72,9 +72,8 @@ def checkIfForcedLoss(board, playerSymbol):
         for j in range(BOARD_SIZE - 2):
             segment = [board[i][j+k] for k in range(3)]
             # Aaand continue but not today ig..
-
+            
     # Columns
-
 
     # Diagonal
 
@@ -125,12 +124,12 @@ def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
 # --- SERVER STUFF ---
 def serverConnect(ip, port):
     try:
-        socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket = pysocket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket.connect((ip, port))
         print(f"Succesfully connected to {ip}:{port}")
         return socket
     
-    except socket.error as e:
+    except pysocket.error as e:
         print(f"Error connecting to server: {e}")
         sys.exit(1)
 
@@ -138,7 +137,7 @@ def sendMessage(socket, message):
     try:
         print(f"Sending: {message}")
         socket.sendall(message.encode('utf-8'))
-    except socket.error as e:
+    except pysocket.error as e:
         print(f"Error while sending: {e}")
         sys.exit(1)
 
@@ -152,7 +151,7 @@ def receiveMessage(socket):
         print(f"Received: {message}")
         return message
     
-    except socket.error as e:
+    except pysocket.error as e:
         print(f"Error receiving message: {e}")
         return None
     
