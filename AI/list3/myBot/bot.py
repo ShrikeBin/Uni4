@@ -52,7 +52,6 @@ def makeMove(board, move, playerSymbol):
     if move == None:
         print("Empty Move")
         return board;
-
     i, j = move
 
     if(i >= 0 and i < BOARD_SIZE and j >= 0 and j < BOARD_SIZE and board[i][j] == EMPTY_CELL):
@@ -60,8 +59,8 @@ def makeMove(board, move, playerSymbol):
         newBoard[i][j] = playerSymbol
         return newBoard
     else:
-        print(f"Invalid move for ({i},{j})")
-        return board
+        # Invalid Move
+        return False
     
 # If 3 in a line you loseeee
 def checkIfForcedLoss(board, playerSymbol):
@@ -147,16 +146,16 @@ def checkMove(board, playerSymbol):
 # Here happens the magic
 # Unfortunately it's empty
 # (For Now)
+# TODO ADD WORTH HEURISTICS!
 def heuristics(board, playerSymbol):
     value = checkMove(board, playerSymbol)
-    value += random.randint(-100, 100)
     return value
 
 
 # --- MINIMAX ---
+# TODO check what to do to make it not PRUNE BRANCHES WITH ONLY POSSIBLE NOT LOSING MOVE
 def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
-    eval = heuristics(playerSymbol, board)
-
+    eval = heuristics(board, playerSymbol)
     # Terminal state exit (win/lose)
     if depth == 0 or abs(eval) >= 999_999:
         return eval
@@ -164,26 +163,63 @@ def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
     if isMaximizingPlayer:
         maxEval = -999_999_999
 
-        for newBoard in getValidMoves(board, playerSymbol):
-            eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, False)
-            maxEval = max(maxEval, eval)
-            alpha = max(alpha, eval)
-            if beta <= alpha:
-                break
+        for newMove in getValidMoves(board):
+            newBoard = makeMove(board, newMove, playerSymbol)
+            if newBoard:
+                eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, False)
+                maxEval = max(maxEval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break
         return maxEval
     
     else:
         minEval = 999_999_999
         opponent = 1 if playerSymbol == 2 else 2
 
-        for newBoard in getValidMoves(board, opponent):
-            eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, True)
-            minEval = min(minEval, eval)
-            beta = min(beta, eval)
-            if beta <= alpha:
-                break
+        for newMove in getValidMoves(board):
+            newBoard = makeMove(board, newMove, opponent)
+            if newBoard:
+                eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, True)
+                minEval = min(minEval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break
         return minEval
     
+
+# --- MINIMAX Special ---
+# TODO to check terminal states (αβ returned instant loss)
+# Somtething's here fishy....
+def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
+    eval = heuristics(board, playerSymbol)
+    # Terminal state exit (win/lose)
+    if depth == 0 or abs(eval) >= 999_999:
+        return eval
+
+    if isMaximizingPlayer:
+        maxEval = -999_999_999
+
+        for newMove in getValidMoves(board):
+            newBoard = makeMove(board, newMove, playerSymbol)
+            if newBoard:
+                eval = minimaxNoPrune(playerSymbol, newBoard, depth - 1, False)
+                maxEval = max(maxEval, eval)
+
+        return maxEval
+
+    else:
+        minEval = 999_999_999
+        opponent = 1 if playerSymbol == 2 else 2
+
+        for newMove in getValidMoves(board):
+            newBoard = makeMove(board, newMove, opponent)
+            if newBoard:
+                eval = minimaxNoPrune(playerSymbol, newBoard, depth - 1, True)
+                minEval = min(minEval, eval)
+
+        return minEval
+
 
 # --- SERVER STUFF ---
 def serverConnect(ip, port):
@@ -199,7 +235,7 @@ def serverConnect(ip, port):
 
 def sendMessage(socket, message):
     try:
-        print(f"Sending: {message}")
+        print(f"Sending message [{message}]")
         socket.sendall(message.encode('utf-8'))
     except pysocket.error as e:
         print(f"Error while sending: {e}")
@@ -212,7 +248,7 @@ def receiveMessage(socket):
             print("Server stream is empty, no more data")
             return None
         message = data.decode('utf-8').strip()
-        print(f"Received: {message}")
+        print(f"Received message [{message}]")
         return message
     
     except pysocket.error as e:
@@ -240,6 +276,7 @@ def mainLoop(ip, port, player_number, player_name, depth):
 
         if msg.startswith("700"):
             sendMessage(s, f"{player_number} {player_name}")
+
         elif msg.startswith("600"):
             if my_symbol == 1:
                 # It's our turn
@@ -248,14 +285,28 @@ def mainLoop(ip, port, player_number, player_name, depth):
                 for move in getValidMoves(CURRENT_BOARD):
                     tempBoard = [row[:] for row in CURRENT_BOARD]
                     makeMove(tempBoard, move, my_symbol)
+
                     score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, False)
                     if score > best_score:
                         best_score = score
                         best_move = move
+                if best_score <= 999_999:
+                    print(f"got best score: {best_score}")
+                    best_score = -math.inf
+                    best_move = None
+                    for move in getValidMoves(CURRENT_BOARD):
+                        tempBoard = [row[:] for row in CURRENT_BOARD]
+                        makeMove(tempBoard, move, my_symbol)
+
+                        score = minimaxNoPrune(my_symbol, tempBoard, depth, False)
+                        if score > best_score:
+                            best_score = score
+                            best_move = move
                 if best_move:
                     move_str = f"{best_move[0]+1}{best_move[1]+1}"
                     sendMessage(s, move_str)
-                    makeMove(CURRENT_BOARD , best_move, my_symbol)
+                    makeMove(CURRENT_BOARD, best_move, my_symbol)
+
                 printBoard(CURRENT_BOARD)
 
         elif msg.isdigit() and len(msg) == 2:
@@ -264,29 +315,57 @@ def mainLoop(ip, port, player_number, player_name, depth):
             col = int(msg[1]) - 1
             makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
+            # It's our turn
             best_score = -math.inf
             best_move = None
             for move in getValidMoves(CURRENT_BOARD):
                 tempBoard = [row[:] for row in CURRENT_BOARD]
                 makeMove(tempBoard, move, my_symbol)
+
                 score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, False)
                 if score > best_score:
                     best_score = score
                     best_move = move
+            if best_score <= 999_999:
+                print(f"got best score: {best_score}")
+                best_score = -math.inf
+                best_move = None
+                for move in getValidMoves(CURRENT_BOARD):
+                    tempBoard = [row[:] for row in CURRENT_BOARD]
+                    makeMove(tempBoard, move, my_symbol)
+
+                    score = minimaxNoPrune(my_symbol, tempBoard, depth, False)
+                    print(f"score from noprune: {score}")
+                    if score > best_score:
+                        best_score = score
+                        best_move = move
             if best_move:
                 move_str = f"{best_move[0]+1}{best_move[1]+1}"
                 sendMessage(s, move_str)
-                makeMove(CURRENT_BOARD , best_move, my_symbol)
+                makeMove(CURRENT_BOARD, best_move, my_symbol)
+
             printBoard(CURRENT_BOARD)
 
         elif msg.startswith("1"):
             print("You win!")
+            row = int(msg[1]) - 1
+            col = int(msg[2]) - 1
+            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("2"):
             print("You lose.")
+            row = int(msg[1]) - 1
+            col = int(msg[2]) - 1
+            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("3"):
             print("Draw.")
+            row = int(msg[1]) - 1
+            col = int(msg[2]) - 1
+            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("400"):
             print("Win due to opponent's error.")
@@ -298,7 +377,7 @@ def mainLoop(ip, port, player_number, player_name, depth):
     s.close()
 
 
-# --- Run The Bot ---
+#--- Run The Bot ---
 if __name__ == "__main__":
     import sys
     if len(sys.argv) != 6:
