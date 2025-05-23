@@ -4,29 +4,37 @@
 #include <array>
 #include <vector>
 #include "state_utils.hpp"
+#include <cstdint>
 
 struct Node 
 {
-    //AAAA TO SIE ROZEPCHA DO 4*64bit
     State state;
-    uint8_t g;
-    uint8_t h;
-    uint8_t f; 
-    
+    uint32_t ghf;
+
     Node(State s, uint8_t G, uint8_t H)
-    :state(s), g(G), h(H), f(G+H) {}
+    : state(s)
+    {
+        uint8_t F = G + H;
+        ghf = (G << 16) | (H << 8) | F;
+    }
+
     ~Node() = default;
+
+    uint8_t g() const { return (ghf >> 16) & 0xFF; }
+    uint8_t h() const { return (ghf >> 8) & 0xFF; }
+    uint8_t f() const { return ghf & 0xFF; }
 
     bool operator > (const Node& other) const 
     {
-        return f > other.f;
+        return f() > other.f();
     }
     
     bool operator < (const Node& other) const 
     {
-        return f < other.f;
+        return f() < other.f();
     }
 };
+
 
 // each position valid moves representation
 // 16 values (0..15) going the same as the state

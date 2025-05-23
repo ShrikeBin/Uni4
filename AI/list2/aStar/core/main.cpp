@@ -90,13 +90,13 @@ int main(int argc, char* argv[])
     {
         bool operator()(const Node& a, const Node& b) const 
         {
-            if (a.f == b.f)
+            if (a.f() == b.f())
             {
-                return a.g > b.g; // tie-break: prefer node closer to start (lower g)
+                return a.g() > b.g(); // tie-break: prefer node closer to start (lower g)
             }
             else
             { 
-                return a.f > b.f; // primary: prefer lower f
+                return a.f() > b.f(); // primary: prefer lower f
             }
         }
     };
@@ -129,12 +129,12 @@ int main(int argc, char* argv[])
             break;
         }
 
-        NeighborList neighbors = getNeighbors(current.state, current.g);
+        NeighborList neighbors = getNeighbors(current.state, current.g());
         for (const Node& neighbor : neighbors) 
         {
             if (neighbor.state == 0) continue;
 
-            uint8_t unsure_g = current.g + 1;
+            uint8_t unsure_g = current.g() + 1;
 
             auto it = g_score.find(neighbor.state);
             // Check if the neighbor has been visited but cheaper
