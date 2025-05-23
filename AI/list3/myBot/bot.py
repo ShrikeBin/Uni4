@@ -6,26 +6,26 @@ import socket as pysocket
 # --- CONSTANTS ---
 BOARD_SIZE = 5;
 EMPTY_CELL = 0;
-SYMBOLS = {0: ' ', 1: '⨉', 2: '◯'}
+SYMBOLS = {0: ' ', 1: '\033[1;96m⨉\033[0m', 2: '\033[1;93m◯\033[0m'}
 
 # --- Board Utils ---
 def createBoard():
     return [[EMPTY_CELL for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
 
 def printBoard(board):
-    print('┏' + '━━━┳' * (BOARD_SIZE - 1) + '━━━┓')
+    print('\033[90m┏' + '━━━┳' * (BOARD_SIZE - 1) + '━━━┓\033[0m')
 
     for row in range(BOARD_SIZE):
-        row_str = '┃'
+        row_str = '\033[90m┃\033[0m'
 
         for col in range(BOARD_SIZE):
-            row_str += (f' {SYMBOLS[board[row][col]]} ┃')
+            row_str += (f' {SYMBOLS[board[row][col]]} \033[90m┃\033[0m')
         print(row_str)
 
         if row < BOARD_SIZE - 1:
-            print('┣' + '━━━╋' * (BOARD_SIZE - 1) + '━━━┫')
+            print('\033[90m┣' + '━━━╋' * (BOARD_SIZE - 1) + '━━━┫\033[0m')
         else:
-            print('┗' + '━━━┻' * (BOARD_SIZE - 1) + '━━━┛')
+            print('\033[90m┗' + '━━━┻' * (BOARD_SIZE - 1) + '━━━┛\033[0m')
 
 def reverseBoard(inBoard):
     outBoard = inBoard
@@ -132,32 +132,34 @@ def checkIfWinCondition(board, playerSymbol):
 
     return False
 
-# ok so this just says if I messed up
-def checkMove(board, playerSymbol):
-    # Check if 4 in line FIRST
-    if checkIfWinCondition(board, playerSymbol):
-        return 999_999
-    if checkIfForcedLoss(board, playerSymbol):
-        return -999_999
-    return 0
-
-
 # --- HEURISTICS ---
 # Here happens the magic
 # Unfortunately it's empty
 # (For Now)
 # TODO ADD WORTH HEURISTICS!
 def heuristics(board, playerSymbol):
-    value = checkMove(board, playerSymbol)
-    return value
+    value = random.randint(0,100)
+    
+    
+    # Returns, Heuristic, isWinning, isLosing
+    if checkIfWinCondition(board, playerSymbol):
+        return value, True, False 
+    if checkIfForcedLoss(board, playerSymbol):
+        return value, False, True
+    
+    return value, False, False
 
 
 # --- MINIMAX ---
 # TODO check what to do to make it not PRUNE BRANCHES WITH ONLY POSSIBLE NOT LOSING MOVE
 def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
-    eval = heuristics(board, playerSymbol)
+    eval, isWinningMove, isLosingMove = heuristics(board, playerSymbol)
     # Terminal state exit (win/lose)
-    if depth == 0 or abs(eval) >= 999_999:
+    if depth == 0 or isWinningMove or isLosingMove:
+        if isWinningMove:
+            return 999_999
+        if isLosingMove:
+            return -999_999
         return eval
 
     if isMaximizingPlayer:
@@ -192,9 +194,13 @@ def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
 # TODO to check terminal states (αβ returned instant loss)
 # Somtething's here fishy....
 def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
-    eval = heuristics(board, playerSymbol)
+    eval, isWinningMove, isLosingMove = heuristics(board, playerSymbol)
     # Terminal state exit (win/lose)
-    if depth == 0 or abs(eval) >= 999_999:
+    if depth == 0 or isWinningMove or isLosingMove:
+        if isWinningMove:
+            return 999_999
+        if isLosingMove:
+            return -999_999
         return eval
 
     if isMaximizingPlayer:
@@ -205,7 +211,9 @@ def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
             if newBoard:
                 eval = minimaxNoPrune(playerSymbol, newBoard, depth - 1, False)
                 maxEval = max(maxEval, eval)
-
+                
+        if maxEval == -999_999_999:
+            return eval
         return maxEval
 
     else:
@@ -217,7 +225,9 @@ def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
             if newBoard:
                 eval = minimaxNoPrune(playerSymbol, newBoard, depth - 1, True)
                 minEval = min(minEval, eval)
-
+                
+        if minEval == 999_999_999:
+            return eval
         return minEval
 
 
@@ -286,20 +296,20 @@ def mainLoop(ip, port, player_number, player_name, depth):
                     tempBoard = [row[:] for row in CURRENT_BOARD]
                     makeMove(tempBoard, move, my_symbol)
 
-                    score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, False)
+                    score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
                     if score > best_score:
                         best_score = score
                         best_move = move
-                if best_score <= 999_999:
+                if best_score <= -999_999:
                     print(f"got best score: {best_score}")
                     best_score = -math.inf
                     best_move = None
                     for move in getValidMoves(CURRENT_BOARD):
                         tempBoard = [row[:] for row in CURRENT_BOARD]
                         makeMove(tempBoard, move, my_symbol)
-
-                        score = minimaxNoPrune(my_symbol, tempBoard, depth, False)
-                        if score > best_score:
+                        print(f"Avaliable move: {move}")
+                        score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO Here change to false?
+                        if score >= best_score:
                             best_score = score
                             best_move = move
                 if best_move:
@@ -322,21 +332,21 @@ def mainLoop(ip, port, player_number, player_name, depth):
                 tempBoard = [row[:] for row in CURRENT_BOARD]
                 makeMove(tempBoard, move, my_symbol)
 
-                score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, False)
+                score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
                 if score > best_score:
                     best_score = score
                     best_move = move
-            if best_score <= 999_999:
+            if best_score <= -999_999:
                 print(f"got best score: {best_score}")
                 best_score = -math.inf
                 best_move = None
                 for move in getValidMoves(CURRENT_BOARD):
                     tempBoard = [row[:] for row in CURRENT_BOARD]
                     makeMove(tempBoard, move, my_symbol)
-
-                    score = minimaxNoPrune(my_symbol, tempBoard, depth, False)
+                    print(f"Avaliable move: {move}")
+                    score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO HERE CHANGE TO FALSE?
                     print(f"score from noprune: {score}")
-                    if score > best_score:
+                    if score >= best_score:
                         best_score = score
                         best_move = move
             if best_move:
@@ -347,21 +357,21 @@ def mainLoop(ip, port, player_number, player_name, depth):
             printBoard(CURRENT_BOARD)
 
         elif msg.startswith("1"):
-            print("You win!")
+            print(f"\nYou win! (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
             makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("2"):
-            print("You lose.")
+            print(f"\nYou lose! (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
             makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("3"):
-            print("Draw.")
+            print(f"Draw. (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
             makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
