@@ -7,6 +7,7 @@
 
 struct Node 
 {
+    //AAAA TO SIE ROZEPCHA DO 4*64bit
     State state;
     uint8_t g;
     uint8_t h;
