@@ -301,13 +301,11 @@ def mainLoop(ip, port, player_number, player_name, depth):
                         best_score = score
                         best_move = move
                 if best_score <= -999_999:
-                    print(f"got best score: {best_score}")
                     best_score = -math.inf
                     best_move = None
                     for move in getValidMoves(CURRENT_BOARD):
                         tempBoard = [row[:] for row in CURRENT_BOARD]
                         makeMove(tempBoard, move, my_symbol)
-                        print(f"Avaliable move: {move}")
                         score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO Here change to false?
                         if score >= best_score:
                             best_score = score
@@ -337,15 +335,12 @@ def mainLoop(ip, port, player_number, player_name, depth):
                     best_score = score
                     best_move = move
             if best_score <= -999_999:
-                print(f"got best score: {best_score}")
                 best_score = -math.inf
                 best_move = None
                 for move in getValidMoves(CURRENT_BOARD):
                     tempBoard = [row[:] for row in CURRENT_BOARD]
                     makeMove(tempBoard, move, my_symbol)
-                    print(f"Avaliable move: {move}")
                     score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO HERE CHANGE TO FALSE?
-                    print(f"score from noprune: {score}")
                     if score >= best_score:
                         best_score = score
                         best_move = move
