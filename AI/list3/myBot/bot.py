@@ -138,15 +138,84 @@ def checkIfWinCondition(board, playerSymbol):
 # (For Now)
 # TODO ADD WORTH HEURISTICS!
 def heuristics(board, playerSymbol):
-    value = random.randint(0,100)
-    
-    
+    def evalBoard(board, playerSymbol):
+        opponentSymbol = 1 if playerSymbol == 2 else 2
+        count_free = 0
+        count_blocked = 0
+        diag_two_in_a_row = 0
+        continues_after_gap = 0
+
+        directions = [(0,1), (1,0), (1,1), (1,-1)]  # right, down, diag-right, diag-left
+
+        visited_pairs = set()  # avoid double-counting
+
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                if board[i][j] == playerSymbol:
+                    for dx, dy in directions:
+                        x1, y1 = i + dx, j + dy
+
+                        if (0 <= x1 < BOARD_SIZE and 0 <= y1 < BOARD_SIZE and 
+                            board[x1][y1] == playerSymbol):
+
+                            pair_key = tuple(sorted([(i, j), (x1, y1)]))
+                            if pair_key in visited_pairs:
+                                continue
+                            visited_pairs.add(pair_key)
+
+                            blocked = False
+
+                            # Check forward block
+                            x2, y2 = i + 2*dx, j + 2*dy
+                            if 0 <= x2 < BOARD_SIZE and 0 <= y2 < BOARD_SIZE:
+                                if board[x2][y2] == opponentSymbol:
+                                    blocked = True
+
+                            # Check backward block
+                            bx, by = i - dx, j - dy
+                            if 0 <= bx < BOARD_SIZE and 0 <= by < BOARD_SIZE:
+                                if board[bx][by] == opponentSymbol:
+                                    blocked = True
+
+                            if blocked:
+                                count_blocked += 1
+                            else:
+                                count_free += 1
+
+                            # Specifically count diagonals
+                            if dx != 0 and dy != 0:
+                                diag_two_in_a_row += 1
+
+                            # Check continuation after gap (forward)
+                            gap_x, gap_y = i + 2*dx, j + 2*dy
+                            after_gap_x, after_gap_y = i + 3*dx, j + 3*dy
+                            if (0 <= gap_x < BOARD_SIZE and 0 <= gap_y < BOARD_SIZE and board[gap_x][gap_y] == EMPTY_CELL and
+                                0 <= after_gap_x < BOARD_SIZE and 0 <= after_gap_y < BOARD_SIZE and board[after_gap_x][after_gap_y] == playerSymbol):
+                                continues_after_gap += 1
+
+                            # Check continuation after gap (backward)
+                            gap_bx, gap_by = i - dx, j - dy
+                            after_gap_bx, after_gap_by = i - 2*dx, j - 2*dy
+                            if (0 <= gap_bx < BOARD_SIZE and 0 <= gap_by < BOARD_SIZE and board[gap_bx][gap_by] == EMPTY_CELL and
+                                0 <= after_gap_bx < BOARD_SIZE and 0 <= after_gap_by < BOARD_SIZE and board[after_gap_bx][after_gap_by] == playerSymbol):
+                                continues_after_gap += 1
+        evaluation = 0
+        evaluation += 100*count_free
+        evaluation += 5*count_blocked
+        evaluation += 100*diag_two_in_a_row
+        evaluation += 1000*continues_after_gap
+        return evaluation
+        
     # Returns, Heuristic, isWinning, isLosing
     if checkIfWinCondition(board, playerSymbol):
-        return value, True, False 
+        value = 999_999
+        return value, True, False
     if checkIfForcedLoss(board, playerSymbol):
+        value = -999_999
         return value, False, True
     
+    opponent = 1 if playerSymbol == 2 else 2
+    value = evalBoard(board, playerSymbol) - evalBoard(board, opponent)
     return value, False, False
 
 
@@ -272,7 +341,6 @@ def receiveMessage(socket):
 
 
 # --- Main Bot Loop ---
-# THIS NEEDS FIXING
 def mainLoop(ip, port, player_number, player_name, depth):
     CURRENT_BOARD = createBoard()
     s = serverConnect(ip, port)
@@ -385,14 +453,68 @@ def mainLoop(ip, port, player_number, player_name, depth):
 #--- Run The Bot ---
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 6:
-        print("Usage: python client.py <ip> <port> <player_number> <player_name> <depth>")
+    if not (len(sys.argv) == 6 or len(sys.argv) == 2):
+        print("Usage: python bot.py <ip> <port> <player_number> <player_name> <depth>")
+        print("Or for debug mode: python bot.py -1")
         sys.exit(1)
 
-    ip = sys.argv[1]
-    port = int(sys.argv[2])
-    player_number = int(sys.argv[3])
-    player_name = sys.argv[4]
-    depth = int(sys.argv[5])
+    if int(sys.argv[1]) != -1:
+        ip = sys.argv[1]
+        port = int(sys.argv[2])
+        player_number = int(sys.argv[3])
+        player_name = sys.argv[4]
+        depth = int(sys.argv[5])
 
-    mainLoop(ip, port, player_number, player_name, depth)
+        mainLoop(ip, port, player_number, player_name, depth)
+        
+    else:
+        print("Debug mode:")
+        board = createBoard()
+        printBoard(board)
+        print("You can now test your heuristics and minimax function here.")
+        print("Use `move` to make a move.")
+        print("Use `print` to print the board.")
+        print("Use `heuristics` to get heuristic value.")
+        print("Use `minimax` to run minimax with pruning.")
+        print("Use `minimax_no_prune` to run minimax without pruning.")
+        print("Use `exit` or `quit` to exit debug mode.")
+        while True:
+            try:
+                commmand = input("Enter command : ").strip().lower()
+                if commmand == "move":
+                    row = int(input("Enter row (0-4): ")[0])
+                    col = int(input("Enter column (0-4): ")[0])
+                    playerSymbol = int(input("Enter player symbol (1 or 2): "))
+                    if row < 0 or row >= BOARD_SIZE or col < 0 or col >= BOARD_SIZE:
+                        print("Invalid move. Try again.")
+                        continue
+                    board = makeMove(board, (row, col), playerSymbol)
+                    printBoard(board)
+                elif commmand == "print":
+                    printBoard(board)
+                elif commmand == "heuristics":
+                    playerSymbol = int(input("Enter player symbol (1 or 2): "))
+                    value, isWinning, isLosing = heuristics(board, playerSymbol)
+                    print(f"Heuristic value: {value}, Winning: {isWinning}, Losing: {isLosing}")
+                elif commmand == "minimax":
+                    depth = int(input("Enter depth for minimax: "))
+                    playerSymbol = int(input("Enter player symbol (1 or 2): "))
+                    best_score = minimax(playerSymbol, board, depth, -math.inf, math.inf, True)
+                    print(f"Best score from minimax: {best_score}")
+                elif commmand == "minimax_no_prune":
+                    depth = int(input("Enter depth for minimax no prune: "))
+                    playerSymbol = int(input("Enter player symbol (1 or 2): "))
+                    best_score = minimaxNoPrune(playerSymbol, board, depth, True)
+                    print(f"Best score from minimax no prune: {best_score}")
+                elif commmand == "exit" or commmand == "quit":
+                    print("Exiting debug mode.")
+                    break
+                else:
+                    print("Unknown command")
+                    continue
+            except ValueError:
+                print("Invalid input. Please enter numbers only.")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+        print("Exiting debug mode.")
+        sys.exit(0) 
