@@ -358,26 +358,30 @@ def mainLoop(ip, port, player_number, player_name, depth):
         elif msg.startswith("600"):
             if my_symbol == 1:
                 # It's our turn
-                best_score = -math.inf
-                best_move = None
-                for move in getValidMoves(CURRENT_BOARD):
-                    tempBoard = [row[:] for row in CURRENT_BOARD]
-                    makeMove(tempBoard, move, my_symbol)
+                # best_score = -math.inf
+                # best_move = None
+                
+                best_move = (random.randint(1, BOARD_SIZE-2), random.randint(1, BOARD_SIZE-2)) 
+                # First move is random in the center
+                
+                # for move in getValidMoves(CURRENT_BOARD):
+                #     tempBoard = [row[:] for row in CURRENT_BOARD]
+                #     makeMove(tempBoard, move, my_symbol)
 
-                    score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
-                    if score > best_score:
-                        best_score = score
-                        best_move = move
-                if best_score <= -999_999:
-                    best_score = -math.inf
-                    best_move = None
-                    for move in getValidMoves(CURRENT_BOARD):
-                        tempBoard = [row[:] for row in CURRENT_BOARD]
-                        makeMove(tempBoard, move, my_symbol)
-                        score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO Here change to false?
-                        if score >= best_score:
-                            best_score = score
-                            best_move = move
+                #     score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
+                #     if score > best_score:
+                #         best_score = score
+                #         best_move = move
+                # if best_score <= -999_999:
+                #     best_score = -math.inf
+                #     best_move = None
+                #     for move in getValidMoves(CURRENT_BOARD):
+                #         tempBoard = [row[:] for row in CURRENT_BOARD]
+                #         makeMove(tempBoard, move, my_symbol)
+                #         score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO Here change to false?
+                #         if score >= best_score:
+                #             best_score = score
+                #             best_move = move
                 if best_move:
                     move_str = f"{best_move[0]+1}{best_move[1]+1}"
                     sendMessage(s, move_str)
@@ -453,12 +457,12 @@ def mainLoop(ip, port, player_number, player_name, depth):
 #--- Run The Bot ---
 if __name__ == "__main__":
     import sys
-    if not (len(sys.argv) == 6 or len(sys.argv) == 2):
+    if not (len(sys.argv) == 6 or (len(sys.argv) == 2 and sys.argv[1] == "-1")):
         print("Usage: python bot.py <ip> <port> <player_number> <player_name> <depth>")
         print("Or for debug mode: python bot.py -1")
         sys.exit(1)
 
-    if int(sys.argv[1]) != -1:
+    if sys.argv[1]!= "-1":
         ip = sys.argv[1]
         port = int(sys.argv[2])
         player_number = int(sys.argv[3])
