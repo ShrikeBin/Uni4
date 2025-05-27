@@ -46,6 +46,7 @@ def getValidMoves(board):
         for j in range(BOARD_SIZE):
             if board[i][j] == EMPTY_CELL:
                 moves.append((i,j))
+    random.shuffle(moves) # add some NOISE, because the bot tends to play from the top left corner
     return moves
 
 def makeMove(board, move, playerSymbol):
