@@ -143,7 +143,6 @@ def heuristics(board, playerSymbol):
         opponentSymbol = 1 if playerSymbol == 2 else 2
         count_free = 0
         count_blocked = 0
-        diag_two_in_a_row = 0
         continues_after_gap = 0
 
         directions = [(0,1), (1,0), (1,1), (1,-1)]  # right, down, diag-right, diag-left
@@ -183,10 +182,6 @@ def heuristics(board, playerSymbol):
                             else:
                                 count_free += 1
 
-                            # Specifically count diagonals
-                            if dx != 0 and dy != 0:
-                                diag_two_in_a_row += 1
-
                             # Check continuation after gap (forward)
                             gap_x, gap_y = i + 2*dx, j + 2*dy
                             after_gap_x, after_gap_y = i + 3*dx, j + 3*dy
@@ -203,7 +198,6 @@ def heuristics(board, playerSymbol):
         evaluation = 0
         evaluation += 100*count_free
         evaluation += 5*count_blocked
-        evaluation += 100*diag_two_in_a_row
         evaluation += 1000*continues_after_gap
         return evaluation
         
