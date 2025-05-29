@@ -12,8 +12,7 @@ Wersja: 2.0 - z ulepszeniami przeciw samobójstwu
 #include <time.h>
 #include <limits.h>
 
-#include "./board.hpp"
-
+#include "./board.h"
 
 // Struktura przechowująca wynik minimax
 typedef struct {
