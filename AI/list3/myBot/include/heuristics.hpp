@@ -73,12 +73,12 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         // These two do not really make sense but yeah maybe they do I dunno
         // We have Potential 3 in line for us
         if (opponent_count == 0 && player_count == 2 && player_middle){
-            score -= 30;
+            score += 20;
         }
         
         // Enemy has potential 3 in line
         if (player_count == 0 && opponent_count == 2 && opponent_middle){
-            score += 30;
+            score -= 20;
         }
 
         // We have (X)( )(X)
