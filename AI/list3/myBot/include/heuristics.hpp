@@ -18,10 +18,10 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     int opponentSymbol = (playerSymbol == 1) ? 2 : 1;
     
     // HIGHEST PRIORITY
-    if (winCheck(playerSymbol, board)) return 50000;      // Player won
-    if (winCheck(opponentSymbol, board)) return -50000;   // Enemy won
-    if (loseCheck(playerSymbol, board)) return -30000;    // Player tupid
-    if (loseCheck(opponentSymbol, board)) return 30000;   // Enemy tupid
+    if (winCheck(playerSymbol, board)) return 100000;      // Player won
+    if (winCheck(opponentSymbol, board)) return -100000;   // Enemy won
+    if (loseCheck(playerSymbol, board)) return -50000;    // Player tupid
+    if (loseCheck(opponentSymbol, board)) return 50000;   // Enemy tupid
     
     // 1. Check for possible 4 in line
     // Here we analyze every possible 4 in line
@@ -33,8 +33,8 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         for (int j = 0; j < 4; ++j){
             int row = winTable[i][j][0];
             int col = winTable[i][j][1];
-            if (board[row][col] == playerSymbol) player_count++;
-            else if (board[row][col] == opponentSymbol) opponent_count++;
+            if (board[row][col] == playerSymbol) ++player_count;
+            else if (board[row][col] == opponentSymbol) ++opponent_count;
             else empty_count++;
         }
         
@@ -62,8 +62,8 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         for (int j = 0; j < 3; ++j){
             int row = loseTable[i][j][0];
             int col = loseTable[i][j][1];
-            if (board[row][col] == playerSymbol) player_count++;
-            else if (board[row][col] == opponentSymbol) opponent_count++;
+            if (board[row][col] == playerSymbol) ++player_count;
+            else if (board[row][col] == opponentSymbol) ++opponent_count;
             if(j == 1){
                 if(board[row][col] == playerSymbol) player_middle = true;
                 else if (board[row][col] == opponentSymbol) opponent_middle = true;
@@ -94,16 +94,15 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     
     // 3. Be present in the middle
     int center_positions[][3] = {
-        {2, 2, 25},                                     // Middle
+        {2, 2, 20},                                     // Middle
         {1, 2, 15}, {2, 1, 15}, {3, 2, 15}, {2, 3, 15}, // Middle cross
-        {1, 1, 10}, {1, 3, 10}, {3, 1, 10}, {3, 3, 10}  // Middle corners
+        {1, 1, 15}, {1, 3, 15}, {3, 1, 15}, {3, 3, 15}  // Middle corners
     };
     
     for (int i = 0; i < 9; ++i){
         int row = center_positions[i][0];
         int col = center_positions[i][1];
         int bonus = center_positions[i][2];
-        
         if (board[row][col] == playerSymbol){
             score += bonus;
         }
