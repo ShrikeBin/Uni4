@@ -52,15 +52,16 @@ def getValidMoves(board):
 def makeMove(board, move, playerSymbol):
     if move == None:
         print("Empty Move")
-        return board;
+        newBoard = [row[:] for row in board]
+        return newBoard
     i, j = move
-
-    if(i >= 0 and i < BOARD_SIZE and j >= 0 and j < BOARD_SIZE and board[i][j] == EMPTY_CELL):
-        newBoard = board
+    newBoard = [row[:] for row in board]
+    if(i >= 0 and i < BOARD_SIZE and j >= 0 and j < BOARD_SIZE and newBoard[i][j] == EMPTY_CELL):
         newBoard[i][j] = playerSymbol
         return newBoard
     else:
-        # Invalid Move
+        print(f"{move} is invalid")
+        printBoard(newBoard)
         return False
     
 # If 3 in a line you loseeee
@@ -210,21 +211,25 @@ def heuristics(board, playerSymbol):
         return value, False, True
     
     opponent = 1 if playerSymbol == 2 else 2
-    value = evalBoard(board, playerSymbol) - evalBoard(board, opponent)
+    value = evalBoard(board, playerSymbol) - 2*evalBoard(board, opponent)
     return value, False, False
 
 
 # --- MINIMAX ---
-# TODO check what to do to make it not PRUNE BRANCHES WITH ONLY POSSIBLE NOT LOSING MOVE
-def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
-    eval, isWinningMove, isLosingMove = heuristics(board, playerSymbol)
-    # Terminal state exit (win/lose)
+# TODO It refuses to block oponnent even if punished heavily
+# TODO IT'S VERY VERY WRONG
+# TODO AND SLOW
+def minimax(root, playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
+    # Evaluate from the current player’s POV
+    score, isWinningMove, isLosingMove = heuristics(board, root)
+
+    # Terminal‐state check
     if depth == 0 or isWinningMove or isLosingMove:
         if isWinningMove:
             return 999_999
         if isLosingMove:
             return -999_999
-        return eval
+        return score
 
     if isMaximizingPlayer:
         maxEval = -999_999_999
@@ -232,31 +237,33 @@ def minimax(playerSymbol, board, depth, alpha, beta, isMaximizingPlayer):
         for newMove in getValidMoves(board):
             newBoard = makeMove(board, newMove, playerSymbol)
             if newBoard:
-                eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, False)
-                maxEval = max(maxEval, eval)
-                alpha = max(alpha, eval)
+                val = minimax(root, playerSymbol, newBoard, depth - 1, alpha, beta, False)
+                maxEval = max(maxEval, val)
+                alpha = max(alpha, val)
                 if beta <= alpha:
                     break
         return maxEval
-    
+
     else:
-        minEval = 999_999_999
+        # Swap symbol for the opponent’s turn
         opponent = 1 if playerSymbol == 2 else 2
+        minEval = 999_999_999
 
         for newMove in getValidMoves(board):
             newBoard = makeMove(board, newMove, opponent)
             if newBoard:
-                eval = minimax(playerSymbol, newBoard, depth - 1, alpha, beta, True)
-                minEval = min(minEval, eval)
-                beta = min(beta, eval)
+                # Pass opponent as the “current” symbol now
+                val = minimax(root, opponent, newBoard, depth - 1, alpha, beta, True)
+                minEval = min(minEval, val)
+                beta = min(beta, val)
                 if beta <= alpha:
                     break
         return minEval
     
 
 # --- MINIMAX Special ---
-# TODO to check terminal states (αβ returned instant loss)
-# Somtething's here fishy....
+# To check terminal states (αβ returned instant loss)
+# TODO FIX AFTER MINIMAX
 def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
     eval, isWinningMove, isLosingMove = heuristics(board, playerSymbol)
     # Terminal state exit (win/lose)
@@ -287,7 +294,7 @@ def minimaxNoPrune(playerSymbol, board, depth, isMaximizingPlayer):
         for newMove in getValidMoves(board):
             newBoard = makeMove(board, newMove, opponent)
             if newBoard:
-                eval = minimaxNoPrune(playerSymbol, newBoard, depth - 1, True)
+                eval = minimaxNoPrune(opponent, newBoard, depth - 1, True)
                 minEval = min(minEval, eval)
                 
         if minEval == 999_999_999:
@@ -351,36 +358,12 @@ def mainLoop(ip, port, player_number, player_name, depth):
             sendMessage(s, f"{player_number} {player_name}")
 
         elif msg.startswith("600"):
-            if my_symbol == 1:
-                # It's our turn
-                # best_score = -math.inf
-                # best_move = None
-                
+            if my_symbol == 1:      
                 best_move = (random.randint(1, BOARD_SIZE-2), random.randint(1, BOARD_SIZE-2)) 
-                # First move is random in the center
-                
-                # for move in getValidMoves(CURRENT_BOARD):
-                #     tempBoard = [row[:] for row in CURRENT_BOARD]
-                #     makeMove(tempBoard, move, my_symbol)
-
-                #     score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
-                #     if score > best_score:
-                #         best_score = score
-                #         best_move = move
-                # if best_score <= -999_999:
-                #     best_score = -math.inf
-                #     best_move = None
-                #     for move in getValidMoves(CURRENT_BOARD):
-                #         tempBoard = [row[:] for row in CURRENT_BOARD]
-                #         makeMove(tempBoard, move, my_symbol)
-                #         score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO Here change to false?
-                #         if score >= best_score:
-                #             best_score = score
-                #             best_move = move
                 if best_move:
                     move_str = f"{best_move[0]+1}{best_move[1]+1}"
                     sendMessage(s, move_str)
-                    makeMove(CURRENT_BOARD, best_move, my_symbol)
+                    CURRENT_BOARD = makeMove(CURRENT_BOARD, best_move, my_symbol)
 
                 printBoard(CURRENT_BOARD)
 
@@ -388,55 +371,46 @@ def mainLoop(ip, port, player_number, player_name, depth):
             # Opponent's move
             row = int(msg[0]) - 1
             col = int(msg[1]) - 1
-            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            CURRENT_BOARD = makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
-            # It's our turn
-            best_score = -math.inf
+            print(getValidMoves(CURRENT_BOARD))
+            score = minimax(my_symbol, my_symbol, CURRENT_BOARD, depth, -math.inf, math.inf, True)
             best_move = None
             for move in getValidMoves(CURRENT_BOARD):
-                tempBoard = [row[:] for row in CURRENT_BOARD]
-                makeMove(tempBoard, move, my_symbol)
-
-                score = minimax(my_symbol, tempBoard, depth, -math.inf, math.inf, True)
-                if score > best_score:
-                    best_score = score
+                scorehere, iswin, isloss = heuristics(makeMove(CURRENT_BOARD, move, my_symbol), my_symbol)
+                printBoard(CURRENT_BOARD)
+                print(f"{move} <- move")
+                print(f"score: {scorehere} w:{iswin} l:{isloss}")
+                if score == scorehere:
                     best_move = move
-            if best_score <= -999_999:
-                best_score = -math.inf
-                best_move = None
-                for move in getValidMoves(CURRENT_BOARD):
-                    tempBoard = [row[:] for row in CURRENT_BOARD]
-                    makeMove(tempBoard, move, my_symbol)
-                    score = minimaxNoPrune(my_symbol, tempBoard, depth, True) #TODO HERE CHANGE TO FALSE?
-                    if score >= best_score:
-                        best_score = score
-                        best_move = move
+
             if best_move:
                 move_str = f"{best_move[0]+1}{best_move[1]+1}"
                 sendMessage(s, move_str)
-                makeMove(CURRENT_BOARD, best_move, my_symbol)
-
+                printBoard(CURRENT_BOARD)
+                print(best_move)
+                CURRENT_BOARD = makeMove(CURRENT_BOARD, best_move, my_symbol)
             printBoard(CURRENT_BOARD)
 
         elif msg.startswith("1"):
             print(f"\nYou win! (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
-            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            CURRENT_BOARD = makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("2"):
             print(f"\nYou lose! (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
-            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            CURRENT_BOARD = makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("3"):
             print(f"Draw. (You are {SYMBOLS[my_symbol]})\n    Final Board:")
             row = int(msg[1]) - 1
             col = int(msg[2]) - 1
-            makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
+            CURRENT_BOARD = makeMove(CURRENT_BOARD , (row, col), opponent_symbol)
             printBoard(CURRENT_BOARD)
             break
         elif msg.startswith("400"):
@@ -451,6 +425,9 @@ def mainLoop(ip, port, player_number, player_name, depth):
 
 #--- Run The Bot ---
 if __name__ == "__main__":
+    print("IT'S BROKEN DO NOT USE IT")
+    sys.exit(1)
+    
     import sys
     if not (len(sys.argv) == 6 or (len(sys.argv) == 2 and sys.argv[1] == "-1")):
         print("Usage: python bot.py <ip> <port> <player_number> <player_name> <depth>")
@@ -481,13 +458,13 @@ if __name__ == "__main__":
             try:
                 commmand = input("Enter command : ").strip().lower()
                 if commmand == "move":
-                    row = int(input("Enter row (0-4): ")[0])
-                    col = int(input("Enter column (0-4): ")[0])
+                    row = int(input("Enter row (1-5): ")[0])
+                    col = int(input("Enter column (1-5): ")[0])
                     playerSymbol = int(input("Enter player symbol (1 or 2): "))
-                    if row < 0 or row >= BOARD_SIZE or col < 0 or col >= BOARD_SIZE:
+                    if row < 1 or row > BOARD_SIZE or col < 1 or col > BOARD_SIZE:
                         print("Invalid move. Try again.")
                         continue
-                    board = makeMove(board, (row, col), playerSymbol)
+                    board = makeMove(board, (row-1, col-1), playerSymbol)
                     printBoard(board)
                 elif commmand == "print":
                     printBoard(board)
