@@ -83,12 +83,12 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
 
         // We have (X)( )(X)
         if (opponent_count == 0 && player_count == 2 && !player_middle){
-            score += 100;
+            score += 30;
         }
 
         // Enemy has (X)( )(X)
         if (player_count == 0 && opponent_count == 2 && !opponent_middle){
-            score -= 120;
+            score -= 30;
         }
     }
     
