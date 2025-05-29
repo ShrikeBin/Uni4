@@ -8,7 +8,7 @@ MEDIUM_LEN    = 140                                 # number of cells in the sha
 TOTAL_STEPS   = 2000                                # how many discrete time‐steps to run
 SIGNAL_LENGTH = 10                                  # how many contiguous cells a data burst covers
 JAM_DURATION  = 140                                  # how many steps a station actively emits its own '!' 
-BACKOFF_RANGE = (JAM_DURATION, JAM_DURATION + 10)   # after any jam (or at startup), random wait
+BACKOFF_RANGE = (3, 15)   # after any jam (or at startup), random wait
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -121,6 +121,8 @@ class Station:
         if self.state == 'transmitting':
             self.state = 'waiting'
             self.wait_timer = random.randint(*BACKOFF_RANGE)
+        if self.state == 'waiting':
+            self.wait_timer = random.randint(*BACKOFF_RANGE)
 
     def tick(self):
         if self.state == 'jam':
@@ -200,7 +202,7 @@ def simulate_csma_cd(
         #    must give up & back off immediately.
         # ─────────────────────────────────────────────────────────────────────
         for st in stations:
-            if st.state == 'transmitting' and '!' in cell_map.get(st.pos, []):
+            if '!' in cell_map.get(st.pos, []):
                 st.hear_external_jam()
 
         # ─────────────────────────────────────────────────────────────────────
@@ -251,13 +253,13 @@ def _print_medium_state(time_step, length, signals, stations):
     display = []
     for i, contents in enumerate(cell_contents):
         if not contents:
-            display.append('.')
+            display.append('·')
         elif '!' in contents and len(contents) == 1:
             display.append('!')
         else:
             non_jams = [oid for oid in contents if oid != '!']
             if len(set(non_jams)) > 1:
-                display.append('X')
+                display.append('⨉')
             else:
                 display.append(str(next(iter(contents))))
 
@@ -265,9 +267,9 @@ def _print_medium_state(time_step, length, signals, stations):
     for st in stations:
         if 0 <= st.pos < length:
             if st.state == 'waiting':
-                display[st.pos] = '[W]'
+                display[st.pos] = '[⏳]'
             elif st.state in ('transmitting', 'jam'):
-                display[st.pos] = '[T]'
+                display[st.pos] = '[📡]'
 
     print(f"T={time_step:04d}: {''.join(display)}")
 
