@@ -168,8 +168,8 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << "╔════════════════════════════════════╗\n"
-              << "║        MINIMAX CLIENT 2.0          ║\n"
-              << "║     with suicide protection        ║\n"
+              << "║        MINIMAX TicTacToe 5x5       ║\n"
+              << "║  with moderate  heuristics quality ║\n"
               << "╠════════════════════════════════════╣\n"
               << "║ Player:     " << MY_SYMBOL<< " (" << (MY_SYMBOL == 1 ? 'X' : 'O') << ")                  ║\n"
               << "║ Name:       " << player_name << std::string(40 - 16 - player_name.size() - 1, ' ') << "║\n"
@@ -249,7 +249,11 @@ int main(int argc, char* argv[]) {
         if (msg == 0 || msg == 6) {
             std::cout << "\nMY TURN! Calculating best move...\n"
                       << "─────────────────────────────────────\n";
-            move = getBestMove(MY_SYMBOL, DEPTH);
+            if(msg != 6){
+                move = getBestMove(MY_SYMBOL, DEPTH);
+            } else {
+                move = 33;
+            }
 
             if (move == -1) {
                 std::cerr << "CRITICAL ERROR: Cannot find a move!\n";
