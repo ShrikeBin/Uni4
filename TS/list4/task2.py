@@ -1,115 +1,294 @@
-# CSMA/CD Simulator - Prosty model w Pythonie
 import random
+from collections import defaultdict
 
-class Station:
-    def __init__(self, position, p_send):
-        self.position = position    # indeks na medium
-        self.p_send = p_send        # prawdopodobieństwo wysyłki
-        self.transmitting = False   # czy aktualnie nadaje
-        self.backoff = 0            # sloty do odczekania przy kolizji
-        self.frame_time = 0         # pozostałe sloty ramki
-        self.success = 0            # licznik udanych transmisji
-        self.collisions = 0         # licznik kolizji
+# ─────────────────────────────────────────────────────────────────────────────
+# CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+MEDIUM_LEN    = 140                                 # number of cells in the shared bus
+TOTAL_STEPS   = 2000                                # how many discrete time‐steps to run
+SIGNAL_LENGTH = 10                                  # how many contiguous cells a data burst covers
+JAM_DURATION  = 140                                  # how many steps a station actively emits its own '!' 
+BACKOFF_RANGE = (JAM_DURATION, JAM_DURATION + 10)   # after any jam (or at startup), random wait
+# ─────────────────────────────────────────────────────────────────────────────
 
-    def start_transmission(self):
-        self.transmitting = True
-        self.frame_time = 3  # ramka trwa 3 sloty
 
-    def handle_collision(self):
-        self.transmitting = False
-        self.collisions += 1
-        self.backoff = random.randint(1, 4)
+class Signal:
+    """
+    A unified signal class. If is_jam=True, behaves like a jam wave: two heads move outward
+    until off‐bus. If is_jam=False, behaves like a data burst: grows to SIGNAL_LENGTH while
+    its origin_station is 'transmitting', then propagates as a fixed‐length block. If the
+    origin_station is jammed mid‐burst, the burst “freezes” at whatever length it has reached
+    and then propagates until off‐bus.
+    """
+    def __init__(self, origin_station, pos, signal_length, is_jam=False):
+        self.origin_station = origin_station  # Station object (or None for jam if desired)
+        self.origin_id = origin_station.id if not is_jam else '!'
+        self.is_jam = is_jam
+        self.length = signal_length if not is_jam else 0
+        self.age = 0  # only used for data bursts
 
-    def tick(self, medium):
-        # odczekanie backoffu
-        if self.backoff > 0:
-            self.backoff -= 1
-            return
-
-        # rozpoczęcie nowej ramki
-        if not self.transmitting and random.random() < self.p_send:
-            # stacja sprawdza, czy na jej pozycji nie ma sygnału
-            if medium[self.position] == 0:
-                self.start_transmission()
-                medium[self.position] += 1
-                return
-
-        # kontynuacja transmisji (jeśli już rozpoczęta)
-        if self.transmitting:
-            medium[self.position] += 1
-
-    def finish(self, medium):
-        if self.transmitting:
-            # sprawdzamy kolizję na pozycji stacji
-            if medium[self.position] > 1:
-                self.handle_collision()
-            else:
-                # zmniejszamy czas ramki
-                self.frame_time -= 1
-                if self.frame_time == 0:
-                    self.transmitting = False
-                    self.success += 1
-
-class Medium:
-    def __init__(self, length):
-        self.length = length
-        self.cells = [0] * length
-
-    def reset(self):
-        self.cells = [0] * self.length
+        # heads and tails:
+        # For both data and jam, we track two heads (pos, direction).
+        # For data (is_jam=False), we also track two tails.
+        self.heads = [(pos, -1), (pos, +1)]
+        if not is_jam:
+            self.tails = [(pos, -1), (pos, +1)]
+        else:
+            self.tails = []  # jam has no tails
 
     def propagate(self):
-        # sygnał rozchodzi się do sąsiadów
-        new = [0] * self.length
-        for i, val in enumerate(self.cells):
-            if val > 0:
-                # sygnał w bieżącej komórce
-                new[i] += val
-                # do sąsiadów
-                if i > 0:
-                    new[i-1] += val
-                if i < self.length - 1:
-                    new[i+1] += val
-        self.cells = new
+        """
+        Advance one time‐step:
+        - If is_jam: move both heads outward; drop any head off‐bus.
+        - Else (data burst):
+            * If age < length and origin still transmitting: age += 1; move only heads.
+            * If age < length but origin not transmitting: set age=length; move heads+tails.
+            * If age >= length: move both heads and tails outward in sync.
+        """
+        if self.is_jam:
+            new_heads = []
+            for (p, d) in self.heads:
+                new_p = p + d
+                if 0 <= new_p < MEDIUM_LEN:
+                    new_heads.append((new_p, d))
+            self.heads = new_heads
+        else:
+            # Data burst logic
+            if self.age < self.length:
+                if self.origin_station.state == 'transmitting':
+                    # still building the burst
+                    self.age += 1
+                    # move heads outward
+                    self.heads = [(p + d, d) for (p, d) in self.heads]
+                    # tails remain at origin until age == length
+                else:
+                    # origin was jammed before burst finished: freeze at full length
+                    self.age = self.length
+                    # move heads and tails outward one cell
+                    self.heads = [(p + d, d) for (p, d) in self.heads]
+                    self.tails = [(p + d, d) for (p, d) in self.tails]
+            else:
+                # full‐length packet propagates: move both heads and tails outward
+                self.heads = [(p + d, d) for (p, d) in self.heads]
+                self.tails = [(p + d, d) for (p, d) in self.tails]
 
-class Simulator:
-    def __init__(self, num_stations=10, length=50, p_send=0.1, slots=1000):
-        # rozmieszczamy stacje równomiernie
-        step = max(1, length // num_stations)
-        positions = [i * step for i in range(num_stations)]
-        self.stations = [Station(pos, p_send) for pos in positions]
-        self.medium = Medium(length)
-        self.slots = slots
+    def occupied_cells(self):
+        """
+        Return a set of all cells currently occupied by this signal:
+        - If is_jam: just both head positions.
+        - Else (data): the range from each tail to its corresponding head.
+        """
+        if self.is_jam:
+            return {p for (p, _) in self.heads}
+        else:
+            occupied = set()
+            # For each direction, include all cells from tail to head (inclusive)
+            for ((tpos, _), (hpos, _)) in zip(self.tails, self.heads):
+                if tpos <= hpos:
+                    occupied.update(range(tpos, hpos + 1))
+                else:
+                    occupied.update(range(hpos, tpos + 1))
+            return occupied
 
-    def run(self):
-        for _ in range(self.slots):
-            # reset medium na początek slotu
-            self.medium.reset()
 
-            # każda stacja wrzuca sygnał (start/continuation)
-            for st in self.stations:
-                st.tick(self.medium.cells)
+class Station:
+    """
+    Each station cycles through:
+      'waiting'  → (wait_timer expires) → 'transmitting'
+      'transmitting' → (if collision) → 'jam' (JAM_DURATION)
+      'jam' → (jam_timer expires) → 'waiting' (new random backoff)
 
-            # propagacja sygnału w medium
-            self.medium.propagate()
+    While in 'transmitting', it spawns one data‐Signal that grows to SIGNAL_LENGTH (unless cut)
+    and then propagates until off‐bus. If jammed mid‐burst, the packet freezes and continues.
+    """
+    def __init__(self, station_id, position):
+        self.id = station_id
+        self.pos = position
+        self.state = 'waiting'
+        self.wait_timer = random.randint(*BACKOFF_RANGE)
+        self.jam_timer = 0
 
-            # zakończenie slotu: obsługa sukcesu/kolizji
-            for st in self.stations:
-                st.finish(self.medium.cells)
+    def try_transmit(self):
+        if self.state == 'waiting' and self.wait_timer <= 0:
+            self.state = 'transmitting'
 
-        total_success = sum(s.success for s in self.stations)
-        total_coll = sum(s.collisions for s in self.stations)
-        throughput = total_success / self.slots
-        return {
-            'total_success': total_success,
-            'total_collisions': total_coll,
-            'throughput': throughput
-        }
+    def detect_collision(self):
+        if self.state == 'transmitting':
+            self.state = 'jam'
+            self.jam_timer = JAM_DURATION
 
-if __name__ == '__main__':
-    sim = Simulator(num_stations=2, length=4, p_send=0.9, slots=100)
-    results = sim.run()
-    print("Wyniki symulacji CSMA/CD:")
-    print(f"  Udane transmisje: {results['total_success']}")
-    print(f"  Kolizje: {results['total_collisions']}")
-    print(f"  Przepustowość (ramki/slot): {results['throughput']:.5f}")
+    def hear_external_jam(self):
+        if self.state == 'transmitting':
+            self.state = 'waiting'
+            self.wait_timer = random.randint(*BACKOFF_RANGE)
+
+    def tick(self):
+        if self.state == 'jam':
+            self.jam_timer -= 1
+            if self.jam_timer <= 0:
+                self.state = 'waiting'
+                self.wait_timer = random.randint(*BACKOFF_RANGE)
+        elif self.state == 'waiting':
+            self.wait_timer -= 1
+            if self.wait_timer <= 0:
+                self.try_transmit()
+
+
+def simulate_csma_cd(
+    medium_length,
+    stations,
+    steps,
+    signal_length=SIGNAL_LENGTH
+):
+    """
+    - medium_length: number of cells (int)
+    - stations: list of Station objects at fixed positions
+    - steps: total simulation steps (int)
+    - signal_length: how many cells each data burst spans
+    """
+    active_signals = []  # List of Signal instances (data or jam)
+
+    for t in range(steps):
+        # ─────────────────────────────────────────────────────────────────────
+        # 1) Spawn new signals for stations entering 'transmitting' or 'jam'
+        # ─────────────────────────────────────────────────────────────────────
+        for st in stations:
+            if st.state == 'transmitting':
+                # If no existing data‐Signal from this station, create one
+                if not any(
+                    isinstance(sig, Signal)
+                    and not sig.is_jam
+                    and sig.origin_id == st.id
+                    for sig in active_signals
+                ):
+                    active_signals.append(Signal(st, st.pos, signal_length, is_jam=False))
+
+            elif st.state == 'jam':
+                # If no existing jam‐Signal whose head started at this station’s pos, create one
+                if not any(
+                    isinstance(sig, Signal)
+                    and sig.is_jam
+                    and st.pos in sig.occupied_cells()
+                    for sig in active_signals
+                ):
+                    active_signals.append(Signal(None, st.pos, 0, is_jam=True))
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 2) Build a cell → list(origin_ids) mapping for collision/jam detection
+        # ─────────────────────────────────────────────────────────────────────
+        cell_map = defaultdict(list)
+        for sig in active_signals:
+            for c in sig.occupied_cells():
+                if 0 <= c < medium_length:
+                    cell_map[c].append(sig.origin_id)
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 3) Collision detection (data vs. data): any cell with ≥2 distinct station IDs,
+        # ignoring cells with jams (jam overrides)
+        # ─────────────────────────────────────────────────────────────────────
+        collision_cells = [
+            c for c, origins in cell_map.items()
+            if '!' not in origins and len({oid for oid in origins if oid != '!'}) > 1
+        ]
+        if collision_cells:
+            for st in stations:
+                if st.state == 'transmitting' and st.pos in collision_cells:
+                    st.detect_collision()
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 4) Jam‐hearing: any transmitting station that “sees” a '!' at its own cell
+        #    must give up & back off immediately.
+        # ─────────────────────────────────────────────────────────────────────
+        for st in stations:
+            if st.state == 'transmitting' and '!' in cell_map.get(st.pos, []):
+                st.hear_external_jam()
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 5) (REMOVED) Drop any data‐Signal whose station switched to 'waiting' mid‐step
+        #    (stations no longer control signal propagation; signals propagate fully)
+        # ─────────────────────────────────────────────────────────────────────
+        # skipping step 5 entirely
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 6) Propagate every signal (data or jam). If fully off‐bus, drop it.
+        # ─────────────────────────────────────────────────────────────────────
+        next_signals = []
+        for sig in active_signals:
+            sig.propagate()
+            occupied = sig.occupied_cells()
+            if any(0 <= c < medium_length for c in occupied):
+                next_signals.append(sig)
+        active_signals = next_signals
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 7) Tick each station’s timers (jam → waiting → transmit, waiting → transmit)
+        # ─────────────────────────────────────────────────────────────────────
+        for st in stations:
+            st.tick()
+
+        # ─────────────────────────────────────────────────────────────────────
+        # 8) (Optional) Print bus state for debugging
+        # ─────────────────────────────────────────────────────────────────────
+        _print_medium_state(t, medium_length, active_signals, stations)
+
+
+def _print_medium_state(time_step, length, signals, stations):
+    """
+    Visual key per cell:
+      . = empty
+      digit = station ID’s data burst occupies that cell
+      ! = jam wave present
+      X = ≥2 distinct data‐IDs collided in that cell
+      W = station at that cell is in 'waiting' (backoff)
+      T = station at that cell is 'transmitting' or 'jam'ing
+    """
+    cell_contents = [set() for _ in range(length)]
+    for sig in signals:
+        for c in sig.occupied_cells():
+            if 0 <= c < length:
+                cell_contents[c].add(sig.origin_id)
+
+    display = []
+    for i, contents in enumerate(cell_contents):
+        if not contents:
+            display.append('.')
+        elif '!' in contents and len(contents) == 1:
+            display.append('!')
+        else:
+            non_jams = [oid for oid in contents if oid != '!']
+            if len(set(non_jams)) > 1:
+                display.append('X')
+            else:
+                display.append(str(next(iter(contents))))
+
+    # Overlay station icons (W=waiting, T=transmitting/jamming)
+    for st in stations:
+        if 0 <= st.pos < length:
+            if st.state == 'waiting':
+                display[st.pos] = '[W]'
+            elif st.state in ('transmitting', 'jam'):
+                display[st.pos] = '[T]'
+
+    print(f"T={time_step:04d}: {''.join(display)}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Example usage:
+# ─────────────────────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    # Place five stations at different positions on the 150‐cell bus
+    stations = [
+        Station(1, 10),
+        Station(2, 40),
+        Station(3, 60),
+        Station(4, 80),
+        Station(5, 110),
+    ]
+
+    # At t=0, all stations are in 'waiting' with random backoffs.
+    simulate_csma_cd(
+        MEDIUM_LEN,
+        stations,
+        TOTAL_STEPS,
+        signal_length=SIGNAL_LENGTH
+    )
