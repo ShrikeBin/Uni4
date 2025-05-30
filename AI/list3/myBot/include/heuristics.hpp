@@ -65,24 +65,24 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         }
         // We have (X)( )( )(X)
         if(playerFirst && playerFourth){
-            score += 100;
+            score += (100 - (opponent_count * 60));
         }
         // Enemy has (X)( )( )(X)
         if(opponentFirst && opponentFourth){
-            score -= 100;
+            score -= (100 - (player_count * 50));
         }
         // We have ( )(X)(X)( )
         if(player_count == 2 && playerSecond && playerThird){
-            score += (100 - (opponent_count * 40));       // Theoretical possiblity to win
+            score += (100 - (opponent_count * 40));
         }
         // Enemy has ( )(X)(X)( )
         if(opponent_count == 2 && opponentSecond && opponentThird){
-            score -= (100 - (player_count * 35));       // Enemy has theoretical possibility to win
+            score -= (100 - (player_count * 35));
         }
         // We have (X)(X)( )( ) or ( )( )(X)(X)
         if(player_count == 2 && ((playerFirst && playerSecond) || (playerThird && playerFourth))){
             if (opponent_count == 0){
-                score += 50;       // Player has a chance to win
+                score += 70;       // Player has a chance to win
             }
         }
         // Enemy has (X)(X)( )( ) or ( )( )(X)(X)
@@ -93,27 +93,26 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         }
         // We have (X)( )(X)( ) or ( )(X)( )(X)
         if (player_count == 2 && ((playerFirst && playerThird) || (playerSecond && playerFourth))){
-            score += (100 - opponent_count * 70);       // Player has a chance to win
+            score += (80 - opponent_count * 70);
         }
         // Enemy has (X)( )(X)( ) or ( )(X)( )(X)
         if (opponent_count == 2 && ((opponentFirst && opponentThird) || (opponentSecond && opponentFourth))){
-            score -= (100 - player_count * 70);       // Enemy has a chance to win
+            score -= (100 - player_count * 70);
         }
-
         // We have (X)(X)( )(X) or (X)( )(X)(X)
         if (opponent_count < 1 && player_count == 3 && (playerSecond || playerThird)){
             score += 1100;      // Close to winning
         }
         // Enemy has (X)(X)( )(X) or (X)( )(X)(X)
         if (player_count < 1 && opponent_count == 3 && (opponentSecond || opponentThird)){
-            score -= 700;       // BLOCK WINNING
+            score -= 750;       // BLOCK WINNING
         }
     }
     
     // 2. Be present in the middle
     int center_positions[][3] = {
-        {2, 2, 10},                                     // Middle
-        {1, 2, 5}, {2, 1, 5}, {3, 2, 5}, {2, 3, 5}, // Middle cross
+        {2, 2, 15},                                     // Middle
+        {1, 2, 10}, {2, 1, 10}, {3, 2, 10}, {2, 3, 10}, // Middle cross
         {1, 1, 5}, {1, 3, 5}, {3, 1, 5}, {3, 3, 5}  // Middle corners
     };
     
