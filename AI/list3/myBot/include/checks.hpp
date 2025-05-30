@@ -5,7 +5,7 @@
 #include "board.hpp"
 #include "moves.hpp"
 
-bool winCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
+inline bool winCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
     bool w = false;
     for (int i = 0; i < 28; i++){
         if ( (board[winTable[i][0][0]][winTable[i][0][1]] == player) &&
@@ -19,7 +19,7 @@ bool winCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
     return w;
 }
 
-bool loseCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
+inline bool loseCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
     bool l = false;
     for (int i = 0; i < 48; i++){
         if ( (board[loseTable[i][0][0]][loseTable[i][0][1]] == player) &&
@@ -32,7 +32,7 @@ bool loseCheck(int player, int board[BOARD_SIZE][BOARD_SIZE]){
     return l;
 }
 
-bool isWinningMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
+inline bool isWinningMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
     if(!isValidMove(move, board)){
         return false;
     }
@@ -57,7 +57,7 @@ bool isWinningMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol
     return false;
 }
 
-bool isLosingMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
+inline bool isLosingMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
     if(!isValidMove(move, board)){
         return true;
     }
@@ -105,7 +105,7 @@ bool isLosingMove(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol)
     return true;
 }
 
-bool isBlockingOpponent(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
+inline bool isBlockingOpponent(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerSymbol){
     if(!isValidMove(move, board)){
         return false;
     }
@@ -131,7 +131,7 @@ bool isBlockingOpponent(int board[BOARD_SIZE][BOARD_SIZE], int move, int playerS
     return false;
 }
 
-bool isTerminalState(int board[BOARD_SIZE][BOARD_SIZE]) {
+inline bool isTerminalState(int board[BOARD_SIZE][BOARD_SIZE]) {
     if (winCheck(1, board) || winCheck(2, board) || loseCheck(1, board) || loseCheck(2, board)){
         return true;
     }

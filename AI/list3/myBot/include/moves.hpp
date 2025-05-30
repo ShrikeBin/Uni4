@@ -5,7 +5,7 @@
 
 #include "constants.hpp"
 
-bool isValidMove(int move, int board[BOARD_SIZE][BOARD_SIZE]){
+inline bool isValidMove(int move, int board[BOARD_SIZE][BOARD_SIZE]){
     int row = (move / 10) - 1;
     int col = (move % 10) - 1;
     if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || board[row][col] != EMPTY_CELL){
@@ -14,7 +14,7 @@ bool isValidMove(int move, int board[BOARD_SIZE][BOARD_SIZE]){
     return true;
 }
 
-bool makeMove(int move, int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
+inline bool makeMove(int move, int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     if(!isValidMove(move, board)){
         return false;
     }
@@ -24,7 +24,7 @@ bool makeMove(int move, int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     return true;
 }
 
-void getMoves(int board[BOARD_SIZE][BOARD_SIZE], int moves[], int* movesCount) {
+inline void getMoves(int board[BOARD_SIZE][BOARD_SIZE], int moves[], int* movesCount) {
     *movesCount = 0;
     for (int i = 0; i < BOARD_SIZE; i++){
         for (int j = 0; j < BOARD_SIZE; j++){

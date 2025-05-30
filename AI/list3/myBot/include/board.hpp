@@ -4,7 +4,7 @@
 #include <string>
 #include "constants.hpp"
 
-void clearBoard(int board[BOARD_SIZE][BOARD_SIZE]){
+inline void clearBoard(int board[BOARD_SIZE][BOARD_SIZE]){
     for (int i = 0; i < 5; ++i){
         for (int j = 0; j < 5; ++j){
             board[i][j] = 0;
@@ -12,7 +12,7 @@ void clearBoard(int board[BOARD_SIZE][BOARD_SIZE]){
     }
 }
 
-void copyBoard(int source[BOARD_SIZE][BOARD_SIZE], int dest[BOARD_SIZE][BOARD_SIZE]){
+inline void copyBoard(int source[BOARD_SIZE][BOARD_SIZE], int dest[BOARD_SIZE][BOARD_SIZE]){
     for (int i = 0; i < BOARD_SIZE; ++i){
         for (int j = 0; j < BOARD_SIZE; ++j){
             dest[i][j] = source[i][j];
@@ -20,7 +20,7 @@ void copyBoard(int source[BOARD_SIZE][BOARD_SIZE], int dest[BOARD_SIZE][BOARD_SI
     }
 }
 
-void printBoard(int board[BOARD_SIZE][BOARD_SIZE]){
+inline void printBoard(int board[BOARD_SIZE][BOARD_SIZE]){
     std::cout << "\n" << "\033[90m┏";
     for (int i = 0; i < BOARD_SIZE - 1; ++i){
         std::cout << "━━━┳";

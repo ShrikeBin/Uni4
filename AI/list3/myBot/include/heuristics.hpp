@@ -13,7 +13,7 @@
 //
 //══════════════════════════════════════════════════════════════════════════════
 
-int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
+inline int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     int score = 0;
     int opponentSymbol = (playerSymbol == 1) ? 2 : 1;
     
@@ -81,14 +81,20 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         }
         // We have (X)(X)( )( ) or ( )( )(X)(X)
         if(player_count == 2 && ((playerFirst && playerSecond) || (playerThird && playerFourth))){
-            if (opponent_count == 0){
-                score += 70;       // Player has a chance to win
+            if(!(opponentThird|| opponentSecond)){
+                score += 10;
+                if (!(opponentFirst|| opponentFourth)){
+                    score += 60;
+                }
             }
         }
         // Enemy has (X)(X)( )( ) or ( )( )(X)(X)
         if(opponent_count == 2 && ((opponentFirst && opponentSecond) || (opponentThird && opponentFourth))){
-            if (player_count == 0){
-                score -= 50;       // Enemy has a chance to win
+            if(!(playerThird || playerSecond)){
+                score -= 5;
+                if (!(playerFirst || playerFourth)){
+                    score -= 45;
+                }
             }
         }
         // We have (X)( )(X)( ) or ( )(X)( )(X)
@@ -105,7 +111,7 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
         }
         // Enemy has (X)(X)( )(X) or (X)( )(X)(X)
         if (player_count < 1 && opponent_count == 3 && (opponentSecond || opponentThird)){
-            score -= 750;       // BLOCK WINNING
+            score -= 850;       // BLOCK WINNING
         }
     }
     
