@@ -146,7 +146,8 @@ int main(int argc, char* argv[]) {
     }
 
     if( DEPTH >= 8){
-        std::cout << "I GUESS YOU HAVE A LOOOT OF TIME TO RUN SUCH DEPTH....";
+        std::cout << "I GUESS YOU HAVE A LOOOT OF TIME TO RUN SUCH DEPTH....\n"
+                  << "I hope you have a good computer, because this will take a while...\n";
     }
 
     try {
@@ -171,10 +172,10 @@ int main(int argc, char* argv[]) {
               << "║        MINIMAX TicTacToe 5x5       ║\n"
               << "║  with moderate  heuristics quality ║\n"
               << "╠════════════════════════════════════╣\n"
-              << "║ Player:     " << MY_SYMBOL<< " (" << (MY_SYMBOL == 1 ? 'X' : 'O') << ")                  ║\n"
+              << "║ Player:     " << MY_SYMBOL<< " (" << SYMBOLS[MY_SYMBOL] << ")                  ║\n"
               << "║ Name:       " << player_name << std::string(40 - 16 - player_name.size() - 1, ' ') << "║\n"
-              << "║ Depth:      " << DEPTH << "                      ║\n"
-              << "║ Server:     " << argv[1] << ":" << argv[2] << "    ║\n"
+              << "║ Depth:      " << DEPTH << std::string(23 - std::to_string(DEPTH).size(), ' ') <<"║\n"
+              << "║ Server:     " << argv[1] << ":" << argv[2] << std::string(8 - std::string(argv[2]).size(), ' ') <<"║\n"
               << "╚════════════════════════════════════╝\n\n";
 
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
