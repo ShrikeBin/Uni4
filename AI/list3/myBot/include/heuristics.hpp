@@ -23,80 +23,98 @@ int evaluateBoard(int board[BOARD_SIZE][BOARD_SIZE], int playerSymbol){
     if (loseCheck(playerSymbol, board)) return -50000;    // Player tupid
     if (loseCheck(opponentSymbol, board)) return 50000;   // Enemy tupid
     
-    // 1. Check for possible 4 in line
+    // 2. Check for possible 4 in line
     // Here we analyze every possible 4 in line
+    // ROOM FOR IMPROVEMENT
     for (int i = 0; i < 28; ++i){
         int player_count = 0;
         int opponent_count = 0;
         int empty_count = 0;
+        bool playerFirst = false;
+        bool opponentFirst = false;
+        bool playerSecond = false;
+        bool opponentSecond = false;
+        bool playerThird = false;
+        bool opponentThird = false;
+        bool playerFourth = false;
+        bool opponentFourth = false;
         
         for (int j = 0; j < 4; ++j){
             int row = winTable[i][j][0];
             int col = winTable[i][j][1];
             if (board[row][col] == playerSymbol) ++player_count;
             else if (board[row][col] == opponentSymbol) ++opponent_count;
+            if(j==0){
+                if(board[row][col] == playerSymbol) playerFirst = true;
+                else if (board[row][col] == opponentSymbol) opponentFirst = true;
+            }
+            if(j==1){
+                if(board[row][col] == playerSymbol) playerSecond = true;
+                else if (board[row][col] == opponentSymbol) opponentSecond = true;
+            }
+            if(j==2){
+                if(board[row][col] == playerSymbol) playerThird = true;
+                else if (board[row][col] == opponentSymbol) opponentThird = true;
+            }
+            if (j==3){
+                if(board[row][col] == playerSymbol) playerFourth = true;
+                else if (board[row][col] == opponentSymbol) opponentFourth = true;
+            }
+            else if (board[row][col] == 0) empty_count++;
             else empty_count++;
         }
-        
-        if (opponent_count == 0){
-            if (player_count == 3) score += 1100;      // Close to winning
-            else if (player_count == 2) score += 100;  // 
-            else if (player_count == 1) score += 10;   // 
+        // We have (X)( )( )(X)
+        if(playerFirst && playerFourth){
+            score += 100;
         }
-        
-        if (player_count == 0){
-            if (opponent_count == 3) score += 800;     // BLOCK WINNING
-            else if (opponent_count == 2) score += 80; // Block danger
+        // Enemy has (X)( )( )(X)
+        if(opponentFirst && opponentFourth){
+            score -= 100;
         }
-    }
-    
-    // 2. Look for possible 3 in line
-    // Here we also punish "unsafe play", potentially allowing enemy to force us into suicide
-    // Here we analize all possible loosing 3 in line
-    for (int i = 0; i < 48; ++i){
-        int player_count = 0;
-        int opponent_count = 0;
-        bool player_middle = false;
-        bool opponent_middle = false;
-        
-        for (int j = 0; j < 3; ++j){
-            int row = loseTable[i][j][0];
-            int col = loseTable[i][j][1];
-            if (board[row][col] == playerSymbol) ++player_count;
-            else if (board[row][col] == opponentSymbol) ++opponent_count;
-            if(j == 1){
-                if(board[row][col] == playerSymbol) player_middle = true;
-                else if (board[row][col] == opponentSymbol) opponent_middle = true;
+        // We have ( )(X)(X)( )
+        if(player_count == 2 && playerSecond && playerThird){
+            score += (100 - (opponent_count * 40));       // Theoretical possiblity to win
+        }
+        // Enemy has ( )(X)(X)( )
+        if(opponent_count == 2 && opponentSecond && opponentThird){
+            score -= (100 - (player_count * 35));       // Enemy has theoretical possibility to win
+        }
+        // We have (X)(X)( )( ) or ( )( )(X)(X)
+        if(player_count == 2 && ((playerFirst && playerSecond) || (playerThird && playerFourth))){
+            if (opponent_count == 0){
+                score += 50;       // Player has a chance to win
             }
         }
-        
-        // These two do not really make sense but yeah maybe they do I dunno
-        // We have Potential 3 in line for us
-        if (opponent_count == 0 && player_count == 2 && player_middle){
-            score += 20;
+        // Enemy has (X)(X)( )( ) or ( )( )(X)(X)
+        if(opponent_count == 2 && ((opponentFirst && opponentSecond) || (opponentThird && opponentFourth))){
+            if (player_count == 0){
+                score -= 50;       // Enemy has a chance to win
+            }
         }
-        
-        // Enemy has potential 3 in line
-        if (player_count == 0 && opponent_count == 2 && opponent_middle){
-            score -= 20;
+        // We have (X)( )(X)( ) or ( )(X)( )(X)
+        if (player_count == 2 && ((playerFirst && playerThird) || (playerSecond && playerFourth))){
+            score += (100 - opponent_count * 70);       // Player has a chance to win
         }
-
-        // We have (X)( )(X)
-        if (opponent_count == 0 && player_count == 2 && !player_middle){
-            score += 10;
+        // Enemy has (X)( )(X)( ) or ( )(X)( )(X)
+        if (opponent_count == 2 && ((opponentFirst && opponentThird) || (opponentSecond && opponentFourth))){
+            score -= (100 - player_count * 70);       // Enemy has a chance to win
         }
 
-        // Enemy has (X)( )(X)
-        if (player_count == 0 && opponent_count == 2 && !opponent_middle){
-            score += 10;
+        // We have (X)(X)( )(X) or (X)( )(X)(X)
+        if (opponent_count < 1 && player_count == 3 && (playerSecond || playerThird)){
+            score += 1100;      // Close to winning
+        }
+        // Enemy has (X)(X)( )(X) or (X)( )(X)(X)
+        if (player_count < 1 && opponent_count == 3 && (opponentSecond || opponentThird)){
+            score -= 700;       // BLOCK WINNING
         }
     }
     
-    // 3. Be present in the middle
+    // 2. Be present in the middle
     int center_positions[][3] = {
-        {2, 2, 20},                                     // Middle
-        {1, 2, 15}, {2, 1, 15}, {3, 2, 15}, {2, 3, 15}, // Middle cross
-        {1, 1, 15}, {1, 3, 15}, {3, 1, 15}, {3, 3, 15}  // Middle corners
+        {2, 2, 10},                                     // Middle
+        {1, 2, 5}, {2, 1, 5}, {3, 2, 5}, {2, 3, 5}, // Middle cross
+        {1, 1, 5}, {1, 3, 5}, {3, 1, 5}, {3, 3, 5}  // Middle corners
     };
     
     for (int i = 0; i < 9; ++i){

@@ -1,0 +1,34 @@
+
+Prediction details:
+g3.1.png: True Label = 3, Predicted = 5 = FALSE
+g0.2.png: True Label = 0, Predicted = 5 = FALSE
+g9.3.png: True Label = 9, Predicted = 5 = FALSE
+g7.2.png: True Label = 7, Predicted = 5 = FALSE
+g5.2.png: True Label = 5, Predicted = 5 = TRUE
+g7.3.png: True Label = 7, Predicted = 5 = FALSE
+g2.3.png: True Label = 2, Predicted = 3 = FALSE
+g8.1.png: True Label = 8, Predicted = 5 = FALSE
+g6.1.png: True Label = 6, Predicted = 2 = FALSE
+g1.3.png: True Label = 1, Predicted = 3 = FALSE
+g2.2.png: True Label = 2, Predicted = 3 = FALSE
+g6.2.png: True Label = 6, Predicted = 3 = FALSE
+g9.1.png: True Label = 9, Predicted = 5 = FALSE
+g3.2.png: True Label = 3, Predicted = 5 = FALSE
+g9.2.png: True Label = 9, Predicted = 5 = FALSE
+g4.3.png: True Label = 4, Predicted = 5 = FALSE
+g6.3.png: True Label = 6, Predicted = 3 = FALSE
+g8.3.png: True Label = 8, Predicted = 5 = FALSE
+g0.1.png: True Label = 0, Predicted = 5 = FALSE
+g8.2.png: True Label = 8, Predicted = 5 = FALSE
+g7.1.png: True Label = 7, Predicted = 5 = FALSE
+g4.1.png: True Label = 4, Predicted = 5 = FALSE
+g1.2.png: True Label = 1, Predicted = 5 = FALSE
+g5.3.png: True Label = 5, Predicted = 5 = TRUE
+g0.3.png: True Label = 0, Predicted = 5 = FALSE
+g4.2.png: True Label = 4, Predicted = 5 = FALSE
+g3.3.png: True Label = 3, Predicted = 5 = FALSE
+g2.1.png: True Label = 2, Predicted = 5 = FALSE
+g1.1.png: True Label = 1, Predicted = 5 = FALSE
+g5.1.png: True Label = 5, Predicted = 5 = TRUE
+
+Accuracy: 10.00%

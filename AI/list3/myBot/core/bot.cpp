@@ -174,7 +174,7 @@ int main(int argc, char* argv[]) {
               << "║ Player:     " << MY_SYMBOL<< " (" << (MY_SYMBOL == 1 ? 'X' : 'O') << ")                  ║\n"
               << "║ Name:       " << player_name << std::string(40 - 16 - player_name.size() - 1, ' ') << "║\n"
               << "║ Depth:      " << DEPTH << "                      ║\n"
-              << "║ Server:     " << argv[1] << ":" << argv[2] << "         ║\n"
+              << "║ Server:     " << argv[1] << ":" << argv[2] << "    ║\n"
               << "╚════════════════════════════════════╝\n\n";
 
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -252,10 +252,13 @@ int main(int argc, char* argv[]) {
             if(msg != 6){
                 move = getBestMove(MY_SYMBOL, DEPTH);
             } else {
-                move = 33;
+                std::uniform_int_distribution<> distr(2, 4);
+                int rand1 = distr(gen);
+                int rand2 = distr(gen);
+                move = rand1 * 10 + rand2; // Random move in range 22-44
             }
 
-            if (move == -1) {
+            if (move == -1){
                 std::cerr << "CRITICAL ERROR: Cannot find a move!\n";
                 break;
             }
