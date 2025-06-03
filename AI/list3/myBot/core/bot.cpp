@@ -175,7 +175,7 @@ int main(int argc, char* argv[]) {
               << "║ Player:     " << MY_SYMBOL<< " (" << SYMBOLS[MY_SYMBOL] << ")                  ║\n"
               << "║ Name:       " << player_name << std::string(40 - 16 - player_name.size() - 1, ' ') << "║\n"
               << "║ Depth:      " << DEPTH << std::string(23 - std::to_string(DEPTH).size(), ' ') <<"║\n"
-              << "║ Server:     " << argv[1] << ":" << argv[2] << std::string(8 - std::string(argv[2]).size(), ' ') <<"║\n"
+              << "║ Server:     " << argv[1] << ":" << argv[2] << std::string(13 - std::string(argv[2]).size(), ' ') <<"║\n"
               << "╚════════════════════════════════════╝\n\n";
 
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
