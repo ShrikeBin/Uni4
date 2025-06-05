@@ -1,44 +1,55 @@
 #ifndef BINHEAP_HPP
 #define BINHEAP_HPP
-
+#include <vector>
+#include "Metrics.hpp"
 struct BinomialNode {
-    int key;
-    int degree;
+    int value;
     BinomialNode* parent;
-    BinomialNode* child;
-    BinomialNode* sibling;
+    std::vector<BinomialNode*> children;
+    int degree;
+    bool marked;
 
-    BinomialNode(int k);
+    BinomialNode(int val);
 };
 
 class BinomialHeap {
 public:
+    std::vector<BinomialNode*> trees;
+    BinomialNode* min_node;
+    int count;
+    Metrics* metrics;
+
+    // Constructor for the Binomial Heap
     BinomialHeap();
-
-    void makeHeap();
-    void clear();
-
-    void insert(int key);
-    void unionHeap(BinomialHeap& other);
-
-    int extractMin();
-    bool empty() const;
-
-    void resetComparisonCount();
-    void addToTotalComparisons();
-    long long getCurrentOpComparisons() const;
-    long long getTotalComparisons() const;
-
+    // Check if the heap is empty
+    bool is_empty();
+    // Insert a new value into the heap
+    void insert(int value);
+    // Get the minimum value in the heap
+    int get_min();
+    // Extract the minimum value from the heap
+    int extract_min();
+    // Merge two binomial heaps
+    void merge(BinomialHeap& other_heap);
+    // Get the size of the heap
+    int size();
+    // sets metrics for the heap operations
+    void setMetrics(Metrics& metrics);
 private:
-    BinomialNode* head;
-
-    long long total_comparisons;
-    long long current_op_comparisons;
-
-    bool less_or_equal(int a, int b);
-    void linkTrees(BinomialNode* y, BinomialNode* z);
-    BinomialNode* mergeRootLists(BinomialNode* h1, BinomialNode* h2);
-    BinomialNode* unionHeaps(BinomialNode* h1, BinomialNode* h2);
+    // Decrease the key of a node
+    void decrease_key(BinomialNode* node, int new_value);
+    // Delete a specific node from the heap
+    void delete_node(BinomialNode* node);
+    // Perform the bubbling up operation
+    void _bubble_up(BinomialNode* node);
+    // Link two trees together
+    void _link(BinomialNode* tree1, BinomialNode* tree2);
+    // Consolidate the trees in the heap
+    void _consolidate();
+    // Find the minimum value in the heap
+    void _find_min();
 };
+
+
 
 #endif // BINHEAP_HPP

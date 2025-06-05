@@ -1,0 +1,27 @@
+{
+    "files.associations": {
+        ".als.json": "jsonc",
+        "vector": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "algorithm": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "expected": "cpp",
+        "format": "cpp",
+        "ratio": "cpp",
+        "source_location": "cpp",
+        "stacktrace": "cpp",
+        "scoped_allocator": "cpp"
+    }
+}

@@ -1,162 +1,151 @@
 #include "BinHeap.hpp"
-#include <cassert>
+#include <cmath>
+#include <climits>
+#include <vector>
+#include <stdexcept>
+#include <utility>
+#include <algorithm>
+// ──────────────────────────── BinomialNode ────────────────────────────
+BinomialNode::BinomialNode(int val)
+    : value(val), degree(0), parent(nullptr), children() {}
 
-BinomialNode::BinomialNode(int k)
-    : key(k), degree(0), parent(nullptr), child(nullptr), sibling(nullptr) {}
-
-BinomialHeap::BinomialHeap() : head(nullptr), total_comparisons(0), current_op_comparisons(0) {}
-
-bool BinomialHeap::less_or_equal(int a, int b) {
-    current_op_comparisons++;
-    return a <= b;
+// ──────────────────────────── BinomialHeap ────────────────────────────
+// Constructor for the Binomial Heap
+BinomialHeap::BinomialHeap() {
+    min_node = nullptr;
+    count = 0;
+    trees.clear();
 }
 
-void BinomialHeap::linkTrees(BinomialNode* y, BinomialNode* z) {
-    y->parent = z;
-    y->sibling = z->child;
-    z->child = y;
-    z->degree++;
+// Set metrics for the heap operations
+void BinomialHeap::setMetrics(Metrics& metrics) {
+    this->metrics = &metrics;
 }
 
-BinomialNode* BinomialHeap::mergeRootLists(BinomialNode* h1, BinomialNode* h2) {
-    if (!h1) return h2;
-    if (!h2) return h1;
+// Check if the heap is empty
+bool BinomialHeap::is_empty() {
+    return min_node == nullptr;
+}
 
-    BinomialNode* head = nullptr;
-    BinomialNode** pos = &head;
+// Insert a new value into the heap
+void BinomialHeap::insert(int value) {
+    BinomialNode* node = new BinomialNode(value);
+    BinomialHeap heap;
+    heap.trees.push_back(node);
+    merge(heap);
+}
 
-    while (h1 && h2) {
-        if (h1->degree < h2->degree) {
-            *pos = h1;
-            h1 = h1->sibling;
-        } else {
-            *pos = h2;
-            h2 = h2->sibling;
+// Get the minimum value in the heap
+int BinomialHeap::get_min() {
+    return min_node->value;
+}
+
+// Extract the minimum value from the heap
+int BinomialHeap::extract_min() {
+    BinomialNode* minNode = min_node;
+    trees.erase(remove(trees.begin(), trees.end(), minNode), trees.end());
+    BinomialHeap heap;
+    heap.trees = minNode->children;
+    merge(heap);
+    _find_min();
+    count -= 1;
+    return minNode->value;
+}
+
+// Merge two binomial heaps
+void BinomialHeap::merge(BinomialHeap& other_heap) {
+    trees.insert(trees.end(), other_heap.trees.begin(), other_heap.trees.end());
+    count += other_heap.count;
+    _find_min();
+}
+
+// Find the minimum value in the heap
+void BinomialHeap::_find_min() {
+    min_node = nullptr;
+    for (BinomialNode* tree : trees) {
+        if(this -> metrics != nullptr) { this -> metrics -> comparisons++; }
+        if (min_node == nullptr || tree->value < min_node->value) {
+            min_node = tree;
         }
-        pos = &((*pos)->sibling);
+    }
+}
+
+// Decrease the key of a node
+void BinomialHeap::decrease_key(BinomialNode* node, int new_value) {
+    if (new_value > node->value) {
+        throw std::invalid_argument("New value is greater than the current value");
+    }
+    node->value = new_value;
+    _bubble_up(node);
+}
+
+// Delete a specific node from the heap
+void BinomialHeap::delete_node(BinomialNode* node) {
+    decrease_key(node, INT_MIN);
+    extract_min();
+}
+
+// Perform the bubbling up operation
+void BinomialHeap::_bubble_up(BinomialNode* node) {
+    BinomialNode* parent = node->parent;
+    while (parent != nullptr && node->value < parent->value) {
+        if(this -> metrics != nullptr) { this -> metrics -> comparisons++; }
+        std::swap(node->value, parent->value);
+        node = parent;
+        parent = node->parent;
+    }
+}
+
+// Link two trees together
+void BinomialHeap::_link(BinomialNode* tree1, BinomialNode* tree2) {
+    if(this -> metrics != nullptr) { this -> metrics -> comparisons++; }
+    if (tree1->value > tree2->value) {
+        std::swap(tree1, tree2);
+    }
+    tree2->parent = tree1;
+    tree1->children.push_back(tree2);
+    tree1->degree += 1;
+}
+
+// Consolidate the trees in the heap
+void BinomialHeap::_consolidate() {
+    int max_degree = static_cast<int>(floor(log2(count))) + 1;
+    std::vector<BinomialNode*> degree_to_tree(max_degree + 1, nullptr);
+
+    while (!trees.empty()) {
+        BinomialNode* current = trees[0];
+        trees.erase(trees.begin());
+        int degree = current->degree;
+        while (degree_to_tree[degree] != nullptr) {
+            BinomialNode* other = degree_to_tree[degree];
+            degree_to_tree[degree] = nullptr;
+            if(this -> metrics != nullptr) { this -> metrics -> comparisons++; }
+            if (current->value < other->value) {
+                _link(current, other);
+            } else {
+                _link(other, current);
+                current = other;
+            }
+            degree++;
+        }
+        degree_to_tree[degree] = current;
     }
 
-    *pos = (h1) ? h1 : h2;
-    return head;
-}
-
-BinomialNode* BinomialHeap::unionHeaps(BinomialNode* h1, BinomialNode* h2) {
-    BinomialNode* newHead = mergeRootLists(h1, h2);
-    if (!newHead) return nullptr;
-
-    BinomialNode* prev = nullptr;
-    BinomialNode* curr = newHead;
-    BinomialNode* next = curr->sibling;
-
-    while (next) {
-        if ((curr->degree != next->degree) ||
-            (next->sibling && next->sibling->degree == curr->degree)) {
-            prev = curr;
-            curr = next;
-        } else {
-            current_op_comparisons++;
-            if (curr->key <= next->key) {
-                curr->sibling = next->sibling;
-                linkTrees(next, curr);
-            } else {
-                if (prev) prev->sibling = next;
-                else newHead = next;
-                linkTrees(curr, next);
-                curr = next;
+    min_node = nullptr;
+    trees.clear();
+    for (BinomialNode* tree : degree_to_tree) {
+        if (tree != nullptr) {
+            trees.push_back(tree);
+            if(this -> metrics != nullptr) { this -> metrics -> comparisons++; }
+            if (min_node == nullptr || tree->value < min_node->value) {
+                min_node = tree;
             }
         }
-        next = curr->sibling;
     }
-    return newHead;
 }
 
-void BinomialHeap::resetComparisonCount() {
-    current_op_comparisons = 0;
+// Get the size of the heap
+int BinomialHeap::size() {
+    return count;
 }
 
-void BinomialHeap::addToTotalComparisons() {
-    total_comparisons += current_op_comparisons;
-}
-
-long long BinomialHeap::getCurrentOpComparisons() const {
-    return current_op_comparisons;
-}
-
-long long BinomialHeap::getTotalComparisons() const {
-    return total_comparisons;
-}
-
-void BinomialHeap::clear() {
-    head = nullptr;
-    total_comparisons = 0;
-    current_op_comparisons = 0;
-}
-
-void BinomialHeap::makeHeap() {
-    head = nullptr;
-    total_comparisons = 0;
-    current_op_comparisons = 0;
-}
-
-void BinomialHeap::insert(int key) {
-    resetComparisonCount();
-    BinomialNode* newNode = new BinomialNode(key);
-    head = unionHeaps(head, newNode);
-    addToTotalComparisons();
-}
-
-void BinomialHeap::unionHeap(BinomialHeap& other) {
-    resetComparisonCount();
-    head = unionHeaps(head, other.head);
-    other.head = nullptr;
-    addToTotalComparisons();
-}
-
-bool BinomialHeap::empty() const {
-    return head == nullptr;
-}
-
-int BinomialHeap::extractMin() {
-    resetComparisonCount();
-    if (!head) return -1;
-
-    BinomialNode* minNode = head;
-    BinomialNode* minPrev = nullptr;
-
-    BinomialNode* curr = head;
-    BinomialNode* prev = nullptr;
-
-    while (curr) {
-        current_op_comparisons++;
-        if (curr->key < minNode->key) {
-            minNode = curr;
-            minPrev = prev;
-        }
-        prev = curr;
-        curr = curr->sibling;
-    }
-
-    if (minPrev) {
-        minPrev->sibling = minNode->sibling;
-    } else {
-        head = minNode->sibling;
-    }
-
-    BinomialNode* child = minNode->child;
-    BinomialNode* newHead = nullptr;
-    while (child) {
-        BinomialNode* next = child->sibling;
-        child->sibling = newHead;
-        child->parent = nullptr;
-        newHead = child;
-        child = next;
-    }
-
-    head = unionHeaps(head, newHead);
-
-    int minKey = minNode->key;
-    delete minNode;
-
-    addToTotalComparisons();
-    return minKey;
-}

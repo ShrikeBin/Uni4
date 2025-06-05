@@ -1,6 +1,7 @@
 #include "schedule.hpp"
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 // Build adjacency list and directed children lists from MST edges
 void buildTree(int n, const std::vector<Edge>& mstEdges, int root, std::vector<std::vector<int>>& children) {
