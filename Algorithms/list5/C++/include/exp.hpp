@@ -2,7 +2,7 @@
 #define EXP_HPP
 
 void runHeapExperiment(int n, int trials);
-void runGraphExperiment(int n, int trials, bool useKruskal);
-void runSchedulingExperiment(int n, int trials);
+void runGraphExperiment(int step, int limit, int trials, bool useKruskal);
+void runSchedulingExperiment(int step, int limit, int trials);
 
 #endif // EXP_HPP

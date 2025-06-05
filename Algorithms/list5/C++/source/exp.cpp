@@ -14,10 +14,34 @@ std::vector<int> randomSequence(int n, int seed) {
     return v;
 }
 
+void runGraphExperiment(int step, int limit, int trials, bool useKruskal){
+    std::ofstream out("results/graph_exp_results.txt");
+    for(int trial = 1; trial <= trials; trial++) {
+        for(int n = step; n <= limit; n += step) {
+            std::cout << "Trial " << trial << ", n = " << n << ":\n";
+            if (useKruskal) {
+
+            } else {
+
+            }
+        }
+    }
+}
+
+void runSchedulingExperiment(int step, int limit, int trials){
+    std::ofstream out("results/scheduling_exp_results.txt");
+        for(int trial = 1; trial <= trials; trial++) {
+            for(int n = step; n <= limit; n += step) {
+                std::cout << "Trial " << trial << ", n = " << n << ":\n";
+                // Placeholder for scheduling algorithm experiment
+            }
+    }
+}
+
 void runHeapExperiment(int n, int trials) {
     std::ofstream out("results/heap_exp_results.txt");
     for (int trial = 1; trial <= trials; trial++) {
-        std::cout << "Trial " << trial << ":\n";
+        std::cout << "Trial " << trial << "\n";
         BinomialHeap H1, H2;
 
         H1 = BinomialHeap();
@@ -51,7 +75,7 @@ void runHeapExperiment(int n, int trials) {
         H1.merge(H2);
         long long union_comps = metrics1.comparisons;
         metrics1.reset();
-        
+
         std::vector<long long> extract_comps;
         std::vector<int> extracted;
 

@@ -8,25 +8,25 @@
 #include <iostream>
 
 int main() {
-    std::cout << "Running Binomial Heap Experiment...\n";
-    int n = 1000; // Size of the random sequence
-    int trials = 5; // Number of trials
+    int n = 1000;
+    int step = 1000;
+    int limit = 100000;
+    int trials = 20;
+
+    std::cout << "Running Binomial Heap Experiment:\n";
     runHeapExperiment(n, trials);
 
-    std::cout << "Running Graph Algorithms...\n";
-    //Graph g;
-    std::cout << "(Not yet implemented)\n";
-
+    std::cout << "Running MST Graph Algorithms:\n";
     std::cout << "Kruskal's Algorithm:\n";
-    //kruskal(g);
+    //runGraphExperiment(step, limit, trials, true);
     std::cout << "(Not yet implemented)\n";
-
+    
     std::cout << "Prim's Algorithm:\n";
-    //prim(g);
+    //runGraphExperiment(step, limit, trials, false);
     std::cout << "(Not yet implemented)\n";
 
-    std::cout << "Running Scheduling Algorithm...\n";
-    //schedule();
+    std::cout << "Running Scheduling Algorithm:\n";
+    //runSchedulingExperiment(step, limit, trials);
     std::cout << "(Not yet implemented)\n";
 
     return 0;
