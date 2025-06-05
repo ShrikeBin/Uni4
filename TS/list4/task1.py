@@ -1,7 +1,7 @@
 FLAG_SEQUENCE = "01111110"
 BIT_STUFFING_THRESHOLD = 5
 CRC_POLYNOMIAL = "10001000000100001"  # CRC-16 polynomial (17 bits)
-FRAME_SIZE = 128  # WITH NO DATA FRAME TAKES 32 BITS
+FRAME_SIZE = 80  # WITH NO DATA FRAME TAKES 32 BITS
 
 def calculate_crc(data, polynomial):
     poly_len = len(polynomial)
@@ -108,37 +108,51 @@ if __name__ == "__main__":
 
         framed_results = frame_data(original_data)
 
+        # Save all frames concatenated without any newline or separator
         with open(framed_file, 'w') as f_out:
-            for i, framed_result in enumerate(framed_results):
-                f_out.write(framed_result + "\n")
-                print(f"Ramka {i + 1}: |{framed_result}| (długość: {len(framed_result)} bitów) zapisana do {framed_file}")
+            f_out.write("".join(framed_results))  # no \n!
+
+        for i, framed_result in enumerate(framed_results):
+            print(f"Ramka {i + 1}: |{framed_result}| (długość: {len(framed_result)} bitów) zapisana do {framed_file}")
 
         if input(f"Wczytać ramki z {framed_file}? (y/n): ").lower() not in ('y', 'yes'): exit()
 
+        # Read all content as one string
         with open(framed_file, 'r') as f_in:
-            received_frames = f_in.readlines()
+            raw_data = f_in.read().strip()
+
+        # Split by FLAG_SEQUENCE (removing empty splits)
+        # Because frames = FLAG + data + FLAG, splitting by FLAG leaves empty entries, filter them
+        raw_splits = raw_data.split(FLAG_SEQUENCE)
+        # After split, frames data is between FLAG sequences, so reconstruct frames by adding flags back
+        frames = []
+        for i in range(1, len(raw_splits) - 1):
+            frame = FLAG_SEQUENCE + raw_splits[i] + FLAG_SEQUENCE
+            if len(frame) > 2 * len(FLAG_SEQUENCE):  # avoid empty frames
+                frames.append(frame)
 
         unframed_data = ""
-        i = 0
-        for received_frame in received_frames:
-            i+=1
-            received_frame = received_frame.strip()
-            unframed_result_part = deframe_data(received_frame,i)
+        frame_amout = len(frames)
+        for i, frame in enumerate(frames, 1):
+            unframed_result_part = deframe_data(frame, i)
             if unframed_result_part is None:
-                unframed_data = None
-                break
+                print(f"Pomijanie uszkodzonej ramki: {i}")
+                frame_amout -= 1
+                continue
             unframed_data += unframed_result_part
 
-        if unframed_data is not None:
+        if unframed_data != "":
             print(f"Odramkowane dane: \n|{unframed_data}|")
+            print(f"Poprawnie odczytano {frame_amout} ramek.")
             if unframed_data == original_data:
                 print("Weryfikacja pomyślna: Dane odzyskane poprawnie.")
             else:
                 print("Błąd w weryfikacji: Odramkowane dane różnią się od oryginalnych.")
         else:
-            print("Weryfikacja nie powiodła się.")
+            print("Brak poprawnych ramek do odramkowania.")
 
     except FileNotFoundError:
         print(f"Błąd: Nie można znaleźć pliku {source_file}.")
     except Exception as e:
         print(f"Wystąpił nieoczekiwany błąd: {e}")
+
