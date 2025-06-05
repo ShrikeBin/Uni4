@@ -1,0 +1,26 @@
+Jun 05 12:38:02.850 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Jun 05 12:38:02.850 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 58685.
+Jun 05 12:38:02.857 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 05 12:38:02.857 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips 
+Jun 05 12:38:02.857 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips
+Jun 05 12:38:02.857 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/8df401ef-677e-41d0-9644-3505729a596d 
+Jun 05 12:38:02.857 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/8df401ef-677e-41d0-9644-3505729a596d
+Jun 05 12:38:02.858 HYPERVISOR: exec_cmd: vm create R1 1 c3600 
+Jun 05 12:38:02.858 VM: VM R1 created.
+Jun 05 12:38:02.858 HYPERVISOR: exec_cmd: vm set_con_tcp_port R1 5008 
+Jun 05 12:38:02.858 HYPERVISOR: exec_cmd: c3600 get_mac_addr R1 
+Jun 05 12:38:02.859 HYPERVISOR: exec_cmd: c3600 set_chassis R1 3620 
+Jun 05 12:38:02.859 HYPERVISOR: exec_cmd: vm set_nvram R1 256 
+Jun 05 12:38:02.859 HYPERVISOR: exec_cmd: vm set_ram R1 192 
+Jun 05 12:38:02.860 HYPERVISOR: exec_cmd: vm set_ios R1 /root/GNS3/images/IOS/c3620-a3jk8s-mz.122-26c.image 
+Jun 05 12:38:02.860 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 05 12:38:02.861 HYPERVISOR: exec_cmd: vm set_idle_pc R1 0x603a8bac 
+Jun 05 12:38:02.916 HYPERVISOR: exec_cmd: vm set_ios R1 /root/GNS3/images/IOS/c3620-a3jk8s-mz.122-26c.image 
+Jun 05 12:38:04.134 HYPERVISOR: exec_cmd: vm set_ios R1 /root/GNS3/images/IOS/c3620-a3jk8s-mz.122-26c.image 
+Jun 05 12:39:32.234 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 05 12:39:32.302 HYPERVISOR: exec_cmd: vm extract_config R1 
+Jun 05 12:39:32.303 HYPERVISOR: exec_cmd: vm delete R1 
+Jun 05 12:39:32.303 VM: VM R1 destroyed.
+Jun 05 12:39:32.304 HYPERVISOR: exec_cmd: hypervisor stop 
+Jun 05 12:39:32.438 HYPERVISOR: Stopped.
+Jun 05 12:39:32.438 GENERAL: reset done.

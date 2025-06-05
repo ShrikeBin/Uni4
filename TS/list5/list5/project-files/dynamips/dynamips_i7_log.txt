@@ -1,0 +1,31 @@
+Jun 05 12:33:44.870 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Jun 05 12:33:44.870 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 53541.
+Jun 05 12:33:44.879 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 05 12:33:44.879 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips 
+Jun 05 12:33:44.879 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips
+Jun 05 12:33:44.879 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/7ce2acc8-70e0-44f6-a2a3-d6e30fca6c6b 
+Jun 05 12:33:44.879 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/7ce2acc8-70e0-44f6-a2a3-d6e30fca6c6b
+Jun 05 12:33:44.879 HYPERVISOR: exec_cmd: vm create R2 2 c1700 
+Jun 05 12:33:44.879 VM: VM R2 created.
+Jun 05 12:33:44.880 HYPERVISOR: exec_cmd: vm set_con_tcp_port R2 5009 
+Jun 05 12:33:44.880 HYPERVISOR: exec_cmd: c1700 get_mac_addr R2 
+Jun 05 12:33:44.880 HYPERVISOR: exec_cmd: vm get_status R2 
+Jun 05 12:33:44.880 HYPERVISOR: exec_cmd: vm set_idle_pc R2 0x80358a60 
+Jun 05 12:33:44.880 HYPERVISOR: exec_cmd: vm set_ios R2 /root/GNS3/images/IOS/c1700-adventerprisek9-mz.124-25d.image 
+Jun 05 12:33:44.881 HYPERVISOR: exec_cmd: c1700 set_mac_addr R2 d002.ae5e.0000 
+Jun 05 12:33:44.881 HYPERVISOR: exec_cmd: vm set_nvram R2 128 
+Jun 05 12:33:44.881 HYPERVISOR: exec_cmd: vm set_ram R2 160 
+Jun 05 12:33:58.160 HYPERVISOR: exec_cmd: nio create_udp udp-8885b600-4e4d-4a9b-96f9-f0b8988ef551 10008 127.0.0.1 10009 
+Jun 05 12:33:58.373 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R2 0 0 udp-8885b600-4e4d-4a9b-96f9-f0b8988ef551 
+Jun 05 12:33:58.374 HYPERVISOR: exec_cmd: vm get_status R2 
+Jun 05 12:36:01.956 HYPERVISOR: exec_cmd: vm set_ios R2 /root/GNS3/images/IOS/c1700-adventerprisek9-mz.124-25d.image 
+Jun 05 12:36:05.228 HYPERVISOR: exec_cmd: vm get_status R2 
+Jun 05 12:36:05.229 HYPERVISOR: exec_cmd: vm slot_remove_nio_binding R2 0 0 
+Jun 05 12:36:05.231 HYPERVISOR: exec_cmd: nio delete udp-8885b600-4e4d-4a9b-96f9-f0b8988ef551 
+Jun 05 12:36:05.394 HYPERVISOR: exec_cmd: vm get_status R2 
+Jun 05 12:36:05.394 HYPERVISOR: exec_cmd: vm extract_config R2 
+Jun 05 12:36:05.395 HYPERVISOR: exec_cmd: vm delete R2 
+Jun 05 12:36:05.395 VM: VM R2 destroyed.
+Jun 05 12:36:05.397 HYPERVISOR: exec_cmd: hypervisor stop 
+Jun 05 12:36:05.515 HYPERVISOR: Stopped.
+Jun 05 12:36:05.515 GENERAL: reset done.

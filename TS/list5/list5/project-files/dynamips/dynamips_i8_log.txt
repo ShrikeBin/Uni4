@@ -1,0 +1,24 @@
+Jun 05 12:33:44.899 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Jun 05 12:33:44.899 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 54559.
+Jun 05 12:33:44.907 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips 
+Jun 05 12:33:44.908 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/9f16d8b9-184e-4e6f-850d-ff1f6b5ca409 
+Jun 05 12:33:44.908 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/9f16d8b9-184e-4e6f-850d-ff1f6b5ca409
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: vm create R6 3 c1700 
+Jun 05 12:33:44.908 VM: VM R6 created.
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: vm set_con_tcp_port R6 5010 
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: c1700 get_mac_addr R6 
+Jun 05 12:33:44.908 HYPERVISOR: exec_cmd: vm get_status R6 
+Jun 05 12:33:44.909 HYPERVISOR: exec_cmd: vm set_idle_pc R6 0x80358a60 
+Jun 05 12:33:44.909 HYPERVISOR: exec_cmd: vm set_ios R6 /root/GNS3/images/IOS/c1700-adventerprisek9-mz.124-25d.image 
+Jun 05 12:33:44.909 HYPERVISOR: exec_cmd: c1700 set_mac_addr R6 d003.ae7c.0000 
+Jun 05 12:33:44.909 HYPERVISOR: exec_cmd: vm set_nvram R6 128 
+Jun 05 12:33:44.910 HYPERVISOR: exec_cmd: vm set_ram R6 160 
+Jun 05 12:36:13.086 HYPERVISOR: exec_cmd: vm get_status R6 
+Jun 05 12:36:13.086 HYPERVISOR: exec_cmd: vm extract_config R6 
+Jun 05 12:36:13.086 HYPERVISOR: exec_cmd: vm delete R6 
+Jun 05 12:36:13.087 VM: VM R6 destroyed.
+Jun 05 12:36:13.087 HYPERVISOR: exec_cmd: hypervisor stop 
+Jun 05 12:36:13.543 HYPERVISOR: Stopped.
+Jun 05 12:36:13.543 GENERAL: reset done.

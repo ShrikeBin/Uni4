@@ -1,0 +1,25 @@
+Jun 05 12:43:30.012 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Jun 05 12:43:30.012 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 37453.
+Jun 05 12:43:30.020 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 05 12:43:30.021 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips 
+Jun 05 12:43:30.021 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips
+Jun 05 12:43:30.021 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/cf6fb0fe-7a88-455e-99bc-2a41b206cb16 
+Jun 05 12:43:30.021 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/cf6fb0fe-7a88-455e-99bc-2a41b206cb16
+Jun 05 12:43:30.021 HYPERVISOR: exec_cmd: vm create R3 3 c3600 
+Jun 05 12:43:30.021 VM: VM R3 created.
+Jun 05 12:43:30.021 HYPERVISOR: exec_cmd: vm set_con_tcp_port R3 5010 
+Jun 05 12:43:30.021 HYPERVISOR: exec_cmd: c3600 get_mac_addr R3 
+Jun 05 12:43:30.022 HYPERVISOR: exec_cmd: vm set_nvram R3 256 
+Jun 05 12:43:30.022 HYPERVISOR: exec_cmd: vm set_ram R3 192 
+Jun 05 12:43:30.022 HYPERVISOR: exec_cmd: vm set_ios R3 /root/GNS3/images/IOS/c3640-a3js-mz.124-25d.image 
+Jun 05 12:43:30.022 HYPERVISOR: exec_cmd: vm get_status R3 
+Jun 05 12:43:30.023 HYPERVISOR: exec_cmd: vm set_idle_pc R3 0x6050b114 
+Jun 05 12:43:30.073 HYPERVISOR: exec_cmd: vm set_ios R3 /root/GNS3/images/IOS/c3640-a3js-mz.124-25d.image 
+Jun 05 12:43:49.160 HYPERVISOR: exec_cmd: vm get_status R3 
+Jun 05 12:43:49.161 HYPERVISOR: exec_cmd: vm slot_add_binding R3 0 0 NM-4E 
+Jun 05 12:44:06.465 HYPERVISOR: exec_cmd: nio create_udp udp-fe5aaa70-800f-4105-92c6-200319616178 10016 127.0.0.1 10017 
+Jun 05 12:44:06.676 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R3 0 0 udp-fe5aaa70-800f-4105-92c6-200319616178 
+Jun 05 12:44:06.677 HYPERVISOR: exec_cmd: vm get_status R3 
+Jun 05 12:44:10.044 HYPERVISOR: exec_cmd: nio create_udp udp-627a5c81-ff53-4e9e-b701-15cdd8610d7f 10020 127.0.0.1 10021 
+Jun 05 12:44:10.045 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R3 0 1 udp-627a5c81-ff53-4e9e-b701-15cdd8610d7f 
+Jun 05 12:44:10.046 HYPERVISOR: exec_cmd: vm get_status R3 
