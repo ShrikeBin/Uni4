@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <fstream>
 
 // Helper: generate vector of random ints size n
 std::vector<int> randomSequence(int n, int seed) {
@@ -13,7 +14,8 @@ std::vector<int> randomSequence(int n, int seed) {
     return v;
 }
 
-void runExperiment(int n, int trials) {
+void runHeapExperiment(int n, int trials) {
+    std::ofstream out("results/heap_exp_results.txt");
     for (int trial = 1; trial <= trials; trial++) {
         std::cout << "Trial " << trial << ":\n";
         BinomialHeap H1, H2;
@@ -36,17 +38,20 @@ void runExperiment(int n, int trials) {
         for (int x : seq1) {
             H1.insert(x);
             insert_comps_H1.push_back(metrics1.comparisons);
+            metrics1.reset();
         }
 
         for (int x : seq2) {
             H2.insert(x);
             insert_comps_H2.push_back(metrics2.comparisons);
+            metrics2.reset();
         }
 
         metrics1.reset();
         H1.merge(H2);
         long long union_comps = metrics1.comparisons;
-
+        metrics1.reset();
+        
         std::vector<long long> extract_comps;
         std::vector<int> extracted;
 
@@ -56,20 +61,24 @@ void runExperiment(int n, int trials) {
             int val = H1.extract_min();
             extracted.push_back(val);
             extract_comps.push_back(metrics1.comparisons);
+            metrics1.reset();
             if (i > 0 && extracted[i] < extracted[i - 1]) sorted = false;
         }
 
         bool empty_after = H1.is_empty();
 
-        std::cout << "Insert H1 comparisons (per insert): ";
-        for (auto c : insert_comps_H1) std::cout << c << " ";
-        std::cout << "\nInsert H2 comparisons (per insert): ";
-        for (auto c : insert_comps_H2) std::cout << c << " ";
-        std::cout << "\nUnion comparisons: " << union_comps << "\n";
-        std::cout << "Extract-Min comparisons (per op): ";
-        for (auto c : extract_comps) std::cout << c << " ";
-        std::cout << "\nExtracted sequence sorted: " << (sorted ? "YES" : "NO") << "\n";
-        std::cout << "Heap empty after 2n extracts: " << (empty_after ? "YES" : "NO") << "\n";
-        std::cout << "---------------------------------------\n";
+        
+        out << "---------------------------------------\n";
+        out << "Trial " << trial << " results:\n";
+        out<< "Insert Heap 1 comparisons (per insert): ";
+        for (auto c : insert_comps_H1) out << c << " ";
+        out << "\nInsert Heap 2 comparisons (per insert): ";
+        for (auto c : insert_comps_H2) out << c << " ";
+        out << "\nUnion comparisons: " << union_comps << "\n";
+        out << "Extract-Min comparisons (per op): ";
+        for (auto c : extract_comps) out << c << " ";
+        out << "\nExtracted sequence sorted: " << (sorted ? "YES" : "NO") << "\n";
+        out << "Heap empty after 2n extracts: " << (empty_after ? "YES" : "NO") << "\n";
+        out << "---------------------------------------\n";
     }
 }

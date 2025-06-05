@@ -30,9 +30,17 @@ bool BinomialHeap::is_empty() {
 // Insert a new value into the heap
 void BinomialHeap::insert(int value) {
     BinomialNode* node = new BinomialNode(value);
-    BinomialHeap heap;
-    heap.trees.push_back(node);
-    merge(heap);
+    BinomialHeap tmp;
+    tmp.trees.push_back(node);
+    tmp.count = 1;             // track size
+    merge(tmp);                // will consolidate now
+}
+
+// Merge two binomial heaps
+void BinomialHeap::merge(BinomialHeap& other_heap) {
+    trees.insert(trees.end(), other_heap.trees.begin(), other_heap.trees.end());
+    count += other_heap.count;
+    _consolidate();            // <-- call the real fixer
 }
 
 // Get the minimum value in the heap
@@ -50,13 +58,6 @@ int BinomialHeap::extract_min() {
     _find_min();
     count -= 1;
     return minNode->value;
-}
-
-// Merge two binomial heaps
-void BinomialHeap::merge(BinomialHeap& other_heap) {
-    trees.insert(trees.end(), other_heap.trees.begin(), other_heap.trees.end());
-    count += other_heap.count;
-    _find_min();
 }
 
 // Find the minimum value in the heap
