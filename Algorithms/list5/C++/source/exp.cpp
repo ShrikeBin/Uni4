@@ -1,5 +1,9 @@
 #include "exp.hpp"
 #include "BinHeap.hpp"
+#include "Graph.hpp"
+#include "kruskal.hpp"
+#include "prim.hpp"
+#include "schedule.hpp"
 #include <iostream>
 #include <vector>
 #include <random>
@@ -14,32 +18,82 @@ std::vector<int> randomSequence(int n, int seed) {
     return v;
 }
 
-void runGraphExperiment(int step, int limit, int trials, bool useKruskal){
-    std::ofstream out("results/graph_exp_results.txt");
-    for(int trial = 1; trial <= trials; trial++) {
-        for(int n = step; n <= limit; n += step) {
-            std::cout << "Trial " << trial << ", n = " << n << ":\n";
-            if (useKruskal) {
+#include <fstream>
+#include <iostream>
+#include <filesystem>
 
-            } else {
+void runGraphExperiment(int step, int limit, int trials, bool useKruskal) {
+    std::string file = useKruskal ? "results/kruskal_exp_results.txt" : "results/prim_exp_results.txt";
+    std::ofstream out(file);
+    if (!out.is_open()) {
+        std::cerr << "Failed to open output file!\n";
+        return;
+    }
+    for (int n = step; n <= limit; n += step) {
+        std::cout << "  n = " << n << "...\n";
+        out << "n = " << n << ":\n";
 
+        for (int trial = 1; trial <= trials; ++trial) {
+            std::cout << "Trial " << trial << "\n";
+            out << "Trial " << trial << "\n";
+
+            Graph graph;
+            graph.generateCompleteGraph(n);
+
+            std::string time;
+            std::vector<Edge> MSTedges = useKruskal ? kruskalMST(graph, time) : primMST(graph, time);
+
+            out << (useKruskal ? "Kruskal" : "Prim") << " MST computed: " << time << "\n";
+        }
+        out.flush();
+    }
+
+    out.flush();
+}
+
+
+void runSchedulingExperiment(int step, int limit, int trials, int rootChoices) {
+    std::ofstream out("results/scheduling_exp_results.txt");
+    if (!out.is_open()) {
+        std::cerr << "Failed to open output file!\n";
+        return;
+    }
+    std::mt19937 rng(std::random_device{}());  // move rng outside loops
+
+    for (int n = step; n <= limit; n += step) {
+        std::cout << "  n = " << n << "...\n";
+        out << "n = " << n << ":\n";
+
+        for (int trial = 1; trial <= trials; ++trial) {
+            std::cout << "Trial " << trial << "\n";
+            out << "Trial " << trial << "\n";
+
+            Graph graph;
+            graph.generateCompleteGraph(n);
+            std::string time;
+            std::vector<Edge> MSTedges = primMST(graph, time);
+            std::cout << "MST computed: " << time << "\n";
+            std::uniform_int_distribution<int> dist(0, n - 1);
+
+            for (int j = 0; j < rootChoices; j++) {
+                int root = dist(rng);
+                std::vector<int> rounds(n, 0);
+                int result = computeBroadcastRounds(n, root, MSTedges, rounds);
+                out << j+1 << "th — Min rounds: " << result << "\n";
             }
+            out.flush();
         }
     }
 }
 
-void runSchedulingExperiment(int step, int limit, int trials){
-    std::ofstream out("results/scheduling_exp_results.txt");
-        for(int trial = 1; trial <= trials; trial++) {
-            for(int n = step; n <= limit; n += step) {
-                std::cout << "Trial " << trial << ", n = " << n << ":\n";
-                // Placeholder for scheduling algorithm experiment
-            }
-    }
-}
 
 void runHeapExperiment(int n, int trials) {
     std::ofstream out("results/heap_exp_results.txt");
+    if (!out.is_open()) {
+        std::cerr << "Failed to open output file!\n";
+        return;
+    }
+    out << "N == " << n << "\n";
     for (int trial = 1; trial <= trials; trial++) {
         std::cout << "Trial " << trial << "\n";
         BinomialHeap H1, H2;
@@ -104,5 +158,6 @@ void runHeapExperiment(int n, int trials) {
         out << "\nExtracted sequence sorted: " << (sorted ? "YES" : "NO") << "\n";
         out << "Heap empty after 2n extracts: " << (empty_after ? "YES" : "NO") << "\n";
         out << "---------------------------------------\n";
+        out.flush();
     }
 }

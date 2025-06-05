@@ -3,6 +3,6 @@
 
 void runHeapExperiment(int n, int trials);
 void runGraphExperiment(int step, int limit, int trials, bool useKruskal);
-void runSchedulingExperiment(int step, int limit, int trials);
+void runSchedulingExperiment(int step, int limit, int trials, int rootChoicesByN);
 
 #endif // EXP_HPP

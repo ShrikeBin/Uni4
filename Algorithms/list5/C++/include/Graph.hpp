@@ -10,8 +10,8 @@ using Edge = std::tuple<int, int, double>; // (u, v, weight)
 
 class Graph {
 public:
-    Graph(int n);
-    void generateCompleteGraph();
+    Graph();
+    void generateCompleteGraph(int n);
     const std::vector<Edge>& getEdges() const;
     int getVertexCount() const;
 

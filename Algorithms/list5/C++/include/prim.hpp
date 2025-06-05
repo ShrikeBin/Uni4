@@ -4,6 +4,8 @@
 #include "Graph.hpp"
 #include <vector>
 
-std::vector<Edge> primMST(const Graph& graph);
+// GENERALLY BETTER FOR DENSE GRAPHS
+
+std::vector<Edge> primMST(const Graph& graph, std::string& time);
 
 #endif // PRIM_HPP

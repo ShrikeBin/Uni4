@@ -2,54 +2,33 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include "prim.hpp"
 
-// Build adjacency list and directed children lists from MST edges
-void buildTree(int n, const std::vector<Edge>& mstEdges, int root, std::vector<std::vector<int>>& children) {
+int computeBroadcastRounds(int n, int root, std::vector<Edge>& MSTedges, std::vector<int>& rounds) {
+
+    // Build adjacency list from MST edges
     std::vector<std::vector<int>> adj(n);
-    for (const auto& e : mstEdges) {
-        int u = std::get<0>(e);
-        int v = std::get<1>(e);
+    for (auto& [u, v, weigh] : MSTedges) {
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    
-    children.assign(n, {});
-    std::vector<bool> visited(n, false);
-    
-    // DFS to establish parent-child
-    std::function<void(int)> dfs = [&](int u) {
-        visited[u] = true;
-        for (int v : adj[u]) {
-            if (!visited[v]) {
-                children[u].push_back(v);
-                dfs(v);
-            }
+
+    // DP broadcast rounds using your adjacency
+    std::function<int(int, int)> dfs = [&](int node, int parent) -> int {
+        std::vector<int> childrenTimes;
+        for (int child : adj[node]) {
+            if (child == parent) continue; // Avoid going back to parent
+            childrenTimes.push_back(dfs(child, node));
         }
+        std::sort(childrenTimes.begin(), childrenTimes.end(), std::greater<int>());
+        int maxTime = 0;
+        for (int i = 0; i < (int)childrenTimes.size(); i++) {
+            maxTime = std::max(maxTime, childrenTimes[i] + i + 1);
+        }
+        rounds[node] = maxTime;
+        return maxTime;
     };
-    
-    dfs(root);
+
+    return dfs(root, -1);
 }
 
-// Post-order compute rounds needed for each subtree
-int dfsCompute(const std::vector<std::vector<int>>& children, int u, std::vector<int>& rounds) {
-    std::vector<int> childRounds;
-    for (int v : children[u]) {
-        int cr = dfsCompute(children, v, rounds);
-        childRounds.push_back(cr);
-    }
-    
-    std::sort(childRounds.rbegin(), childRounds.rend());
-    int maxRounds = 0;
-    for (int i = 0; i < (int)childRounds.size(); ++i) {
-        maxRounds = std::max(maxRounds, childRounds[i] + i + 1);
-    }
-    rounds[u] = maxRounds;
-    return maxRounds;
-}
-
-int computeBroadcastRounds(int n, const std::vector<Edge>& mstEdges, int root, std::vector<int>& rounds) {
-    std::vector<std::vector<int>> children;
-    buildTree(n, mstEdges, root, children);
-    rounds.assign(n, 0);
-    return dfsCompute(children, root, rounds);
-}

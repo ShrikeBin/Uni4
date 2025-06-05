@@ -1,5 +1,6 @@
 #include "kruskal.hpp"
 #include <algorithm>
+#include <chrono>
 
 DisjointSet::DisjointSet(int n) : parent(n), rank(n, 0) {
     for (int i = 0; i < n; i++) parent[i] = i;
@@ -24,7 +25,9 @@ void DisjointSet::unite(int x, int y) {
     }
 }
 
-std::vector<Edge> kruskalMST(const Graph& graph) {
+std::vector<Edge> kruskalMST(const Graph& graph, std::string& time) {
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::vector<Edge> edges = graph.getEdges();
     std::sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
         return std::get<2>(a) < std::get<2>(b);
@@ -39,5 +42,10 @@ std::vector<Edge> kruskalMST(const Graph& graph) {
             mst.push_back({u, v, w});
         }
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    time = "Duration: " + std::to_string(elapsed.count()) + " sec";
+
     return mst;
 }

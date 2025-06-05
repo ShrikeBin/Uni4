@@ -1,8 +1,9 @@
 #include "Graph.hpp"
 
-Graph::Graph(int n) : n(n) {}
+Graph::Graph(){}
 
-void Graph::generateCompleteGraph() {
+void Graph::generateCompleteGraph(int n) {
+    this->n = n;
     edges.clear();
     std::mt19937 rng(std::random_device{}());
     std::uniform_real_distribution<double> dist(0.0, 1.0);

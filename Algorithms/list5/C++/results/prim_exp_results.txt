@@ -1,0 +1,220 @@
+n = 500:
+Trial 1
+Prim MST computed: Duration: 0.033926 sec
+Trial 2
+Prim MST computed: Duration: 0.031046 sec
+Trial 3
+Prim MST computed: Duration: 0.032115 sec
+Trial 4
+Prim MST computed: Duration: 0.031867 sec
+Trial 5
+Prim MST computed: Duration: 0.032152 sec
+n = 1000:
+Trial 1
+Prim MST computed: Duration: 0.126252 sec
+Trial 2
+Prim MST computed: Duration: 0.127005 sec
+Trial 3
+Prim MST computed: Duration: 0.126602 sec
+Trial 4
+Prim MST computed: Duration: 0.126380 sec
+Trial 5
+Prim MST computed: Duration: 0.126754 sec
+n = 1500:
+Trial 1
+Prim MST computed: Duration: 0.295031 sec
+Trial 2
+Prim MST computed: Duration: 0.286706 sec
+Trial 3
+Prim MST computed: Duration: 0.288820 sec
+Trial 4
+Prim MST computed: Duration: 0.292832 sec
+Trial 5
+Prim MST computed: Duration: 0.293383 sec
+n = 2000:
+Trial 1
+Prim MST computed: Duration: 0.511041 sec
+Trial 2
+Prim MST computed: Duration: 0.501922 sec
+Trial 3
+Prim MST computed: Duration: 0.499713 sec
+Trial 4
+Prim MST computed: Duration: 0.502884 sec
+Trial 5
+Prim MST computed: Duration: 0.496215 sec
+n = 2500:
+Trial 1
+Prim MST computed: Duration: 0.826659 sec
+Trial 2
+Prim MST computed: Duration: 0.835371 sec
+Trial 3
+Prim MST computed: Duration: 0.831738 sec
+Trial 4
+Prim MST computed: Duration: 0.840448 sec
+Trial 5
+Prim MST computed: Duration: 0.826246 sec
+n = 3000:
+Trial 1
+Prim MST computed: Duration: 1.199068 sec
+Trial 2
+Prim MST computed: Duration: 1.169933 sec
+Trial 3
+Prim MST computed: Duration: 1.164499 sec
+Trial 4
+Prim MST computed: Duration: 1.158274 sec
+Trial 5
+Prim MST computed: Duration: 1.147646 sec
+n = 3500:
+Trial 1
+Prim MST computed: Duration: 1.579584 sec
+Trial 2
+Prim MST computed: Duration: 1.585671 sec
+Trial 3
+Prim MST computed: Duration: 1.607537 sec
+Trial 4
+Prim MST computed: Duration: 1.555626 sec
+Trial 5
+Prim MST computed: Duration: 1.573577 sec
+n = 4000:
+Trial 1
+Prim MST computed: Duration: 2.027943 sec
+Trial 2
+Prim MST computed: Duration: 2.031004 sec
+Trial 3
+Prim MST computed: Duration: 2.029250 sec
+Trial 4
+Prim MST computed: Duration: 2.022581 sec
+Trial 5
+Prim MST computed: Duration: 2.031459 sec
+n = 4500:
+Trial 1
+Prim MST computed: Duration: 2.753168 sec
+Trial 2
+Prim MST computed: Duration: 2.673029 sec
+Trial 3
+Prim MST computed: Duration: 2.654817 sec
+Trial 4
+Prim MST computed: Duration: 2.692804 sec
+Trial 5
+Prim MST computed: Duration: 2.669704 sec
+n = 5000:
+Trial 1
+Prim MST computed: Duration: 3.293255 sec
+Trial 2
+Prim MST computed: Duration: 3.256184 sec
+Trial 3
+Prim MST computed: Duration: 3.209021 sec
+Trial 4
+Prim MST computed: Duration: 3.217576 sec
+Trial 5
+Prim MST computed: Duration: 3.220479 sec
+n = 5500:
+Trial 1
+Prim MST computed: Duration: 3.905723 sec
+Trial 2
+Prim MST computed: Duration: 3.847129 sec
+Trial 3
+Prim MST computed: Duration: 3.854271 sec
+Trial 4
+Prim MST computed: Duration: 3.840992 sec
+Trial 5
+Prim MST computed: Duration: 3.827621 sec
+n = 6000:
+Trial 1
+Prim MST computed: Duration: 4.682171 sec
+Trial 2
+Prim MST computed: Duration: 4.668281 sec
+Trial 3
+Prim MST computed: Duration: 4.658234 sec
+Trial 4
+Prim MST computed: Duration: 4.666134 sec
+Trial 5
+Prim MST computed: Duration: 4.656881 sec
+n = 6500:
+Trial 1
+Prim MST computed: Duration: 5.425822 sec
+Trial 2
+Prim MST computed: Duration: 5.399034 sec
+Trial 3
+Prim MST computed: Duration: 5.413662 sec
+Trial 4
+Prim MST computed: Duration: 5.439482 sec
+Trial 5
+Prim MST computed: Duration: 5.463331 sec
+n = 7000:
+Trial 1
+Prim MST computed: Duration: 6.256674 sec
+Trial 2
+Prim MST computed: Duration: 6.228334 sec
+Trial 3
+Prim MST computed: Duration: 6.236156 sec
+Trial 4
+Prim MST computed: Duration: 6.280192 sec
+Trial 5
+Prim MST computed: Duration: 6.309842 sec
+n = 7500:
+Trial 1
+Prim MST computed: Duration: 7.126513 sec
+Trial 2
+Prim MST computed: Duration: 7.103343 sec
+Trial 3
+Prim MST computed: Duration: 7.111261 sec
+Trial 4
+Prim MST computed: Duration: 7.095034 sec
+Trial 5
+Prim MST computed: Duration: 7.204457 sec
+n = 8000:
+Trial 1
+Prim MST computed: Duration: 8.143765 sec
+Trial 2
+Prim MST computed: Duration: 8.294205 sec
+Trial 3
+Prim MST computed: Duration: 8.099281 sec
+Trial 4
+Prim MST computed: Duration: 8.034642 sec
+Trial 5
+Prim MST computed: Duration: 8.073801 sec
+n = 8500:
+Trial 1
+Prim MST computed: Duration: 9.819206 sec
+Trial 2
+Prim MST computed: Duration: 9.866984 sec
+Trial 3
+Prim MST computed: Duration: 9.805306 sec
+Trial 4
+Prim MST computed: Duration: 9.825225 sec
+Trial 5
+Prim MST computed: Duration: 9.822446 sec
+n = 9000:
+Trial 1
+Prim MST computed: Duration: 10.926206 sec
+Trial 2
+Prim MST computed: Duration: 10.907024 sec
+Trial 3
+Prim MST computed: Duration: 10.919354 sec
+Trial 4
+Prim MST computed: Duration: 11.053233 sec
+Trial 5
+Prim MST computed: Duration: 10.903151 sec
+n = 9500:
+Trial 1
+Prim MST computed: Duration: 12.052570 sec
+Trial 2
+Prim MST computed: Duration: 12.064467 sec
+Trial 3
+Prim MST computed: Duration: 12.040419 sec
+Trial 4
+Prim MST computed: Duration: 12.038144 sec
+Trial 5
+Prim MST computed: Duration: 12.021851 sec
+n = 10000:
+Trial 1
+Prim MST computed: Duration: 13.256784 sec
+Trial 2
+Prim MST computed: Duration: 13.260975 sec
+Trial 3
+Prim MST computed: Duration: 13.317836 sec
+Trial 4
+Prim MST computed: Duration: 13.292568 sec
+Trial 5
+Prim MST computed: Duration: 13.258078 sec

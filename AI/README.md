@@ -12,3 +12,10 @@
         - sanity
         - bit switches
         - lots of Ram
+
+##  list 3:
+- Tic Tac Toe Bootleg bot
+    - Dependencies:
+        - skill in tic tac toe
+        - basic C++
+        - Minimax w/αβ prunning

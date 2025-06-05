@@ -1,0 +1,220 @@
+n = 500:
+Trial 1
+Kruskal MST computed: Duration: 0.072599 sec
+Trial 2
+Kruskal MST computed: Duration: 0.071100 sec
+Trial 3
+Kruskal MST computed: Duration: 0.071916 sec
+Trial 4
+Kruskal MST computed: Duration: 0.071646 sec
+Trial 5
+Kruskal MST computed: Duration: 0.072685 sec
+n = 1000:
+Trial 1
+Kruskal MST computed: Duration: 0.312765 sec
+Trial 2
+Kruskal MST computed: Duration: 0.313465 sec
+Trial 3
+Kruskal MST computed: Duration: 0.315759 sec
+Trial 4
+Kruskal MST computed: Duration: 0.312716 sec
+Trial 5
+Kruskal MST computed: Duration: 0.312288 sec
+n = 1500:
+Trial 1
+Kruskal MST computed: Duration: 0.742639 sec
+Trial 2
+Kruskal MST computed: Duration: 0.737973 sec
+Trial 3
+Kruskal MST computed: Duration: 0.735547 sec
+Trial 4
+Kruskal MST computed: Duration: 0.749891 sec
+Trial 5
+Kruskal MST computed: Duration: 0.744330 sec
+n = 2000:
+Trial 1
+Kruskal MST computed: Duration: 1.362093 sec
+Trial 2
+Kruskal MST computed: Duration: 1.362850 sec
+Trial 3
+Kruskal MST computed: Duration: 1.359796 sec
+Trial 4
+Kruskal MST computed: Duration: 1.343841 sec
+Trial 5
+Kruskal MST computed: Duration: 1.340274 sec
+n = 2500:
+Trial 1
+Kruskal MST computed: Duration: 2.181579 sec
+Trial 2
+Kruskal MST computed: Duration: 2.177302 sec
+Trial 3
+Kruskal MST computed: Duration: 2.185268 sec
+Trial 4
+Kruskal MST computed: Duration: 2.175283 sec
+Trial 5
+Kruskal MST computed: Duration: 2.220955 sec
+n = 3000:
+Trial 1
+Kruskal MST computed: Duration: 3.253652 sec
+Trial 2
+Kruskal MST computed: Duration: 3.235130 sec
+Trial 3
+Kruskal MST computed: Duration: 3.179221 sec
+Trial 4
+Kruskal MST computed: Duration: 3.217983 sec
+Trial 5
+Kruskal MST computed: Duration: 3.185811 sec
+n = 3500:
+Trial 1
+Kruskal MST computed: Duration: 4.416386 sec
+Trial 2
+Kruskal MST computed: Duration: 4.473526 sec
+Trial 3
+Kruskal MST computed: Duration: 4.451052 sec
+Trial 4
+Kruskal MST computed: Duration: 4.464447 sec
+Trial 5
+Kruskal MST computed: Duration: 4.424708 sec
+n = 4000:
+Trial 1
+Kruskal MST computed: Duration: 5.919302 sec
+Trial 2
+Kruskal MST computed: Duration: 5.789938 sec
+Trial 3
+Kruskal MST computed: Duration: 5.767206 sec
+Trial 4
+Kruskal MST computed: Duration: 5.769019 sec
+Trial 5
+Kruskal MST computed: Duration: 5.803568 sec
+n = 4500:
+Trial 1
+Kruskal MST computed: Duration: 7.402119 sec
+Trial 2
+Kruskal MST computed: Duration: 7.412758 sec
+Trial 3
+Kruskal MST computed: Duration: 7.453349 sec
+Trial 4
+Kruskal MST computed: Duration: 7.379385 sec
+Trial 5
+Kruskal MST computed: Duration: 7.425774 sec
+n = 5000:
+Trial 1
+Kruskal MST computed: Duration: 9.192961 sec
+Trial 2
+Kruskal MST computed: Duration: 9.273309 sec
+Trial 3
+Kruskal MST computed: Duration: 9.219202 sec
+Trial 4
+Kruskal MST computed: Duration: 9.229874 sec
+Trial 5
+Kruskal MST computed: Duration: 9.230681 sec
+n = 5500:
+Trial 1
+Kruskal MST computed: Duration: 11.308195 sec
+Trial 2
+Kruskal MST computed: Duration: 11.290259 sec
+Trial 3
+Kruskal MST computed: Duration: 11.214539 sec
+Trial 4
+Kruskal MST computed: Duration: 11.304655 sec
+Trial 5
+Kruskal MST computed: Duration: 11.277832 sec
+n = 6000:
+Trial 1
+Kruskal MST computed: Duration: 13.610754 sec
+Trial 2
+Kruskal MST computed: Duration: 13.526441 sec
+Trial 3
+Kruskal MST computed: Duration: 13.684867 sec
+Trial 4
+Kruskal MST computed: Duration: 13.842726 sec
+Trial 5
+Kruskal MST computed: Duration: 13.539232 sec
+n = 6500:
+Trial 1
+Kruskal MST computed: Duration: 16.125893 sec
+Trial 2
+Kruskal MST computed: Duration: 15.970481 sec
+Trial 3
+Kruskal MST computed: Duration: 16.046627 sec
+Trial 4
+Kruskal MST computed: Duration: 16.037004 sec
+Trial 5
+Kruskal MST computed: Duration: 15.982758 sec
+n = 7000:
+Trial 1
+Kruskal MST computed: Duration: 18.704044 sec
+Trial 2
+Kruskal MST computed: Duration: 18.698897 sec
+Trial 3
+Kruskal MST computed: Duration: 18.640331 sec
+Trial 4
+Kruskal MST computed: Duration: 18.982118 sec
+Trial 5
+Kruskal MST computed: Duration: 18.588652 sec
+n = 7500:
+Trial 1
+Kruskal MST computed: Duration: 21.587794 sec
+Trial 2
+Kruskal MST computed: Duration: 21.574104 sec
+Trial 3
+Kruskal MST computed: Duration: 21.657746 sec
+Trial 4
+Kruskal MST computed: Duration: 21.578611 sec
+Trial 5
+Kruskal MST computed: Duration: 21.676056 sec
+n = 8000:
+Trial 1
+Kruskal MST computed: Duration: 24.687492 sec
+Trial 2
+Kruskal MST computed: Duration: 24.697614 sec
+Trial 3
+Kruskal MST computed: Duration: 24.745520 sec
+Trial 4
+Kruskal MST computed: Duration: 24.882349 sec
+Trial 5
+Kruskal MST computed: Duration: 24.739986 sec
+n = 8500:
+Trial 1
+Kruskal MST computed: Duration: 28.212981 sec
+Trial 2
+Kruskal MST computed: Duration: 28.293293 sec
+Trial 3
+Kruskal MST computed: Duration: 28.153727 sec
+Trial 4
+Kruskal MST computed: Duration: 28.138669 sec
+Trial 5
+Kruskal MST computed: Duration: 28.027317 sec
+n = 9000:
+Trial 1
+Kruskal MST computed: Duration: 31.693504 sec
+Trial 2
+Kruskal MST computed: Duration: 31.667953 sec
+Trial 3
+Kruskal MST computed: Duration: 31.780409 sec
+Trial 4
+Kruskal MST computed: Duration: 31.645215 sec
+Trial 5
+Kruskal MST computed: Duration: 31.654661 sec
+n = 9500:
+Trial 1
+Kruskal MST computed: Duration: 35.341223 sec
+Trial 2
+Kruskal MST computed: Duration: 35.489111 sec
+Trial 3
+Kruskal MST computed: Duration: 35.687000 sec
+Trial 4
+Kruskal MST computed: Duration: 35.614440 sec
+Trial 5
+Kruskal MST computed: Duration: 35.551635 sec
+n = 10000:
+Trial 1
+Kruskal MST computed: Duration: 39.352359 sec
+Trial 2
+Kruskal MST computed: Duration: 39.448522 sec
+Trial 3
+Kruskal MST computed: Duration: 39.597738 sec
+Trial 4
+Kruskal MST computed: Duration: 39.343546 sec
+Trial 5
+Kruskal MST computed: Duration: 39.656715 sec

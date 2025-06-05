@@ -6,28 +6,49 @@
 #include "prim.hpp"
 #include "schedule.hpp"
 #include <iostream>
+#include <thread>
 
 int main() {
     int n = 1000;
-    int step = 1000;
-    int limit = 100000;
-    int trials = 20;
+    int step = 500;
+    int limit = 10000;
+    int trials = 5;
+    int rootChoices = 100;
 
-    std::cout << "Running Binomial Heap Experiment:\n";
-    runHeapExperiment(n, trials);
+    std::cout << "Running all experiments concurrently...\n";
 
-    std::cout << "Running MST Graph Algorithms:\n";
-    std::cout << "Kruskal's Algorithm:\n";
-    //runGraphExperiment(step, limit, trials, true);
-    std::cout << "(Not yet implemented)\n";
-    
-    std::cout << "Prim's Algorithm:\n";
-    //runGraphExperiment(step, limit, trials, false);
-    std::cout << "(Not yet implemented)\n";
+    // Threads for each experiment
+    std::thread heapThread([=]() {
+        std::cout << "[Heap] Running Binomial Heap Experiment...\n";
+        runHeapExperiment(n, trials);
+        std::cout << "[Heap] Done.\n";
+    });
 
-    std::cout << "Running Scheduling Algorithm:\n";
-    //runSchedulingExperiment(step, limit, trials);
-    std::cout << "(Not yet implemented)\n";
+    std::thread kruskalThread([=]() {
+        std::cout << "[Kruskal] Running Kruskal's Algorithm...\n";
+        runGraphExperiment(step, limit, trials, true);
+        std::cout << "[Kruskal] Done.\n";
+    });
 
+    std::thread primThread([=]() {
+        std::cout << "[Prim] Running Prim's Algorithm...\n";
+        runGraphExperiment(step, limit, trials, false);
+        std::cout << "[Prim] Done.\n";
+    });
+
+    std::thread schedulingThread([=]() {
+        std::cout << "[Scheduling] Running Scheduling Algorithm...\n";
+        runSchedulingExperiment(1000, 10000, 1, 100); // hardcoded here
+        std::cout << "[Scheduling] Done.\n";
+    });
+
+    // Wait for all threads to complete
+    heapThread.join();
+    kruskalThread.join();
+    primThread.join();
+    schedulingThread.join();
+
+    std::cout << "\nAll experiments completed.\n";
+    std::cout << "Results saved to 'results/' directory.\n";
     return 0;
 }

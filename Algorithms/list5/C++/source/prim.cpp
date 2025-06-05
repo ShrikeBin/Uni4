@@ -2,8 +2,10 @@
 #include <queue>
 #include <functional>
 #include <limits>
+#include <chrono>
 
-std::vector<Edge> primMST(const Graph& graph) {
+std::vector<Edge> primMST(const Graph& graph, std::string& time) {
+    auto start = std::chrono::high_resolution_clock::now();
     int n = graph.getVertexCount();
     std::vector<std::vector<std::pair<int, double>>> adj(n);
 
@@ -39,6 +41,10 @@ std::vector<Edge> primMST(const Graph& graph) {
             }
         }
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    time = "Duration: " + std::to_string(elapsed.count()) + " sec";
 
     return mst;
 }
