@@ -1,56 +1,57 @@
-import random
-import math
+import numpy as np
 
-def euclidean(p1, p2):
-    return math.sqrt(sum((a - b) ** 2 for a, b in zip(p1, p2)))
+def euclidean(a, b):
+    # Compute Euclidean distances between vector a and array b
+    return np.linalg.norm(a - b, axis=1)
 
 def initialize_centroids_kmeanspp(data, k):
-    centroids = [random.choice(data)]
+    n_samples = data.shape[0]
+    centroids = [data[np.random.choice(n_samples)]]
     for _ in range(k - 1):
-        distances = [min(euclidean(x, c) for c in centroids) for x in data]
-        total = sum(distances)
-        probs = [d / total for d in distances]
-        r = random.random()
-        s = 0
-        for i, p in enumerate(probs):
-            s += p
-            if r <= s:
-                centroids.append(data[i])
-                break
-    return centroids
+        distances = np.array([min(np.linalg.norm(x - c) for c in centroids) for x in data])
+        probs = distances / distances.sum()
+        cumulative_probs = np.cumsum(probs)
+        r = np.random.rand()
+        idx = np.searchsorted(cumulative_probs, r)
+        centroids.append(data[idx])
+    return np.array(centroids)
 
-def kmeans(data, k, max_iter=50, tol=1e-4):
+def kmeans(data, k, max_iter=1000, tol=1e-4):
     best_inertia = float('inf')
-    best_result = None
+    best_centroids = None
+    best_labels = None
 
     for attempt in range(5):
         print(f"Attempt {attempt + 1}")
         centroids = initialize_centroids_kmeanspp(data, k)
         for iter_num in range(max_iter):
-            print(f"  Iteration {iter_num + 1}")
-            clusters = [[] for _ in range(k)]
-            for x in data:
-                idx = min(range(k), key=lambda i: euclidean(x, centroids[i]))
-                clusters[idx].append(x)
-            new_centroids = []
-            for i in range(k):
-                if clusters[i]:
-                    new_c = [sum(pix) / len(clusters[i]) for pix in zip(*clusters[i])]
-                else:
-                    new_c = centroids[i]
-                new_centroids.append(new_c)
-            # Check for convergence
-            diffs = [euclidean(c1, c2) for c1, c2 in zip(centroids, new_centroids)]
-            print(f"    Max centroid shift: {max(diffs):.6f}")
-            if max(diffs) < tol:
-                print("    Converged!")
+            # Compute distances (n_samples x k)
+            distances = np.linalg.norm(data[:, None] - centroids[None, :], axis=2)
+            labels = np.argmin(distances, axis=1)
+
+            new_centroids = np.array([
+                data[labels == i].mean(axis=0) if np.any(labels == i) else centroids[i]
+                for i in range(k)
+            ])
+
+            max_shift = np.linalg.norm(centroids - new_centroids, axis=1).max()
+            print(f"  Iteration {iter_num + 1} - Max centroid shift: {max_shift:.6f}")
+
+            if max_shift < tol:
+                print("  Converged!")
                 break
             centroids = new_centroids
 
-        inertia = sum(euclidean(x, centroids[min(range(k), key=lambda i: euclidean(x, centroids[i]))])**2 for x in data)
-        print(f"  Inertia: {inertia:.2f}")
+        # Compute inertia
+        inertia = np.sum((data - centroids[labels]) ** 2)
+        print(f"Attempt {attempt + 1} inertia: {inertia:.2f}")
+
         if inertia < best_inertia:
             best_inertia = inertia
-            best_result = (centroids, clusters)
+            best_centroids = centroids
+            best_labels = labels
 
-    return best_result
+    # Group points by cluster
+    clusters = [data[best_labels == i] for i in range(k)]
+
+    return best_centroids, clusters
