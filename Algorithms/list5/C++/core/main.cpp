@@ -20,7 +20,7 @@ int main() {
     // Threads for each experiment
     std::thread heapThread([=]() {
         std::cout << "[Heap] Running Binomial Heap Experiment...\n";
-        runHeapExperiment(n, trials);
+        runHeapExperiment(n, 25);
         std::cout << "[Heap] Done.\n";
     });
 
@@ -38,7 +38,7 @@ int main() {
 
     std::thread schedulingThread([=]() {
         std::cout << "[Scheduling] Running Scheduling Algorithm...\n";
-        runSchedulingExperiment(1000, 10000, 1, 100); // hardcoded here
+        runSchedulingExperiment(1000, 15000, 2, 100); // hardcoded here
         std::cout << "[Scheduling] Done.\n";
     });
 

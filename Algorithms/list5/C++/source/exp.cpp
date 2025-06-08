@@ -93,71 +93,74 @@ void runHeapExperiment(int n, int trials) {
         std::cerr << "Failed to open output file!\n";
         return;
     }
-    out << "N == " << n << "\n";
-    for (int trial = 1; trial <= trials; trial++) {
-        std::cout << "Trial " << trial << "\n";
-        BinomialHeap H1, H2;
+    int step = n*2;
+    int our_n = n;
+    while (our_n <= 50 * n)
+    {
+        out << "N == " << our_n << "\n";
+        for (int trial = 1; trial <= trials; trial++) {
+            std::cout << "Trial " << trial << "\n";
+            BinomialHeap H1, H2;
 
-        H1 = BinomialHeap();
-        H2 = BinomialHeap();
+            H1 = BinomialHeap();
+            H2 = BinomialHeap();
 
-        Metrics metrics1, metrics2;
-        metrics1 = Metrics();
-        metrics2 = Metrics();
-        H1.setMetrics(metrics1);
-        H2.setMetrics(metrics2);
+            Metrics metrics1, metrics2;
+            metrics1 = Metrics();
+            metrics2 = Metrics();
+            H1.setMetrics(metrics1);
+            H2.setMetrics(metrics2);
 
-        auto seq1 = randomSequence(n, trial * 100);
-        auto seq2 = randomSequence(n, trial * 200);
+            auto seq1 = randomSequence(our_n, trial * 100);
+            auto seq2 = randomSequence(our_n, trial * 200);
 
-        std::vector<long long> insert_comps_H1;
-        std::vector<long long> insert_comps_H2;
+            std::vector<long long> insert_comps_H1;
+            std::vector<long long> insert_comps_H2;
 
-        for (int x : seq1) {
-            H1.insert(x);
-            insert_comps_H1.push_back(metrics1.comparisons);
+            for (int x : seq1) {
+                H1.insert(x);
+                insert_comps_H1.push_back(metrics1.comparisons);
+                metrics1.reset();
+            }
+
+            for (int x : seq2) {
+                H2.insert(x);
+                insert_comps_H2.push_back(metrics2.comparisons);
+                metrics2.reset();
+            }
+
             metrics1.reset();
-        }
-
-        for (int x : seq2) {
-            H2.insert(x);
-            insert_comps_H2.push_back(metrics2.comparisons);
-            metrics2.reset();
-        }
-
-        metrics1.reset();
-        H1.merge(H2);
-        long long union_comps = metrics1.comparisons;
-        metrics1.reset();
-
-        std::vector<long long> extract_comps;
-        std::vector<int> extracted;
-
-        bool sorted = true;
-
-        for (int i = 0; i < 2 * n; i++) {
-            int val = H1.extract_min();
-            extracted.push_back(val);
-            extract_comps.push_back(metrics1.comparisons);
+            H1.merge(H2);
+            long long union_comps = metrics1.comparisons;
             metrics1.reset();
-            if (i > 0 && extracted[i] < extracted[i - 1]) sorted = false;
+
+            std::vector<long long> extract_comps;
+            std::vector<int> extracted;
+
+            bool sorted = true;
+
+            for (int i = 0; i < 2 * our_n; i++) {
+                int val = H1.extract_min();
+                extracted.push_back(val);
+                extract_comps.push_back(metrics1.comparisons);
+                metrics1.reset();
+                if (i > 0 && extracted[i] < extracted[i - 1]) sorted = false;
+            }
+
+            bool empty_after = H1.is_empty();
+
+            double avg_H1 = std::accumulate(insert_comps_H1.begin(), insert_comps_H1.end(), 0.0) / insert_comps_H1.size();
+            double avg_H2 = std::accumulate(insert_comps_H2.begin(), insert_comps_H2.end(), 0.0) / insert_comps_H2.size();
+            double avg_ex = std::accumulate(extract_comps.begin(), extract_comps.end(), 0.0) / extract_comps.size();
+
+            out << "CSV,"
+            << our_n << ','           // heap size
+            << trial << ','       // trial #
+            << avg_H1 << ','
+            << avg_H2 << ','
+            << union_comps << ','
+            << avg_ex << '\n';
         }
-
-        bool empty_after = H1.is_empty();
-
-        
-        out << "---------------------------------------\n";
-        out << "Trial " << trial << " results:\n";
-        out<< "Insert Heap 1 comparisons (per insert): ";
-        for (auto c : insert_comps_H1) out << c << " ";
-        out << "\nInsert Heap 2 comparisons (per insert): ";
-        for (auto c : insert_comps_H2) out << c << " ";
-        out << "\nUnion comparisons: " << union_comps << "\n";
-        out << "Extract-Min comparisons (per op): ";
-        for (auto c : extract_comps) out << c << " ";
-        out << "\nExtracted sequence sorted: " << (sorted ? "YES" : "NO") << "\n";
-        out << "Heap empty after 2n extracts: " << (empty_after ? "YES" : "NO") << "\n";
-        out << "---------------------------------------\n";
-        out.flush();
+        our_n += step;
     }
 }
