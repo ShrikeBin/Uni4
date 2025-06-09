@@ -3,7 +3,7 @@ from collections import deque
 from sklearn.neighbors import NearestNeighbors
 
 
-class MyDBSCAN:
+class DBSCAN:
     def __init__(self, radius=0.5, num_close=4, random_state=None, verbose=0):
         self.radius = radius
         self.num_close = num_close

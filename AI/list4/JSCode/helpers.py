@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-from JSCode.dbscan_optimized import MyDBSCAN
+from dbscan_optimized import DBSCAN
 import os
 
 def get_labels(cluster_labels, true_labels):
@@ -63,7 +63,7 @@ def batch_simulation_dbscan(data, labels, radius_list=(2,3,4,5), neighbors_list=
             if verbose:
                 print(f'simulation for radius: {radius}, neighbors: {neighbors}')
             filename = f'R={radius}_MiN={neighbors}' + appendix + ".png"
-            my_dbscan = MyDBSCAN(radius=radius, verbose=verbose, num_close=neighbors).fit(data)
+            my_dbscan = DBSCAN(radius=radius, verbose=verbose, num_close=neighbors).fit(data)
             clusters_labels = my_dbscan.labels_
 
             mapping = get_labels(clusters_labels, labels)
