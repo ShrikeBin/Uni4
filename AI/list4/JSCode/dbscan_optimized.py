@@ -160,7 +160,6 @@ class DBSCAN:
         self.n_clusters_ = cluster_id
         return self
 
-    # Keep your original methods for compatibility
     def pairwise_distances(self, X, squared=False):
         """Original pairwise distance method (for small datasets only)."""
         norms_sq = np.sum(X * X, axis=1).reshape(-1, 1)
@@ -178,6 +177,7 @@ class DBSCAN:
         if self.verbose >= 1:
             print('Initializing core points...')
         numbers_of_neighbors = np.sum(distances <= self.radius ** 2, axis=1)
+        # returns a boolean mask of core points (!)
         core_points = numbers_of_neighbors >= self.num_close
         return core_points
 
