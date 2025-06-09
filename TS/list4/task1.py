@@ -1,7 +1,7 @@
 FLAG_SEQUENCE = "01111110"
 BIT_STUFFING_THRESHOLD = 5
 CRC_POLYNOMIAL = "10001000000100001"  # CRC-16 polynomial (17 bits)
-FRAME_SIZE = 128  # WITH NO DATA FRAME TAKES 32 BITS
+FRAME_SIZE = 80  # WITH NO DATA FRAME TAKES 32 BITS
 
 def calculate_crc(data, polynomial):
     poly_len = len(polynomial)
