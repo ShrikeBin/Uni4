@@ -1,8 +1,7 @@
-import typing
 import numpy as np
 import math
 
-class MyKMeans:
+class KMeans:
     def __init__(self, n_clusters: int, n_init: int=10, tolerance: float=1e-4, random_state: int=42, max_iterations: int=300, verbose=0):
         self.n_clusters = n_clusters
         self.num_iterations = n_init
@@ -61,9 +60,7 @@ class MyKMeans:
         best_labels = None
         best_iter = 0
 
-        rng = np.random.RandomState(self.random_state)
         X_sq = np.sum(X * X, axis=1).reshape(-1,1)
-
 
         for init_no in range(self.num_iterations):
             if self.verbose > 0:

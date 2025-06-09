@@ -12,7 +12,7 @@ class DBSCAN:
         self.core_points = None
 
     def fit_optimized(self, X: np.ndarray):
-        """Optimized DBSCAN using sklearn's NearestNeighbors for efficiency."""
+
         if self.verbose >= 1:
             print('Fitting optimized DBSCAN...')
 
@@ -76,7 +76,7 @@ class DBSCAN:
         return self
 
     def fit_memory_efficient(self, X: np.ndarray, batch_size=1000):
-        """Memory-efficient version for very large datasets."""
+
         if self.verbose >= 1:
             print('Fitting memory-efficient DBSCAN...')
 
@@ -85,7 +85,7 @@ class DBSCAN:
         # Use kd_tree for better memory efficiency with high-dimensional data
         nbrs = NearestNeighbors(
             radius=self.radius,
-            algorithm="auto",  # Let sklearn choose the best algorithm
+            algorithm="auto",  # Let sklearn choose the best algorithm lmao
             n_jobs=-1
         ).fit(X)
 
@@ -182,21 +182,23 @@ class DBSCAN:
         return core_points
 
     def fit(self, X: np.ndarray):
-        """Main fit method - automatically chooses best approach based on dataset size."""
         n_samples = X.shape[0]
 
         if n_samples > 10000:
             if self.verbose >= 1:
                 print(f'Large dataset ({n_samples} samples), using memory-efficient approach')
             return self.fit_memory_efficient(X)
+        
         elif n_samples > 2000:
             if self.verbose >= 1:
                 print(f'Medium dataset ({n_samples} samples), using optimized approach')
             return self.fit_optimized(X)
+        
         else:
             if self.verbose >= 1:
                 print(f'Small dataset ({n_samples} samples), using original approach')
-            # For small datasets, your original approach is fine
+
+            # For small datasets, use my implementation
             distances = self.pairwise_distances(X, True)
             core_points_mask = self.initialize_core_points(distances)
 
