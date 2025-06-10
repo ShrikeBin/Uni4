@@ -1,0 +1,41 @@
+Jun 09 11:21:34.981 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Jun 09 11:21:34.981 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 50261.
+Jun 09 11:21:34.990 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 09 11:21:34.990 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips 
+Jun 09 11:21:34.990 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips
+Jun 09 11:21:34.990 HYPERVISOR: exec_cmd: hypervisor working_dir /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/efe1338b-3c91-4904-b10a-eeebae5f815a 
+Jun 09 11:21:34.990 GENERAL: working_dir=/home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/efe1338b-3c91-4904-b10a-eeebae5f815a
+Jun 09 11:21:34.990 HYPERVISOR: exec_cmd: vm create R1 1 c3600 
+Jun 09 11:21:34.990 VM: VM R1 created.
+Jun 09 11:21:34.990 HYPERVISOR: exec_cmd: vm set_con_tcp_port R1 5008 
+Jun 09 11:21:34.991 HYPERVISOR: exec_cmd: c3600 get_mac_addr R1 
+Jun 09 11:21:34.991 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:21:34.991 HYPERVISOR: exec_cmd: vm set_idle_pc R1 0x6050b114 
+Jun 09 11:21:34.992 HYPERVISOR: exec_cmd: vm set_ios R1 /root/GNS3/images/IOS/c3640-a3js-mz.124-25d.image 
+Jun 09 11:21:34.992 HYPERVISOR: exec_cmd: c3600 set_mac_addr R1 cc01.ba65.0000 
+Jun 09 11:21:34.992 HYPERVISOR: exec_cmd: vm set_nvram R1 256 
+Jun 09 11:21:34.992 HYPERVISOR: exec_cmd: vm set_ram R1 192 
+Jun 09 11:21:34.992 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:21:34.993 HYPERVISOR: exec_cmd: vm slot_add_binding R1 0 0 NM-4E 
+Jun 09 11:21:35.568 HYPERVISOR: exec_cmd: nio create_udp udp-906a9a8b-505f-4d8f-a70e-48b175cd3282 10008 127.0.0.1 10009 
+Jun 09 11:21:35.776 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R1 0 0 udp-906a9a8b-505f-4d8f-a70e-48b175cd3282 
+Jun 09 11:21:35.776 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:21:36.476 HYPERVISOR: exec_cmd: nio create_udp udp-f5ffdcdd-98cd-498d-87b4-19c9c35ce542 10022 127.0.0.1 10023 
+Jun 09 11:21:36.477 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R1 0 1 udp-f5ffdcdd-98cd-498d-87b4-19c9c35ce542 
+Jun 09 11:21:36.477 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:21:36.529 HYPERVISOR: exec_cmd: nio create_udp udp-9468f967-c6f0-4a48-b19e-dc1a484bb786 10026 127.0.0.1 10027 
+Jun 09 11:21:36.530 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R1 0 2 udp-9468f967-c6f0-4a48-b19e-dc1a484bb786 
+Jun 09 11:21:36.530 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:30:25.515 HYPERVISOR: exec_cmd: vm set_ios R1 /root/GNS3/images/IOS/c3640-a3js-mz.124-25d.image 
+Jun 09 11:36:21.333 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:36:21.333 HYPERVISOR: exec_cmd: vm extract_config R1 
+Jun 09 11:36:28.290 HYPERVISOR: exec_cmd: vm set_ghost_status R1 2 
+Jun 09 11:36:28.291 HYPERVISOR: exec_cmd: vm set_ghost_file R1 /home/h20/Documents/Uni4/TS/list5/list5/project-files/dynamips/c3640-a3js-mz.124-25d.image-192.ghost 
+Jun 09 11:36:28.324 HYPERVISOR: exec_cmd: vm get_status R1 
+Jun 09 11:36:28.325 HYPERVISOR: exec_cmd: vm set_config R1 configs/i1_startup-config.cfg 
+Jun 09 11:36:28.325 HYPERVISOR: exec_cmd: vm start R1 
+Jun 09 11:36:58.561 HYPERVISOR: exec_cmd: vm extract_config R1 
+Jun 09 11:38:53.704 HYPERVISOR: Stopped.
+Jun 09 11:38:53.850 VM: VM R1 shutdown.
+Jun 09 11:38:53.850 VM: VM R1 destroyed.
+Jun 09 11:38:53.850 GENERAL: reset done.

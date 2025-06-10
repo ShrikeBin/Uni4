@@ -276,7 +276,7 @@
             },
             {
                 "filters": {},
-                "link_id": "617b5805-dd9f-4f93-9964-9ad07fb394b5",
+                "link_id": "afb7b7c6-f18a-4a03-91cf-c29c658b61ca",
                 "link_style": {},
                 "nodes": [
                     {
@@ -284,11 +284,11 @@
                         "label": {
                             "rotation": 0,
                             "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                            "text": "e0/1",
-                            "x": 47,
-                            "y": -15
+                            "text": "wlp5s0",
+                            "x": 108,
+                            "y": 76
                         },
-                        "node_id": "d2c8b33c-c6e7-4512-8f01-551dbea1957f",
+                        "node_id": "d6603b95-9b40-4fd4-b110-6d40341f0f03",
                         "port_number": 1
                     },
                     {
@@ -296,12 +296,12 @@
                         "label": {
                             "rotation": 0,
                             "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                            "text": "enp0s31f6",
-                            "x": 64,
-                            "y": 72
+                            "text": "e0/1",
+                            "x": 10,
+                            "y": -10
                         },
-                        "node_id": "d6603b95-9b40-4fd4-b110-6d40341f0f03",
-                        "port_number": 0
+                        "node_id": "d2c8b33c-c6e7-4512-8f01-551dbea1957f",
+                        "port_number": 1
                     }
                 ],
                 "suspend": false
@@ -333,8 +333,8 @@
                 "symbol": ":/symbols/vpcs_guest.svg",
                 "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc",
                 "width": 65,
-                "x": -547,
-                "y": 182,
+                "x": -435,
+                "y": 149,
                 "z": 1
             },
             {
@@ -362,8 +362,8 @@
                 "symbol": ":/symbols/vpcs_guest.svg",
                 "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc",
                 "width": 65,
-                "x": 165,
-                "y": 149,
+                "x": 322,
+                "y": 125,
                 "z": 1
             },
             {
@@ -391,8 +391,8 @@
                 "symbol": ":/symbols/vpcs_guest.svg",
                 "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc",
                 "width": 65,
-                "x": 163,
-                "y": -260,
+                "x": 286,
+                "y": -240,
                 "z": 1
             },
             {
@@ -471,8 +471,8 @@
                 "symbol": ":/symbols/ethernet_switch.svg",
                 "template_id": "1966b864-93e7-32d5-965f-001384eec461",
                 "width": 72,
-                "x": -279,
-                "y": 194,
+                "x": -161,
+                "y": 114,
                 "z": 1
             },
             {
@@ -551,8 +551,8 @@
                 "symbol": ":/symbols/ethernet_switch.svg",
                 "template_id": "1966b864-93e7-32d5-965f-001384eec461",
                 "width": 72,
-                "x": 166,
-                "y": -38,
+                "x": 85,
+                "y": -66,
                 "z": 1
             },
             {
@@ -566,12 +566,12 @@
                 "label": {
                     "rotation": 0,
                     "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                    "text": "R1",
+                    "text": "R6",
                     "x": 21,
                     "y": -25
                 },
                 "locked": false,
-                "name": "R1",
+                "name": "R6",
                 "node_id": "efe1338b-3c91-4904-b10a-eeebae5f815a",
                 "node_type": "dynamips",
                 "port_name_format": "Ethernet{0}",
@@ -607,8 +607,8 @@
                 "symbol": ":/symbols/classic/router.svg",
                 "template_id": "036dee54-e0f9-4de5-8ea1-7e4f9143548c",
                 "width": 66,
-                "x": -242,
-                "y": -8,
+                "x": -372,
+                "y": -179,
                 "z": 1
             },
             {
@@ -622,12 +622,12 @@
                 "label": {
                     "rotation": 0,
                     "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                    "text": "R2",
+                    "text": "R5",
                     "x": 21,
                     "y": -25
                 },
                 "locked": false,
-                "name": "R2",
+                "name": "R5",
                 "node_id": "d2c8b33c-c6e7-4512-8f01-551dbea1957f",
                 "node_type": "dynamips",
                 "port_name_format": "Ethernet{0}",
@@ -663,8 +663,8 @@
                 "symbol": ":/symbols/classic/router.svg",
                 "template_id": "036dee54-e0f9-4de5-8ea1-7e4f9143548c",
                 "width": 66,
-                "x": -487,
-                "y": -44,
+                "x": -623,
+                "y": -35,
                 "z": 1
             },
             {
@@ -678,12 +678,12 @@
                 "label": {
                     "rotation": 0,
                     "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                    "text": "R3",
+                    "text": "R2",
                     "x": 21,
                     "y": -25
                 },
                 "locked": false,
-                "name": "R3",
+                "name": "R2",
                 "node_id": "cf6fb0fe-7a88-455e-99bc-2a41b206cb16",
                 "node_type": "dynamips",
                 "port_name_format": "Ethernet{0}",
@@ -719,8 +719,8 @@
                 "symbol": ":/symbols/classic/router.svg",
                 "template_id": "036dee54-e0f9-4de5-8ea1-7e4f9143548c",
                 "width": 66,
-                "x": 15,
-                "y": -9,
+                "x": -89,
+                "y": -194,
                 "z": 1
             },
             {
@@ -734,12 +734,12 @@
                 "label": {
                     "rotation": 0,
                     "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                    "text": "R4",
-                    "x": 20,
+                    "text": "R3",
+                    "x": 21,
                     "y": -25
                 },
                 "locked": false,
-                "name": "R4",
+                "name": "R3",
                 "node_id": "0711e73b-b3d8-44df-8418-0681b8a0f6bc",
                 "node_type": "dynamips",
                 "port_name_format": "Ethernet{0}",
@@ -775,27 +775,27 @@
                 "symbol": ":/symbols/classic/router.svg",
                 "template_id": "036dee54-e0f9-4de5-8ea1-7e4f9143548c",
                 "width": 66,
-                "x": 297,
-                "y": -43,
+                "x": 365,
+                "y": -44,
                 "z": 1
             },
             {
                 "compute_id": "local",
                 "console": null,
                 "console_auto_start": false,
-                "console_type": null,
+                "console_type": "none",
                 "custom_adapters": [],
                 "first_port_name": null,
                 "height": 71,
                 "label": {
                     "rotation": 0,
                     "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
-                    "text": "Cloud1",
-                    "x": 53,
+                    "text": "ExtWeb",
+                    "x": 51,
                     "y": -25
                 },
                 "locked": false,
-                "name": "Cloud1",
+                "name": "ExtWeb",
                 "node_id": "d6603b95-9b40-4fd4-b110-6d40341f0f03",
                 "node_type": "cloud",
                 "port_name_format": "Ethernet{0}",
@@ -861,8 +861,8 @@
                 "symbol": ":/symbols/cloud.svg",
                 "template_id": "39e257dc-8412-3174-b6b3-0ee3ed6a43e9",
                 "width": 159,
-                "x": -469,
-                "y": -217,
+                "x": -759,
+                "y": -249,
                 "z": 1
             }
         ]
