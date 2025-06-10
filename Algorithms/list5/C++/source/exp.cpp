@@ -154,12 +154,13 @@ void runHeapExperiment(int n, int trials) {
             double avg_ex = std::accumulate(extract_comps.begin(), extract_comps.end(), 0.0) / extract_comps.size();
 
             out << "CSV,"
-            << our_n << ','           // heap size
+            << our_n << ','       // heap size
             << trial << ','       // trial #
             << avg_H1 << ','
             << avg_H2 << ','
             << union_comps << ','
             << avg_ex << '\n';
+            sorted ? out << "Sorted\n" : out << "NOT Sorted\n";
         }
         our_n += step;
     }
