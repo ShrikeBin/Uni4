@@ -19,6 +19,7 @@ class KMeans:
         :return: void
         '''
         # We do it in a smart way to make them spread out, requires less iterations than pure random choice, makes it more effective
+        # It is called Kmeans++
         if self.verbose > 0:
             print('Initializing centroids...')
         n_samples, n_features = X.shape
