@@ -2,13 +2,15 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Random_Seeds; use Random_Seeds;
 with Ada.Real_Time; use Ada.Real_Time;
+with RW_Monitor; use RW_Monitor;
 
 procedure  Mutex_Template is
 
 
 -- Processes 
-
-  Nr_Of_Processes : constant Integer :=15;
+  Nr_Of_Readers : constant Integer := 10;
+  Nr_Of_Writers : constant Integer := 5;
+  Nr_Of_Processes : constant Integer := Nr_Of_Readers + Nr_Of_Writers;
 
   Min_Steps : constant Integer := 50 ;
   Max_Steps : constant Integer := 100 ;
@@ -20,9 +22,9 @@ procedure  Mutex_Template is
 
   type Process_State is (
     Local_Section,
-    Entry_Protocol,
-    Critical_Section,
-    Exit_Protocol
+    Start,
+    Reading_Room,
+    Stop
     );
 
 -- 2D Board display board
@@ -116,7 +118,7 @@ procedure  Mutex_Template is
   end Printer;
 
 
-    -- Processes
+  -- Processes
   type Process_Type is record
     Id: Integer;
     Symbol: Character;
@@ -184,6 +186,7 @@ procedure  Mutex_Template is
       -- LOCAL_SECTION - end
 
       Change_State( START ); -- starting ENTRY_PROTOCOL
+      -- implement the ENTRY_PROTOCOL here ...
       Start_Read;
 
       Change_State( READING_ROOM ); -- starting CRITICAL_SECTION
@@ -193,6 +196,7 @@ procedure  Mutex_Template is
       -- CRITICAL_SECTION - end
 
       Change_State( STOP ); -- starting EXIT_PROTOCOL
+      -- implement the EXIT_PROTOCOL here ...
       Stop_Read;
 
       Change_State( LOCAL_SECTION ); -- starting LOCAL_SECTION      
@@ -280,7 +284,7 @@ procedure  Mutex_Template is
     Printer.Report( Traces );
   end Writer_Task_Type;
 
-  -- local for main task
+-- local for main task
 
   Reader_Tasks: array (0 .. Nr_Of_Readers-1) of Reader_Task_Type;
   Writer_Tasks: array (0 .. Nr_Of_Writers-1) of Writer_Task_Type; 
