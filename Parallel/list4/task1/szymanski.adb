@@ -177,6 +177,7 @@ procedure  Mutex_Template is
     Nr_of_Steps: Integer;
     Traces: Traces_Sequence_Type; 
     Local_Max_Ticket : Integer := 0;
+    Condition : Boolean;
 
     procedure Store_Trace is
     begin  
@@ -219,37 +220,83 @@ procedure  Mutex_Template is
       null;
     end Start;
 
-    for Step in 0 .. Nr_of_Steps/4 - 1  loop  -- TEST !!!
+    for Step in 0 .. Nr_of_Steps/7 - 1  loop
       delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
+         --type Flag_State is (Outside, Wants_In, Waiting_Door, Door_In, Door_Out);
+          --for Flag_State use (0, 1, 2, 3, 4);
+        Change_State( ENTRY_PROTOCOL_1 ); -- starting ENTRY_PROTOCOL
+        -- implement the ENTRY_PROTOCOL here ...
+        Flags(Process.Id) := Wants_In;
+        Condition := False;
+        while not Condition loop
+          Condition := True;
+          for I in Flags'Range loop
+              if Flags(I) > Waiting_Door then
+                Condition := False;
+                exit;
+              end if;
+          end loop;
+        end loop;
 
-         -- OR SMTH I DUNNO :C
-         Flags(Self) := Wants_In;
-         Change_State ( Entry_Protocol_1 );
+        Flags(Process.Id) := Door_In;
+        Change_State (Entry_Protocol_2);
 
-         -- await(all Flag[0..Nr_ofProcesses-1] ∈ {0, 1, 2})
+        for I in Flags'Range loop
+          if Flags(I) = Wants_In then
+              Flags(Process.Id) := Waiting_Door;
+              Change_State (Entry_Protocol_3);
 
-         Flags(Self) := Door_In;
-         Change_State ( Entry_Protocol_3 );
+              Condition := False;
+              while not Condition loop
+                for I in Flags'Range loop
+                    if Flags(I) = Door_Out then
+                      Condition := True;
+                      exit;
+                    end if;
+                end loop;
+              end loop;
+              exit;
+          end if;
+        end loop;
 
-         -- if any Flag[0..Nr_ofProcesses-1] == 1 then
-            Flags(Self) := Waiting_Door;
-            Change_State ( Entry_Protocol_2 );
-            -- await(any Flag[0..Nr_ofProcesses-1] == 4)
-         -- end if;
+        Flags(Process.Id) := Door_Out;
+        Change_State (Entry_Protocol_4);
 
-         Flags(Self) := Door_Out;
-         Change_State ( Entry_Protocol_4 );
-         -- await(all Flag[0..Self - 1] ∈ {0, 1}) <- only those with lower Ids
+        Condition := False;
+        if Process.Id /= 0 then 
+          while Condition = False loop
+              Condition := True;
+              for I in 0..Process.Id-1 loop
+                if Flags(I) > Wants_In then
+                    Condition := False;
+                    exit;
+                end if;
+              end loop;
+          end loop;
+        end if;
+        
 
-         Change_State ( Critical_Section );
+        Change_State( CRITICAL_SECTION ); -- starting CRITICAL_SECTION
 
-         -- await(all Flag[Selgf + 1..Nr_ofProcesses-1] ∈ {0, 1, 4}) <- only those with higher Ids
-         Flags(Self) := Outside;
+        -- CRITICAL_SECTION - start
+        delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
+        -- CRITICAL_SECTION - end
 
-         Change_State ( Exit_Protocol ); -- <- am not sure 'bout this one'
+        Change_State( EXIT_PROTOCOL ); -- starting EXIT_PROTOCOL
+        -- implement the EXIT_PROTOCOL here ...
+        Condition := False;
+        while not Condition loop
+          Condition := True;
+          for I in Process.Id+1..Nr_Of_Processes-1 loop
+              if Flags(I) =  Waiting_Door or Flags(I) = Door_In then
+                Condition := False;
+                exit;
+              end if;
+          end loop;
+        end loop;
 
-         -- https://en.wikipedia.org/wiki/Szyma%C5%84ski%27s_algorithm (ctr + click to see the algorithm)
-
+        Flags(Process.Id) := Outside;
+        Change_State( LOCAL_SECTION ); -- starting LOCAL_SECTION
       end loop;
 
     Printer.Report( Traces );
