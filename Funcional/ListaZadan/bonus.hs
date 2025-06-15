@@ -152,16 +152,16 @@ Pokażmy, że operator >=> spełnia prawa monady wyrażone w języku >=>:
 (A3) ((f >=> g) >=> h) = (f >=> (g >=> h))
 
 (A1) (f >=> return) x
-= (f x) >>= return    -- ponieważ >>= spełnia prawa monady
+= (f x) >>= return                  -- ponieważ >>= spełnia prawa monady
 = f x
 
 (A2) (return >=> f) x
-= (return x) >>= f    -- ponieważ >>= spełnia prawa monady
+= (return x) >>= f                  -- ponieważ >>= spełnia prawa monady
 = f x
 
 (A3) ((f >=> g) >=> h) x
 = ((f >=> g) x) >>= h
-= ((f x) >>= g) >>= h  -- prawo łączności >>=
+= ((f x) >>= g) >>= h               -- prawo łączności >>=
 = (f x) >>= (((\y -> g) y) >>= h)
 = f x >>= (g >=> h)
 = (f >=> (g >=> h)) x
