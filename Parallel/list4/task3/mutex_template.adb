@@ -181,25 +181,19 @@ procedure  Mutex_Template is
 
 --    for Step in 0 .. Nr_of_Steps loop
     for Step in 0 .. Nr_of_Steps/4 - 1  loop  -- TEST !!!
-      -- LOCAL_SECTION - start
       delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
-      -- LOCAL_SECTION - end
 
-      Change_State( START ); -- starting ENTRY_PROTOCOL
-      -- implement the ENTRY_PROTOCOL here ...
+      Change_State( START );
       Start_Read;
 
-      Change_State( READING_ROOM ); -- starting CRITICAL_SECTION
+      Change_State( READING_ROOM );
 
-      -- CRITICAL_SECTION - start
       delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
-      -- CRITICAL_SECTION - end
 
-      Change_State( STOP ); -- starting EXIT_PROTOCOL
-      -- implement the EXIT_PROTOCOL here ...
+      Change_State( STOP );
       Stop_Read;
 
-      Change_State( LOCAL_SECTION ); -- starting LOCAL_SECTION      
+      Change_State( LOCAL_SECTION );   
     end loop;
     
     Printer.Report( Traces );
@@ -248,37 +242,29 @@ procedure  Mutex_Template is
         );
       -- Number of steps to be made by the Process  
       Nr_of_Steps := Min_Steps + Integer( Float(Max_Steps - Min_Steps) * Random(G));
-      -- Time_Stamp of initialization
       Time_Stamp := To_Duration ( Clock - Start_Time ); -- reads global clock
-      Store_Trace; -- store starting position
+
+      Store_Trace;
     end Init;
     
-    -- wait for initialisations of the remaining tasks:
     accept Start do
       null;
     end Start;
 
 --    for Step in 0 .. Nr_of_Steps loop
     for Step in 0 .. Nr_of_Steps/4 - 1  loop  -- TEST !!!
-      -- LOCAL_SECTION - start
       delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
-      -- LOCAL_SECTION - end
 
-      Change_State( START ); -- starting ENTRY_PROTOCOL
-      -- implement the ENTRY_PROTOCOL here ...
+      Change_State( START );
       Start_Write;
 
-      Change_State( READING_ROOM ); -- starting CRITICAL_SECTION
-
-      -- CRITICAL_SECTION - start
+      Change_State( READING_ROOM ); 
       delay Min_Delay+(Max_Delay-Min_Delay)*Duration(Random(G));
-      -- CRITICAL_SECTION - end
 
-      Change_State( STOP ); -- starting EXIT_PROTOCOL
-      -- implement the EXIT_PROTOCOL here ...
+      Change_State( STOP );
       Stop_Write;
       
-      Change_State( LOCAL_SECTION ); -- starting LOCAL_SECTION      
+      Change_State( LOCAL_SECTION );
     end loop;
     
     Printer.Report( Traces );
@@ -292,11 +278,11 @@ procedure  Mutex_Template is
 begin 
   -- init tarvelers tasks
   for I in Reader_Tasks'Range loop
-    Reader_Tasks(I).Init(I, Seeds(I+1));   -- `Seeds(I+1)` is ugly :-(
+    Reader_Tasks(I).Init(I, Seeds(I+1));
   end loop;
 
   for I in Writer_Tasks'Range loop
-    Writer_Tasks(I).Init(I + Nr_Of_Readers, Seeds(I+ 1 + Nr_Of_Readers));   -- `Seeds(I+1)` is ugly :-(
+    Writer_Tasks(I).Init(I + Nr_Of_Readers, Seeds(I+ 1 + Nr_Of_Readers));
   end loop;
 
   -- start tarvelers tasks

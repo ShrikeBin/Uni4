@@ -7,11 +7,14 @@ package Monitor_Package is
   end Monitor;
 
   task type Condition is
+    entry Pre_Wait;
     entry Signal;
     entry Wait;
-    entry Waiting(B: out Boolean);
+    entry Waiting(P: out Boolean);
   end Condition;
 
-  function Non_Empty(C: Condition) return Boolean;
+  function Non_Empty(Cond: Condition) return Boolean;
+
+  procedure Wait(Cond: in out Condition);
 
 end Monitor_Package;

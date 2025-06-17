@@ -4,45 +4,75 @@ package body Monitor_Package is
   task body Monitor is
   begin
     loop
-      accept Enter;
-      accept Leave;
+      select
+        accept Enter;
+      or
+        terminate;
+      end select;
+
+      select
+        accept Leave;
+      or
+        terminate;
+      end select;
     end loop;
   end Monitor;
 
   task body Condition is
+    Pending : Integer := 0; -- number of pending processes in Wait
   begin
     loop
       select
-        when Wait'Count = 0 =>
+        when Pending = 0 =>
           accept Signal do
             Monitor.Leave;
           end Signal;
+      or
+        accept Pre_Wait do
+          Pending := Pending + 1;
+        end Pre_Wait;
       or
         accept Wait do
           loop
             select
               accept Signal;
+                Pending := Pending - 1;
               exit;
             or
-              accept Waiting(B: out Boolean) do
-                B := True;
+              accept Waiting(P: out Boolean) do
+                P := True;
               end Waiting;
+            or
+              accept Pre_Wait do
+                Pending := Pending + 1;
+              end Pre_Wait;
+            or
+              terminate;
             end select;
           end loop;
         end Wait;
       or
-        accept Waiting(B: out Boolean) do
-          B := Wait'Count /= 0;
+        accept Waiting(P: out Boolean) do
+          P := Pending /= 0;
         end Waiting;
+      or
+        terminate;
       end select;
     end loop;
   end Condition;
 
-  function Non_Empty(C: Condition) return Boolean is
-    B: Boolean;
+  function Non_Empty(Cond: Condition) return Boolean is
+    P: Boolean;
   begin
-    C.Waiting(B);
-    return B;
+    Cond.Waiting(P);
+    return P;
   end Non_Empty;
+
+  procedure Wait(Cond: in out Condition) is
+  begin
+    Cond.Pre_Wait;
+    Monitor.Leave;
+    Cond.Wait;
+  end Wait;
 
 end Monitor_Package;
