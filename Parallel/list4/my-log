@@ -1,0 +1,72 @@
+h20@h20-desktop:~/Documents/Uni4/Parallel/list4$ python3 run.py 
+=========================
+Processing task1 :
+Building task1...
+==========================
+gnatmake szymanski.adb
+x86_64-linux-gnu-gcc-13 -c szymanski.adb
+szymanski.adb:7:12: warning: file name does not match unit name, should be "mutex_template.adb" [enabled by default]
+x86_64-linux-gnu-gcc-13 -c random_seeds.adb
+x86_64-linux-gnu-gnatbind-13 -x szymanski.ali
+x86_64-linux-gnu-gnatlink-13 szymanski.ali
+==========================
+Running task1...
+Output written to [/home/h20/Documents/Uni4/Parallel/list4/task1/out1]
+Copying output to [/home/h20/Documents/Uni4/Parallel/list4/out/out1]
+Cleaning task1...
+rm *.o
+rm *.ali
+rm ./szymanski
+rm ./out1
+=========================
+Processing task2 :
+Building task2...
+==========================
+go build -o szymanski szymanski.go
+==========================
+Running task2...
+Output written to [/home/h20/Documents/Uni4/Parallel/list4/task2/out2]
+Copying output to [/home/h20/Documents/Uni4/Parallel/list4/out/out2]
+Cleaning task2...
+rm ./szymanski
+rm ./out2
+=========================
+Processing task3 :
+Building task3...
+==========================
+gnatmake mutex_template.adb
+x86_64-linux-gnu-gcc-13 -c mutex_template.adb
+x86_64-linux-gnu-gcc-13 -c random_seeds.adb
+x86_64-linux-gnu-gcc-13 -c rw_monitor.adb
+x86_64-linux-gnu-gcc-13 -c monitor_package.adb
+x86_64-linux-gnu-gnatbind-13 -x mutex_template.ali
+x86_64-linux-gnu-gnatlink-13 mutex_template.ali
+==========================
+Running task3...
+Output written to [/home/h20/Documents/Uni4/Parallel/list4/task3/out3]
+Copying output to [/home/h20/Documents/Uni4/Parallel/list4/out/out3]
+Cleaning task3...
+rm *.o
+rm *.ali
+rm ./mutex_template
+rm ./out3
+=========================
+Processing task4 :
+Building task4...
+==========================
+go build -o mutex_template mutex_template.go rw_monitor.go monitor_package.go
+==========================
+Running task4...
+Output written to [/home/h20/Documents/Uni4/Parallel/list4/task4/out4]
+Copying output to [/home/h20/Documents/Uni4/Parallel/list4/out/out4]
+Cleaning task4...
+rm ./mutex_template
+rm ./out4
+✅ All tasks completed!
+h20@h20-desktop:~/Documents/Uni4/Parallel/list4$ shasum ./out/*
+44d88575becec827082480fc77e2fe2b2e8464e0  ./out/out1
+4ea4b0eb8f50765094fe81b59e486ae8b4fade5a  ./out/out2
+71cd1856f5546182907d87dced74fb93ba705311  ./out/out3
+27fd9aba2e1550ea0bbd2cfed28c2dfebea3c441  ./out/out4
+h20@h20-desktop:~/Documents/Uni4/Parallel/list4$ tmux capture-pane -p -S'-' -E'-' -J > my-log
+
