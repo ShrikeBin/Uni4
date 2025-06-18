@@ -19,3 +19,16 @@
         - skill in tic tac toe
         - basic C++
         - Minimax w/αβ prunning
+
+##  list 4:
+- Clustering algorithms Visualization on Mnist
+    - Dependencies:
+        - tensorflow
+        - numpy
+        - scikit-learn
+        - idx2numpy
+
+##  list 5:
+- Backpropagation from scratch on a example
+    - Dependencies:
+        - numpy
